@@ -42,6 +42,71 @@ include "dbConnect.php";
 		}
     }
 
+    if(isset($_POST['isEmailValid'])){
+        $email = validate($_POST['txtEmail']);
+
+        $sql = "SELECT * FROM tblUser WHERE email = '$email';";
+        $result = mysqli_query($conn, $sql);
+    	if (mysqli_num_rows($result) >= 1) {
+            $value = array();
+            $int = 0;
+            while ($row = mysqli_fetch_assoc($result)) {
+                $value[$int] =  array("id" => $row['id'],"name" => $row['firstName'] );
+                $int = $int + 1;
+            }           
+            echo json_encode($value);
+          
+		} else {
+            $value = array();
+            $value[0] =  array("id" => 0 );
+        }
+    }
+
+    if(isset($_POST['GetOTP'])){
+        $id = validate($_POST['id']);
+        $six_digit_random_number = random_int(100000, 999999);
+        $sql = "INSERT INTO tblForgetPass (OTPCode, userId) VALUES ('$six_digit_random_number',$id);";
+        if(mysqli_query($conn, $sql)) {
+            echo json_encode($six_digit_random_number);
+        } else {
+            $message = "Something went wrong.";
+            echo json_encode($message);
+        }
+    }
+
+    if(isset($_POST['getVerifyOTP'])){
+        $id = validate($_POST['id']);
+        $otpcode = validate($_POST['otpcode']);
+
+        $sql = "SELECT userId,DATE_ADD(dateCreated, INTERVAL 1 MINUTE),Now()  
+                FROM tblForgetPass 
+                WHERE DATE_ADD(dateCreated, INTERVAL 15 MINUTE) > Now() and userId = $id and OTPCode = '$otpcode';";
+		$result = mysqli_query($conn, $sql);
+		if (mysqli_num_rows($result) >= 1) {
+                    $message = "1";
+                    echo json_encode($message);
+              
+		}else{
+            $message = "Please Enter Correct OTP.";
+            echo json_encode($message);
+		}
+    }
+
+    if(isset($_POST['updatePass'])){
+        $id = validate($_POST['id']);
+        $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
+       
+        $sql = "UPDATE tblUser 
+                SET password='$password',modifiedBy=$id,dateModified=CURRENT_TIMESTAMP() 
+                WHERE id = $id;";
+        if(mysqli_query($conn, $sql)) {
+            echo json_encode('1');
+        } else {
+            $message = "Something went wrong.";
+            echo json_encode($message);
+        }
+    }
+
     if(isset($_POST['getLogout'])){
         session_start();
 

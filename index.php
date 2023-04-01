@@ -101,15 +101,15 @@
         $('#btnNewTicket').click(function(e) {   
 
             $('#divTitle').html("SUMBIT TICKET");
-            $('#divMessage').html("<p class='mb-4'>Create Incident to assists you in your issue</p> <div class='form-group'> " +
-                                "<input type='email' class='form-control form-control-user' id='txtEmail' placeholder='Email Address'></div>" +
+            $('#divMessage').html("<p class='mb-4'>Create Incident to assists you in your issue</p> <div id='error'> </div> <br><div class='form-group'> " +
+                                "<input type='email' class='form-control form-control-user' id='txtEmail' placeholder='Email Address'>*</div>" +
                                 "<div class='form-group'>" +
-                                "<input type='text' class='form-control form-control-user' id='txtEmp' placeholder='Employee Number'></div>" +
-                                "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtEmpName' placeholder='Complete Name'></div>" +
+                                "<input type='text' class='form-control form-control-user' id='txtEmp' placeholder='Employee Number'>*</div>" +
+                                "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtEmpName' placeholder='Complete Name'>*</div>" +
                                 "<div class='form-group'><select class='form-control form-control-user' id='cmbIncident'></select></div>" +
                                 "<div class='form-group'><select class='form-control form-control-user' onchange='getOffice()' id='cmbDepartment'></select></div>" +
                                 "<div class='form-group'><select class='form-control form-control-user' id='cmbOffice'></select></div>" +
-                                "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtTitle' placeholder='Title'><textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>");
+                                "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtTitle' placeholder='Title'>*<textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea>*</div>");
             $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
                                 "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
         
@@ -189,7 +189,7 @@
   
 
             $('#divTitle').html("SUMBIT TICKET");
-            $('#divMessage').html("<p class='mb-4'>Help us to be better in serving you.</p> " +
+            $('#divMessage').html("<p class='mb-4'>Help us to be better in serving you.</p> <div id='error'> </div> <br> " +
                                 "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtEmpName' placeholder='Complete Name'></div>" +
                                 "<div class='form-group'><textarea class='form-control' rows='5' id='txtdescription' placeholder='Feedback'></textarea></div>");
 
@@ -225,7 +225,7 @@
 
             } else {
                 let techid = 0;
-                let status = 0;
+                let statusId = 0;
                 $.ajax({
                 async: false,
                 type: "POST",
@@ -234,7 +234,8 @@
                 success: function(data) {
                    
                     data = JSON.parse(data);
-                    for (var i=0; i< data.length; i++ ) {
+                    if (data.length > 0) {
+                        for (var i=0; i< data.length; i++ ) {
                         if (data[i].modifiedFrom == "requestor") {
                             document.getElementById("divMessage").innerHTML += "<div class='card shadow mb-4'> "+
                                    "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-right text-warning'>"+ data[i].name +"</h6></div>" +
@@ -249,6 +250,8 @@
                       techid = data[i].TechId;
                       statusId = data[i].statusId;
                     }
+                    }
+                   
                 
                 }
             });
@@ -264,6 +267,13 @@
     })
     function createTicket() {
         $('#divTitle').html("RTU Ticketing Message"); 
+        var email = $('#txtEmail').val()
+        var Emp = $('#txtEmp').val()
+        var name = $('#txtEmpName').val()
+        var title = $('#txtTitle').val()
+        var desc = $('#txtdescription').val()
+
+        if (!((email == '') || (Emp == '') || (name == '') || (title == '') || (desc == ''))) {
             $.ajax({
                 async: false,
                 type: "POST",
@@ -279,17 +289,33 @@
                     },
                 success: function(data) {
                     data = JSON.parse(data);
-                    $('#divMessage').html(data);
+                    sendemail($('#txtEmail').val(),"RTU-Ticketing Management - Ticket Number:" + data,"<html><body>Hi "+ $('#txtEmpName').val() +"<br>You successfully created a ticket.<br><h2><b>Ticket Number: "+ data +"</b></h2><div style='padding-left: 3%;'>"+
+                                                                                "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Incident</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
+                                                                                "<tr style='vertical-align: text-top;'><td>Title</td><td>"+ $('#txtTitle').val() +"</td></tr><tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
+                                                                                "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
+                    $('#divMessage').html("You successfully created ticket. Please take note of this reference number."+ data);
                     $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
                 }, 
                 error: function (e) {
                     alert(e);
                 }
             })
+        } else { 
+            $('#error').html("Please Fill up the required fields");
+            $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
+                                "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
+
+        }
+
+          
     }
 
     function createFeedback() {
         $('#divTitle').html("RTU Ticketing Message"); 
+        var email = $('#txtEmpName').val()
+        var description = $('#txtdescription').val()
+
+        if (!((email == '') || (description == ''))) {
             $.ajax({
                 async: false,
                 type: "POST",
@@ -308,6 +334,14 @@
                     alert(e);
                 }
             })
+        } else { 
+            $('#error').html("Please Fill up the required fields");
+            $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
+                                "  <button type='button' onclick='createFeedback()' class='btn btn-warning' id='btnSubmitFeed'>Submit</button>");
+
+        }
+
+         
     }
    
     function getOffice() {
@@ -337,13 +371,16 @@
 
     function replyTicket(tickedId,StatusId) {
         $('#divTitle').html("UPDATE TICKET");
-        $('#divMessage').html("<div class='form-group'><textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>" );
+        $('#divMessage').html("<div class='form-group'><div id='error'> </div> <br><textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>" );
         $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"+
                               "<button type='button' class='btn btn-warning' onclick='updateTicket("+tickedId+","+ StatusId +")' id='btnUpdate'>Send</button>" );
     }
 
     function updateTicket(tickedId,StatusId) {
+        var description = $('#txtdescription').val()
         $('#divTitle').html("RTU Ticketing Message"); 
+        if (!(description == '')) {
+           
             $.ajax({
                 async: false,
                 type: "POST",
@@ -365,6 +402,29 @@
                     alert(e);
                 }
             })
+        } else { 
+            $('#error').html("Please Fill up the required fields");
+            $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"+
+                              "<button type='button' class='btn btn-warning' onclick='updateTicket("+tickedId+","+ StatusId +")' id='btnUpdate'>Send</button>" );
+
+        }
+       
+    }
+
+    function sendemail(recipient,subject,content) {
+        $.ajax({
+                async: false,
+                type: "POST",
+                url: 'controllers/emailController.php',
+                data: { recipient: recipient, 
+                        content: content,
+                        subject: subject,
+                        sendEmail: 1
+                    },
+                success: function(data) {
+                    console.log(data);               
+                }
+            })    
     }
     </script>
 </body>

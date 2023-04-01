@@ -21,7 +21,7 @@ include "dbConnect.php";
         $sql = "INSERT INTO tblTicket ( email, name, empId, department, description, incident, title) VALUES ('$email','$name','$empId','$department','$description','$incident','$title');";
         if(mysqli_query($conn, $sql)) {
             $id =  mysqli_insert_id($conn);
-            $message = "You successfully created ticket. Please take note of this reference number. $id";
+            $message =  $id;
 
             echo json_encode($message);
 
@@ -171,7 +171,9 @@ include "dbConnect.php";
                $int = $int + 1;
            }           
            echo json_encode($value);
-         
+       } else {
+
+        echo json_encode(0);
        }
     }
 

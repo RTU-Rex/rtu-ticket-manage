@@ -1,8 +1,9 @@
 // for ticket management 
 
 function viewTicket(id) {   
-  let access = 0;
-  let techid = 0;
+  var access = 0;
+  var techid = 0;
+
   $('#divTitle').html("Ticket Journey");
   $.ajax({
       async: false,
@@ -43,12 +44,13 @@ function viewTicket(id) {
                          "<hr> <p class='mb-1 text-left'>"+ data[i].dateModified +" - "+ data[i].statusName +"</p></div></div>";
               } 
               techid = data[i].technicianId
+           
           }
       }
   });
   
   if (access == 2) {
-      $('#divButtons').html("<button type='button' class='btn btn-warning' onclick='replyTicket("+ id +", "+ techid +", "+ access +" )' id='btnUpdate'>Techincal Report</button>" );
+      $('#divButtons').html("<button type='button' class='btn btn-warning' onclick='replyTicket("+ id +", "+ techid +", "+ access +")' id='btnUpdate'>Techincal Report</button>" );
   } else {
       $('#divButtons').html("<button type='button' class='btn btn-primary' onclick='updateTicketview("+ id +")'>Update Ticket</button>"+
                         "<button type='button' class='btn btn-warning' onclick='replyTicket("+ id +", "+ techid +", "+ access +")' id='btnUpdate'>Techincal Report</button>" );
@@ -122,32 +124,35 @@ if (techId != 0) {
     if ( access != 2 ) {
         var element = document.getElementById("divTech");
         element.style.visibility = "hidden";
-    } else {
-        techId = $('#cmbTech').val()
-    }
-
+    } 
 } 
  
 
 
 $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"+
-                    "<button type='button' class='btn btn-warning' onclick='updateTech("+ id +","+ techId +")' id='btnUpdate'>Send</button>" );
+                    "<button type='button' class='btn btn-warning' onclick='updateTech("+ id +","+ techId +","+ access +")' id='btnUpdate'>Send</button>" );
+ }
 
-                   
-                }
-
-function updateTech(id,techid) {
+function updateTech(id,techid, access) {
 $('#divTitle').html("RTU Ticketing Message"); 
 
 var editTech = 0;
 if (techid == 0) {
-
     editTech = $('#cmbTech').val();
+    editTechName = $('#cmbTech option:selected').text();
 } else {
-
-    editTech = techid;
+    if (access != 2) {
+        editTech = techid;
+    } else {
+        editTech = $('#cmbTech').val();
+        editTechName = $('#cmbTech option:selected').text();
+    }
+   
 }
 
+var techName ='';
+var reqEmail ='';
+var rname ='';
 
   $.ajax({
       async: false,
@@ -161,6 +166,31 @@ if (techid == 0) {
           },
       success: function(data) {
           data = JSON.parse(data);
+         
+          if ( $('#cmbStatus').val() == 3 ) {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: 'controllers/homeControllers.php',
+                data: {ticketId: id, getTicketsJourneyHistory: 1},
+                success: function(data) {
+                   console.log(data);
+                    data = JSON.parse(data);
+                    for (var i=0; i< data.length; i++ ) {
+                        techName = data[i].techName
+                        reqEmail = data[i].email
+                        rname = data[i].name
+                    }
+                }
+            });
+
+
+
+                sendemail( reqEmail ,"RTU-Ticketing Management - Ticket Number:" + id + " (Resolved)","<html><body>Hi "+ rname +"<br>Ticket is now resolved<br><h2><b>Ticket Number: "+ id  +"</b></h2><div style='padding-left: 3%;'>"+
+                "<table style='border: 1px solid black; width: 30%;'><tr><td>Techician</td><td>"+ techName +"</td></tr><tr><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr>" +
+                "</table></div>" +
+                "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
+            }
           $('#divMessage').html(data);
           $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
       }, 
@@ -168,7 +198,7 @@ if (techid == 0) {
           alert(e);
       }
   });
-  location.reload();
+  //location.reload();
 }
 
 function getOffice() {
@@ -349,4 +379,20 @@ $('#divTitle').html("RTU Ticketing Message");
       }
   });
   location.reload();
+}
+
+function sendemail(recipient,subject,content) {
+    $.ajax({
+            async: false,
+            type: "POST",
+            url: 'controllers/emailController.php',
+            data: { recipient: recipient, 
+                    content: content,
+                    subject: subject,
+                    sendEmail: 1
+                },
+            success: function(data) {
+                console.log(data);               
+            }
+        })    
 }

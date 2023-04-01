@@ -1,16 +1,18 @@
 <?php
 
-  require("./includes/PHPMailer.php");
-  require("./includes/SMTP.php");
-
-  function validate($data){
+function validate($data){
    $data = trim($data);
    $data = stripslashes($data);
    $data = htmlspecialchars($data);
    return $data;
-   }
+}
+  require("../includes/PHPMailer.php");
+  require("../includes/SMTP.php");
 
-   if(isset($_POST['sendEmail'])){ 
+  $recipient = validate($_POST['recipient']);
+  $content = $_POST['content'];
+  $subject = validate($_POST['subject']);
+
       $mail = new PHPMailer\PHPMailer\PHPMailer();
       $mail->IsSMTP(); // enable SMTP
   
@@ -21,18 +23,18 @@
       $mail->Port = 465; // or 587
       $mail->IsHTML(true);
       $mail->Username = "tonnorombaba@gmail.com";
-      $mail->Password = "xlicptluhnduigrp";
-      $mail->SetFrom("tonnorombaba@gmail.com");
-      $mail->Subject = "Test";
-      $mail->Body = "hello";
-      $mail->AddAddress("tonnorombaba@gmail.com");
+      $mail->Password = "fzawbetvoqzfgwgc";
+      $mail->SetFrom("tonnorombaba1@gmail.com");
+      $mail->Subject = $subject;
+      $mail->Body = $content;
+      $mail->AddAddress($recipient);
   
        if(!$mail->Send()) {
           echo "Mailer Error: " . $mail->ErrorInfo;
        } else {
           echo "Message has been sent";
        }
-   }
+   
 
    
 ?>

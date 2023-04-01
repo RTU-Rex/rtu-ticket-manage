@@ -127,7 +127,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
     function ViewCreateTicket() {
 
         $('#divTitle').html("SUMBIT TICKET");
-        $('#divMessage').html("<p class='mb-4'>Create Incident to assists you in your issue</p> <div class='form-group'> " +
+        $('#divMessage').html("<p class='mb-4'>Create Incident to assists you in your issue</p> <div id='error'> </div> <br> <div class='form-group'> " +
                                 "<input type='email' class='form-control form-control-user' id='txtEmail' placeholder='Email Address'></div>" +
                                 "<div class='form-group'>" +
                                 "<input type='text' class='form-control form-control-user' id='txtEmp' placeholder='Employee Number'></div>" +
@@ -210,6 +210,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 
     function createTicket() {
         $('#divTitle').html("RTU Ticketing Message"); 
+        var email = $('#txtEmail').val()
+        var Emp = $('#txtEmp').val()
+        var name = $('#txtEmpName').val()
+        var title = $('#txtTitle').val()
+        var desc = $('#txtdescription').val()
+
+        if (!((email == '') || (Emp == '') || (name == '') || (title == '') || (desc == ''))) { 
             $.ajax({
                 async: false,
                 type: "POST",
@@ -225,14 +232,42 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                     },
                 success: function(data) {
                     data = JSON.parse(data);
-                    $('#divMessage').html(data);
-                    $('#divButtons').html(" <button type='button' class='btn btn-secondary' onclick='refresh()' data-dismiss='modal'>Close</button>");
+                    sendemail($('#txtEmail').val(),"RTU-Ticketing Management - Ticket Number:" + data,"<html><body>Hi "+ $('#txtEmpName').val() +"<br>You successfully created a ticket.<br><h2><b>Ticket Number: "+ data +"</b></h2><div style='padding-left: 3%;'>"+
+                                                                                "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Incident</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
+                                                                                "<tr style='vertical-align: text-top;'><td>Title</td><td>"+ $('#txtTitle').val() +"</td></tr><tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
+                                                                                "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
+                    $('#divMessage').html("You successfully created ticket. Please take note of this reference number."+ data);
+                    $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
                 }, 
                 error: function (e) {
                     alert(e);
                 }
             })
             location.reload();
+
+        } else { 
+            $('#error').html("Please Fill up the required fields");
+            $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
+                                "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
+
+        }
+           
+    }
+
+    function sendemail(recipient,subject,content) {
+        $.ajax({
+                async: false,
+                type: "POST",
+                url: 'controllers/emailController.php',
+                data: { recipient: recipient, 
+                        content: content,
+                        subject: subject,
+                        sendEmail: 1
+                    },
+                success: function(data) {
+                    console.log(data);               
+                }
+            })    
     }
 
    
