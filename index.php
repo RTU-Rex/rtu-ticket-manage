@@ -19,43 +19,15 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="../rtu-ticket-manage/img/rtulogo.png">
-
 <style>
-  .required-indicator {
-    color: red;
-}
+    body {
+    background-image: url("img/background1.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 
-#myModal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    padding-top: 100px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    background-color: #fefefe;
-    animation-name: animatetop;
-    animation-duration: 0.4s;
-}
-
-@keyframes animatetop {
-    from {top: -300px; opacity: 0;}
-    to {top: 0; opacity: 1;}
-}
-
+    }
 </style>
-
 </head>
 <script src="js/jquery-3.6.3.min.js"></script>
 <body>
@@ -69,7 +41,7 @@
         <div class="row justify-content-center">
                     <div class="col-xl-12 col-lg-12 col-md-12">
                         <div class="card o-hidden border-0 shadow-lg my-5">
-                        <div class="card-body p-10">
+                        <div class="card-body">
                             <div class="row">
                             <div class="col-lg-8">
                                 <div class="p-5">
@@ -78,17 +50,15 @@
                                     <p class="mb-4">Request technical services and submit issues virtually.</p>
                                 </div>
                                 <form class="user">
-                                    <a href="login.html" id="btnNewTicket" class="btn btn-warning btn-user btn-block" data-toggle="modal" data-target="#TicketModal">Create Ticket</a>
-                                    <br>
+                                    <div class="card card-body" style="width: 40rem;">
+                                    <a href="login.html" id="btnNewTicket" class="btn btn-warning btn-user mb-3" data-toggle="modal" data-target="#TicketModal">Create Ticket</a>
                                     <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-lg-7">
-                                        <input type="text" class="form-control form-control-user mb-1" id="txtTickNumber" placeholder="Enter Ticket Number" required>
-                                        </div>
-                                        <div class="col-lg-5">
+                                    
+                                        <div class="justify-content-center">
+                                        <input type="text" class="form-control form-control-user mb-1 " id="txtTickNumber" placeholder="Enter Ticket Number to view ticket" required>
                                         <a href="login.html" id="btnView" data-toggle="modal" data-target="#TicketModal" class="btn btn-warning btn-user btn-block">View Ticket History</a>
                                         </div>
-                                    </div>
+                                        </div>
                                     </div>
                                     <hr>
                                     <p class="mb-4">Help us improve our service.</p>
@@ -99,10 +69,11 @@
                             <div class="col-lg-4 d-none d-lg-block bg-password1-image">
                                 <div class="d-flex align-items-center justify-content-center">
                                 <img src="../rtu-ticket-manage/img/RTUTicketHub.png" >
-                            
                                 </div>
                             </div>
                             </div>
+                            <br><br><hr>
+                            <?php include 'faqs.php' ?>
                         </div>
                         </div>
                     </div>
@@ -234,7 +205,7 @@
                 $('#btnFeedback').click(function(e) {             
                     $('#divTitle').html("SUBMIT FEEDBACK");
                     $('#divMessage').html("<p class='mb-4 text-justify'>We value your opinion and strive to improve our services based on your feedback. Please let us know how we're doing by sharing your thoughts and suggestions with us. Your feedback is anonymous and will be used to help us enhance our ticketing management system, optimize our processes, and deliver a better user experience for you and all our clients." + 
-                    "<br><br>Thank you for your valuable feedback!.</p>" +
+                    "<br><br>Thank you for your valuable feedback!</p>" +
                     "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Your Feedback</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Share your thoughts and suggestions' required></textarea><div class='invalid-feedback'>Please put some feedback.</div></div>");
                     $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" + 
                         "<button type='button' onclick='createFeedback()' class='btn btn-warning' id='btnSubmitFeed'>Submit</button>");
@@ -511,5 +482,5 @@
                 
     </script>
 </body>
-
+<?php   include 'footer.php'; ?>
 </html>
