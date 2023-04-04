@@ -270,7 +270,7 @@
 
             } else {
                 let techid = 0;
-                let status = 0;
+                let statusId = 0;
                 $.ajax({
                 async: false,
                 type: "POST",
@@ -279,6 +279,7 @@
                 success: function(data) {
                    
                     data = JSON.parse(data);
+                    if (data.length > 0) {
                     for (var i=0; i< data.length; i++ ) {
                         if (data[i].modifiedFrom == "requestor") {
                             document.getElementById("divMessage").innerHTML += "<div class='card shadow mb-4'> "+
@@ -294,7 +295,7 @@
                       techid = data[i].TechId;
                       statusId = data[i].statusId;
                     }
-                
+                    }
                 }
             });
             
@@ -323,16 +324,31 @@
                        txtdescription: $('#txtdescription').val(),
                        createTicket: 1
                     },
-                success: function(data) {
+                    success: function(data) {
                     data = JSON.parse(data);
-                    $('#divMessage').html(data);
+                    $('#divMessage').html("<div><b>Ticket Number:</b> " + data + "<div><b>Requestor's Name:</b> " + $('#txtEmpName').val() + "<div><b>Office:</b> " + $('#cmbOffice option:selected').text() + "<div><b>Category:</b> " + $('#cmbIncident option:selected').text() + 
+                    "<div><b>Issue:</b> " + $('#txtTitle').val() + "<div><b>Date Created:</b></div> " + "----Make this DATECREATED----"); 
+
+                    sendemail($('#txtEmail').val(),"RTU-Ticketing Management - Ticket Number:" + data,"<html><body>Hi "+ $('#txtEmpName').val() +"<br>You successfully created a ticket.<br><h2><b>Ticket Number: "+ data +"</b></h2><div style='padding-left: 3%;'>"+
+                                                                                "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Category</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
+                                                                                "<tr style='vertical-align: text-top;'><td>Title</td><td>"+ $('#txtTitle').val() +"</td></tr><tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
+                                                                                "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
+
                     $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
                 }, 
                 error: function (e) {
                     alert(e);
                 }
-            })
-    }      }
+                        })
+                    } else { 
+                        $('#error').html("Please Fill up the required fields");
+                        $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
+                                            "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
+
+                    }
+
+
+    }
 
     function createFeedback() {
         var description = $('#txtdescription').val();
@@ -477,6 +493,21 @@
                 // Check other required fields...
                 return isValid;
                 }
+
+            function sendemail(recipient,subject,content) {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: 'controllers/emailController.php',
+                data: { recipient: recipient, 
+                        content: content,
+                        subject: subject,
+                        sendEmail: 1
+                    },
+                success: function(data) {
+                    console.log(data);               
+                }
+            })   } 
                 
     </script>
 </body>
