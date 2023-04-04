@@ -50,7 +50,7 @@
                                     <p class="mb-4">Request technical services and submit issues virtually.</p>
                                 </div>
                                 <form class="user">
-                                    <div class="card card-body" style="width: 40rem;">
+                                    <div class="card card-body">
                                     <a href="login.html" id="btnNewTicket" class="btn btn-warning btn-user mb-3" data-toggle="modal" data-target="#TicketModal">Create Ticket</a>
                                     <div class="form-group">
                                     
