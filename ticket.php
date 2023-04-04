@@ -39,19 +39,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                        
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                        <th>ID</th>
-                                            <th>STATUS</th>
-                                            <th>TITLE</th>
-                                            <th>PRIORITY</th>
-                                            <th>CATEGORY</th>
-                                            <th>TECHNICIAN</th>
-                                            <th>REQUESTOR</th>
-                                            <th>LAST UPDATE</th>
-                                         
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
 
                                     <?php   

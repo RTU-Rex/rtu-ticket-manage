@@ -33,14 +33,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                             <th>OFFICE</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                        <th>ID</th>
-                                            <th>DEPARTMENT</th>
-                                            <th>OFFICE</th>
-                                         
-                                        </tr>
-                                    </tfoot>
+                                   
                                     <tbody>
 
                                     <?php   

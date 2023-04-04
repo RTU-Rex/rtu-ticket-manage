@@ -40,19 +40,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                        
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                        <th>ID</th>
-                                            <th>ACCESS</th>
-                                            <th>EMAIL</th>
-                                            <th>FIRST NAME</th>
-                                            <th>LAST NAME</th>
-                                            <th>CONTACT NUMBER</th>
-                                            <th>STATUS</th>
-                                            <th>DATE CREATED</th>
-                                         
-                                        </tr>
-                                    </tfoot>
+                                   
                                     <tbody>
 
                                     <?php   
