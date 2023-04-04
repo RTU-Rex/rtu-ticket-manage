@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,72 +18,98 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="shortcut icon" type="x-icon" href="../RTU_ticket_draft/img/rtulogo.png">
+    <link rel="shortcut icon" type="x-icon" href="../rtu-ticket-manage/img/rtulogo.png">
+
+<style>
+  .required-indicator {
+    color: red;
+}
+
+#myModal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    background-color: #fefefe;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+}
+
+@keyframes animatetop {
+    from {top: -300px; opacity: 0;}
+    to {top: 0; opacity: 1;}
+}
+
+</style>
 
 </head>
 <script src="js/jquery-3.6.3.min.js"></script>
 <body>
 
-    <div class="container">
+  <div class="container">
   
   <?php include 'message.php' ?>
 
 
         <!-- Outer Row -->
         <div class="row justify-content-center">
-
-            <div class="col-xl-12 col-lg-12 col-md-12">
-
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <!-- Nested Row within Card Body -->
-                        <div class="row">
-                           
+                    <div class="col-xl-12 col-lg-12 col-md-12">
+                        <div class="card o-hidden border-0 shadow-lg my-5">
+                        <div class="card-body p-10">
+                            <div class="row">
                             <div class="col-lg-8">
                                 <div class="p-5">
-                                    <div class="text-left">
-                                        <h1 class="font-weight-bold text-primary">Welcome to Rizal Technological University Ticketing Management System</h1>
-                                        <p class="mb-4">You can now request techincal services and issue virtully</p>
-                                    </div>
-                                    <form class="user">
-                                        <a href="login.html" id="btnNewTicket" class="btn btn-warning btn-user btn-block" data-toggle="modal" data-target="#TicketModal">
-                                            Create Ticket
-                                        </a>
-                                        <br>
-                                        <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-7"><input type="text" class="form-control form-control-user" id="txtTickNumber" placeholder="Enter Ticket Number"></div>
-                                            <div class="col-lg-5"> <a href="login.html" id="btnView" data-toggle="modal" data-target="#TicketModal" class="btn btn-warning btn-user btn-block">View Ticket History</a></div>
-                                        </div>
-                                        </div>
-                                        <hr>
-                                        <p class="mb-4">Help us to be better in serving you.
-                                        <button type="button" id="btnFeedback" class="btn btn-warning btn-user btn-block" data-toggle="modal" data-target="#TicketModal">Give us feedback</button>
-                                        </p>
-                                    </form>
-                                  
+                                <div class="text-left">
+                                    <h1 class="font-weight-bold text-primary">Welcome to Rizal Technological University Ticketing Management System</h1>
+                                    <p class="mb-4">Request technical services and submit issues virtually.</p>
                                 </div>
-                           
+                                <form class="user">
+                                    <a href="login.html" id="btnNewTicket" class="btn btn-warning btn-user btn-block" data-toggle="modal" data-target="#TicketModal">Create Ticket</a>
+                                    <br>
+                                    <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                        <input type="text" class="form-control form-control-user mb-1" id="txtTickNumber" placeholder="Enter Ticket Number" required>
+                                        </div>
+                                        <div class="col-lg-5">
+                                        <a href="login.html" id="btnView" data-toggle="modal" data-target="#TicketModal" class="btn btn-warning btn-user btn-block">View Ticket History</a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <hr>
+                                    <p class="mb-4">Help us improve our service.</p>
+                                    <button type="button" id="btnFeedback" class="btn btn-warning btn-user btn-block" data-toggle="modal" data-target="#TicketModal">Submit Feedback</button>
+                                </form>
+                                </div>
                             </div>
                             <div class="col-lg-4 d-none d-lg-block bg-password1-image">
-
-                            <div class="d-flex align-items-center justify-content-center">
-               
-               <img src="../RTU_ticket_draft/img/RTUTicketHub.png" >
-
-           </div>
-         
+                                <div class="d-flex align-items-center justify-content-center">
+                                <img src="../rtu-ticket-manage/img/RTUTicketHub.png" >
+                            
+                                </div>
+                            </div>
                             </div>
                         </div>
+                        </div>
                     </div>
-                </div>
+                    </div>
 
-            </div>
-
-        </div>
-
-    </div>
-
+               
+              
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -98,21 +123,42 @@
     $(document).ready(function() {
        
        
-        $('#btnNewTicket').click(function(e) {   
+    $('#btnNewTicket').click(function(e) {   
 
-            $('#divTitle').html("SUMBIT TICKET");
-            $('#divMessage').html("<p class='mb-4'>Create Incident to assists you in your issue</p> <div id='error'> </div> <br><div class='form-group'> " +
-                                "<input type='email' class='form-control form-control-user' id='txtEmail' placeholder='Email Address'>*</div>" +
-                                "<div class='form-group'>" +
-                                "<input type='text' class='form-control form-control-user' id='txtEmp' placeholder='Employee Number'>*</div>" +
-                                "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtEmpName' placeholder='Complete Name'>*</div>" +
-                                "<div class='form-group'><select class='form-control form-control-user' id='cmbIncident'></select></div>" +
-                                "<div class='form-group'><select class='form-control form-control-user' onchange='getOffice()' id='cmbDepartment'></select></div>" +
-                                "<div class='form-group'><select class='form-control form-control-user' id='cmbOffice'></select></div>" +
-                                "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtTitle' placeholder='Title'>*<textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea>*</div>");
-            $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
-                                "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
         
+    $('#divTitle').html("SUBMIT TICKET");
+    $('#divMessage').html("<p class='text-justify mb-4'>Use this form to submit a ticket for any IT-related issues you're experiencing. Please fill out all required fields marked with an asterisk (*).</p>" +
+        "<div class='row'>" + "<br>" +
+            "<div class='col-md-6'>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Email</label><input type='email' class='form-control' id='txtEmail' placeholder='Enter Email Address' required><small class='text-danger' id='txtEmail-error'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Employee No.</label><input type='text' class='form-control' id='txtEmp' placeholder='Enter Employee Number' required><small class='text-danger' id='txtEmp-error'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Employee Name</label><input type='text' class='form-control' id='txtEmpName' placeholder='Complete Name' required><small class='text-danger' id='txtEmpName-error'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Title</label><input type='text' class='form-control' id='txtTitle' placeholder='What is the major issue?' required><small class='text-danger' id='txtTitle-error'></small></div>" +
+            "</div>" +
+            "<div class='col-md-6'>" +
+                "<div class='form-group'><label class ='text-dark'>Category</label><select class='form-control' id='cmbIncident' required></select></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Office Under</label><select class='form-control' onchange='getOffice()' id='cmbDepartment' required></select></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Department</label><select class='form-control' id='cmbOffice' required></select></div>" +
+            "</div>" +
+            "<div class='col-md-12'>" +
+            "<div class='form-group'><label class ='text-dark'>Description</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Provide a detailed description of the issue you are experiencing.'></textarea></div>" +
+            "<div class='alert alert-info' role='alert'>" +
+            "<i class='fas fa-info-circle'></i> Once you submit a ticket, you can check its status and updates using the ticket tracking number provided in the confirmation message. Our support team will also contact you via email or phone to provide updates or request additional information as needed. Thank you for using Rizal Technological University's Ticketing System.</div>"+
+            "</div>" +
+        "</div>");
+        
+        $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
+            " <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
+
+        function showModal() {
+        $('#myModal').show(e);
+        }
+
+        $('#myModal').on('shown.bs.modal', function(e) {
+          $('.modal-content').addClass('animated fadeIn');
+                
+        });
+
             //Retrived incidents
             $.ajax({
                 async: false,
@@ -185,18 +231,16 @@
            
         })
 
-        $('#btnFeedback').click(function(e) {   
-  
+                $('#btnFeedback').click(function(e) {             
+                    $('#divTitle').html("SUBMIT FEEDBACK");
+                    $('#divMessage').html("<p class='mb-4 text-justify'>We value your opinion and strive to improve our services based on your feedback. Please let us know how we're doing by sharing your thoughts and suggestions with us. Your feedback is anonymous and will be used to help us enhance our ticketing management system, optimize our processes, and deliver a better user experience for you and all our clients." + 
+                    "<br><br>Thank you for your valuable feedback!.</p>" +
+                    "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Your Feedback</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Share your thoughts and suggestions' required></textarea><div class='invalid-feedback'>Please put some feedback.</div></div>");
+                    $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" + 
+                        "<button type='button' onclick='createFeedback()' class='btn btn-warning' id='btnSubmitFeed'>Submit</button>");
+                    });
 
-            $('#divTitle').html("SUMBIT TICKET");
-            $('#divMessage').html("<p class='mb-4'>Help us to be better in serving you.</p> <div id='error'> </div> <br> " +
-                                "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtEmpName' placeholder='Complete Name'></div>" +
-                                "<div class='form-group'><textarea class='form-control' rows='5' id='txtdescription' placeholder='Feedback'></textarea></div>");
-
-            $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
-                                "  <button type='button' onclick='createFeedback()' class='btn btn-warning' id='btnSubmitFeed'>Submit</button>");
-        })
-
+              
         $('#btnView').click(function(e) {   
             var error = true;
             $('#divTitle').html("Ticket Journey");
@@ -220,12 +264,13 @@
             });
 
             if (error) {
-                $('#divMessage').html("Please enter valid ticket number.");
+                $('#divMessage').html("<div class='alert alert-info' role='alert'>" +
+                "<i class='fas fa-info-circle'></i> Please enter your <b>valid ticket number</b> on the text field provided to see your ticket history.</div>");
                 $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
 
             } else {
                 let techid = 0;
-                let statusId = 0;
+                let status = 0;
                 $.ajax({
                 async: false,
                 type: "POST",
@@ -234,8 +279,7 @@
                 success: function(data) {
                    
                     data = JSON.parse(data);
-                    if (data.length > 0) {
-                        for (var i=0; i< data.length; i++ ) {
+                    for (var i=0; i< data.length; i++ ) {
                         if (data[i].modifiedFrom == "requestor") {
                             document.getElementById("divMessage").innerHTML += "<div class='card shadow mb-4'> "+
                                    "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-right text-warning'>"+ data[i].name +"</h6></div>" +
@@ -250,8 +294,6 @@
                       techid = data[i].TechId;
                       statusId = data[i].statusId;
                     }
-                    }
-                   
                 
                 }
             });
@@ -266,14 +308,8 @@
         
     })
     function createTicket() {
+        if (validateForm()) {
         $('#divTitle').html("RTU Ticketing Message"); 
-        var email = $('#txtEmail').val()
-        var Emp = $('#txtEmp').val()
-        var name = $('#txtEmpName').val()
-        var title = $('#txtTitle').val()
-        var desc = $('#txtdescription').val()
-
-        if (!((email == '') || (Emp == '') || (name == '') || (title == '') || (desc == ''))) {
             $.ajax({
                 async: false,
                 type: "POST",
@@ -289,33 +325,26 @@
                     },
                 success: function(data) {
                     data = JSON.parse(data);
-                    sendemail($('#txtEmail').val(),"RTU-Ticketing Management - Ticket Number:" + data,"<html><body>Hi "+ $('#txtEmpName').val() +"<br>You successfully created a ticket.<br><h2><b>Ticket Number: "+ data +"</b></h2><div style='padding-left: 3%;'>"+
-                                                                                "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Incident</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
-                                                                                "<tr style='vertical-align: text-top;'><td>Title</td><td>"+ $('#txtTitle').val() +"</td></tr><tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
-                                                                                "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
-                    $('#divMessage').html("You successfully created ticket. Please take note of this reference number."+ data);
+                    $('#divMessage').html(data);
                     $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
                 }, 
                 error: function (e) {
                     alert(e);
                 }
             })
-        } else { 
-            $('#error').html("Please Fill up the required fields");
-            $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
-                                "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
-
-        }
-
-          
-    }
+    }      }
 
     function createFeedback() {
+        var description = $('#txtdescription').val();
+                if (description.trim() === '') {
+                    // show error message
+                    $('#txtdescription').addClass('is-invalid');
+                    return;
+                } else {
+                    // submit form
+                    $('#feedbackForm').submit();
+                }
         $('#divTitle').html("RTU Ticketing Message"); 
-        var email = $('#txtEmpName').val()
-        var description = $('#txtdescription').val()
-
-        if (!((email == '') || (description == ''))) {
             $.ajax({
                 async: false,
                 type: "POST",
@@ -334,14 +363,6 @@
                     alert(e);
                 }
             })
-        } else { 
-            $('#error').html("Please Fill up the required fields");
-            $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
-                                "  <button type='button' onclick='createFeedback()' class='btn btn-warning' id='btnSubmitFeed'>Submit</button>");
-
-        }
-
-         
     }
    
     function getOffice() {
@@ -371,16 +392,13 @@
 
     function replyTicket(tickedId,StatusId) {
         $('#divTitle').html("UPDATE TICKET");
-        $('#divMessage').html("<div class='form-group'><div id='error'> </div> <br><textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>" );
+        $('#divMessage').html("<div class='form-group'><textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>" );
         $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"+
                               "<button type='button' class='btn btn-warning' onclick='updateTicket("+tickedId+","+ StatusId +")' id='btnUpdate'>Send</button>" );
     }
 
     function updateTicket(tickedId,StatusId) {
-        var description = $('#txtdescription').val()
         $('#divTitle').html("RTU Ticketing Message"); 
-        if (!(description == '')) {
-           
             $.ajax({
                 async: false,
                 type: "POST",
@@ -402,30 +420,64 @@
                     alert(e);
                 }
             })
-        } else { 
-            $('#error').html("Please Fill up the required fields");
-            $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"+
-                              "<button type='button' class='btn btn-warning' onclick='updateTicket("+tickedId+","+ StatusId +")' id='btnUpdate'>Send</button>" );
-
-        }
-       
     }
 
-    function sendemail(recipient,subject,content) {
-        $.ajax({
-                async: false,
-                type: "POST",
-                url: 'controllers/emailController.php',
-                data: { recipient: recipient, 
-                        content: content,
-                        subject: subject,
-                        sendEmail: 1
-                    },
-                success: function(data) {
-                    console.log(data);               
+                function validateForm() {
+                let isValid = true;
+
+            
+                const emailField = document.getElementById('txtEmail');
+                const email = emailField.value;
+                const emailErrorMessage = "Please enter a valid Email Address";
+                if (!email) {
+                    emailField.classList.add('is-invalid');
+                    document.getElementById('txtEmail-error').textContent = emailErrorMessage;
+                    isValid = false;
+                } else {
+                    emailField.classList.remove('is-invalid');
+                    document.getElementById('txtEmail-error').textContent = '';
                 }
-            })    
-    }
+
+                const empField = document.getElementById('txtEmp');
+                const emp = empField.value;
+                const empRegex = /^\d{4}-\d{6}$/; // Match a 5-digit number
+                const empErrorMessage = "Please enter a valid employee number in the format 'YYYY-NNNNNN'";
+                if (!emp || !emp.match(empRegex)) {
+                    empField.classList.add('is-invalid');
+                    document.getElementById('txtEmp-error').textContent = empErrorMessage;
+                    isValid = false;
+                } else {
+                    empField.classList.remove('is-invalid');
+                    document.getElementById('txtEmp-error').textContent = '';
+                }
+                
+                const empNameField = document.getElementById('txtEmpName');
+                const empName = empNameField.value;
+                const empNameErrorMessage = "Please enter your name";
+                if (!empName) {
+                    empNameField.classList.add('is-invalid');
+                    document.getElementById('txtEmpName-error').textContent = empNameErrorMessage;
+                    isValid = false;
+                } else {
+                    empNameField.classList.remove('is-invalid');
+                    document.getElementById('txtEmpName-error').textContent = '';
+                }
+
+                const titleNameField = document.getElementById('txtTitle');
+                const titleName = titleNameField.value;
+                const titleErrorMessage = "Please enter the issue title";
+                if (!empName) {
+                    titleNameField.classList.add('is-invalid');
+                    document.getElementById('txtTitle-error').textContent = titleErrorMessage;
+                    isValid = false;
+                } else {
+                    titleNameField.classList.remove('is-invalid');
+                    document.getElementById('txtTitle-error').textContent = '';
+                }
+                // Check other required fields...
+                return isValid;
+                }
+                
     </script>
 </body>
 
