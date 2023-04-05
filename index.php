@@ -40,7 +40,7 @@
         <!-- Outer Row -->
         <div class="row justify-content-center">
                     <div class="col-xl-12 col-lg-12 col-md-12">
-                        <div class="card o-hidden border-0 shadow-lg my-5">
+                        <div class="card o-hidden border-1 shadow-lg my-5 no-animation">
                         <div class="card-body">
                             <div class="row">
                             <div class="col-lg-8">
@@ -51,18 +51,18 @@
                                 </div>
                                 <form class="user">
                                     <div class="card card-body">
-                                    <a href="login.html" id="btnNewTicket" class="btn btn-warning btn-user mb-3" data-toggle="modal" data-target="#TicketModal">Create Ticket</a>
+                                    <a href="login.html" id="btnNewTicket" class="btn btn-primary btn-user mb-3 text-white" data-toggle="modal" data-target="#TicketModal">Create Ticket</a>
                                     <div class="form-group">
                                     
                                         <div class="justify-content-center">
                                         <input type="text" class="form-control form-control-user mb-1 " id="txtTickNumber" placeholder="Enter Ticket Number to view ticket" required>
-                                        <a href="login.html" id="btnView" data-toggle="modal" data-target="#TicketModal" class="btn btn-warning btn-user btn-block">View Ticket History</a>
+                                        <a href="login.html" id="btnView" data-toggle="modal" data-target="#TicketModal" class="btn btn-primary btn-user btn-block text-white">View Ticket History</a>
                                         </div>
                                         </div>
                                     </div>
                                     <hr>
                                     <p class="mb-4">Help us improve our service.</p>
-                                    <button type="button" id="btnFeedback" class="btn btn-warning btn-user btn-block" data-toggle="modal" data-target="#TicketModal">Submit Feedback</button>
+                                    <button type="button" id="btnFeedback" class="btn btn-primary btn-user btn-block text-white" data-toggle="modal" data-target="#TicketModal">Submit Feedback</button>
                                 </form>
                                 </div>
                             </div>
@@ -97,18 +97,18 @@
     $('#btnNewTicket').click(function(e) {   
 
         
-    $('#divTitle').html("SUBMIT TICKET");
+    $('#divTitle').html("Submit Ticket");
     $('#divMessage').html("<p class='text-justify mb-4'>Use this form to submit a ticket for any IT-related issues you're experiencing. Please fill out all required fields marked with an asterisk (*).</p>" +
         "<div class='row'>" + "<br>" +
             "<div class='col-md-6'>" +
-                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Email</label><input type='email' class='form-control' id='txtEmail' placeholder='Enter Email Address' required><small class='text-danger' id='txtEmail-error'></small></div>" +
-                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Employee No.</label><input type='text' class='form-control' id='txtEmp' placeholder='Enter Employee Number' required><small class='text-danger' id='txtEmp-error'></small></div>" +
-                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Employee Name</label><input type='text' class='form-control' id='txtEmpName' placeholder='Complete Name' required><small class='text-danger' id='txtEmpName-error'></small></div>" +
-                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Title</label><input type='text' class='form-control' id='txtTitle' placeholder='What is the major issue?' required><small class='text-danger' id='txtTitle-error'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Email</label><input type='email' class='form-control' id='txtEmail' placeholder='Enter Email Address' required><small class='text-danger' id='txtEmail-error' style='display: none;'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Employee No.</label><input type='text' class='form-control' id='txtEmp' placeholder='Enter Employee Number' required><small class='text-danger' id='txtEmp-error' style='display: none;'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Employee Name</label><input type='text' class='form-control' id='txtEmpName' placeholder='Complete Name' required><small class='text-danger' id='txtEmpName-error' style='display: none;'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Title</label><input type='text' class='form-control' id='txtTitle' placeholder='What is the major issue?' required><small class='text-danger' id='txtTitle-error' style='display: none;'></small></div>" +
             "</div>" +
             "<div class='col-md-6'>" +
                 "<div class='form-group'><label class ='text-dark'>Category</label><select class='form-control' id='cmbIncident' required></select></div>" +
-                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Office Under</label><select class='form-control' onchange='getOffice()' id='cmbDepartment' required></select></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Office Under</label><select class='form-control ' onchange='getOffice()' id='cmbDepartment' required></select><small class='text-danger' style='display: none;'>Please select an office.</small></div>" +
                 "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Department</label><select class='form-control' id='cmbOffice' required></select></div>" +
             "</div>" +
             "<div class='col-md-12'>" +
@@ -140,6 +140,10 @@
                     data = JSON.parse(data);
                     $("#cmbIncident").empty();
                     var cmbInc = document.getElementById("cmbIncident");
+                    var option = document.createElement("option");
+                    option.text = "Select Category";
+                    option.value = 0;
+                    cmbIncident.add(option);
                     for (var i=0; i< data.length; i++ ) {
                         var option = document.createElement("option");
                         option.text = data[i].name;
@@ -152,58 +156,78 @@
                 }
             });
           
-          //Retrived Departments
-          $.ajax({
-                async: false,
-                type: "POST",
-                url: 'controllers/indexControllers.php',
-                data: {getDept: 1},
-                success: function(data) {
-                    data = JSON.parse(data);
-                    $("#cmbDepartment").empty();
-                    var cmbDept = document.getElementById("cmbDepartment");
-                    for (var i=0; i< data.length; i++ ) {
-                        var option = document.createElement("option");
-                        option.text = data[i];
-                        option.value = data[i];
-                        cmbDept.add(option);
-                    }
-                }, 
-                error: function (e) {
-                    alert(e);
+        //Retrived Departments
+        $.ajax({
+            async: false,
+            type: "POST",
+            url: 'controllers/indexControllers.php',
+            data: {getDept: 1},
+            success: function(data) {
+                data = JSON.parse(data);
+                $("#cmbDepartment").empty();
+                var cmbDept = document.getElementById("cmbDepartment");
+                var option = document.createElement("option");
+                option.text = "Select Office you are under";
+                option.value = 0;
+                cmbDepartment.add(option);
+                for (var i=0; i< data.length; i++ ) {
+                    var option = document.createElement("option");
+                    option.text = data[i];
+                    option.value = data[i];
+                    cmbDept.add(option);
                 }
-            });
+            }, 
+            error: function (e) {
+                alert(e);
+            }
+        });
 
-            //Retrived Officess 
-            $.ajax({
-                async: false,
-                type: "POST",
-                url: 'controllers/indexControllers.php',
-                data: {getOffice: 1,department: $('#cmbDepartment').val()},
-                success: function(data) {
-                   
-                    data = JSON.parse(data);
-                    $("#cmbOffice").empty();
-                    var cmbOffice = document.getElementById("cmbOffice");
-                    for (var i=0; i< data.length; i++ ) {
-                        var option = document.createElement("option");
-                        option.text = data[i].name;
-                        option.value = data[i].id;
-                        cmbOffice.add(option);
-                    }
-                  
-                }, 
-                error: function (e) {
-                    alert(e);
+        //Retrieved Offices 
+        var cmbOffice = document.getElementById("cmbOffice"); // get the offices dropdown
+        cmbOffice.disabled = true; // disable the offices dropdown initially
+
+        $("#cmbDepartment").on("change", function() {
+            var selectedDept = $(this).val(); // get the selected department
+            if (selectedDept) { // if a department is selected
+                if (selectedDept === "0") { // if the user selected the "Select Office you are under" option
+                    $("#cmbOffice").empty(); // empty the offices dropdown
+                    cmbOffice.disabled = true; // disable the offices dropdown
+                } else { // if the user selected a department other than "Select Office you are under"
+                    // retrieve the offices for the selected department
+                    $.ajax({
+                        async: false,
+                        type: "POST",
+                        url: 'controllers/indexControllers.php',
+                        data: {getOffice: 1, department: selectedDept},
+                        success: function(data) {
+                            data = JSON.parse(data);
+                            $("#cmbOffice").empty();
+                            cmbOffice.disabled = false; // enable the offices dropdown
+                            for (var i=0; i< data.length; i++ ) {
+                                var option = document.createElement("option");
+                                option.text = data[i].name;
+                                option.value = data[i].id;
+                                cmbOffice.add(option);
+                            }
+                        }, 
+                        error: function (e) {
+                            alert(e);
+                        }
+                    });
                 }
-            });
+            } else { // if no department is selected
+                $("#cmbOffice").empty();
+                cmbOffice.disabled = true; // disable the offices dropdown
+            }
+        });
+
           
 
            
         })
 
                 $('#btnFeedback').click(function(e) {             
-                    $('#divTitle').html("SUBMIT FEEDBACK");
+                    $('#divTitle').html("Submit Feedback");
                     $('#divMessage').html("<p class='mb-4 text-justify'>We value your opinion and strive to improve our services based on your feedback. Please let us know how we're doing by sharing your thoughts and suggestions with us. Your feedback is anonymous and will be used to help us enhance our ticketing management system, optimize our processes, and deliver a better user experience for you and all our clients." + 
                     "<br><br>Thank you for your valuable feedback!</p>" +
                     "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Your Feedback</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Share your thoughts and suggestions' required></textarea><div class='invalid-feedback'>Please put some feedback.</div></div>");
@@ -224,10 +248,11 @@
                    
                     data = JSON.parse(data);
                     for (var i=0; i< data.length; i++ ) {
+                        
                         $('#divMessage').html("<div class='card shadow mb-4'> "+
                                    "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-primary'>RTU sysTicket</h6></div>" +
                                    "<div class='card-body'> Ticket Number: "+ data[i].id +" <br> Incident: "+ data[i].IncidentName +" <br> Title: "+ data[i].title +" <br> Description: "+ data[i].description +" <br> Requestor: "+ data[i].name +" ("+ data[i].email +") <br> Department: "+ data[i].Office + 
-                                   "<hr> <p class='mb-1'>"+ data[i].DateCreated +"</p></div></div>");
+                                   "<hr> <p class='mb-1'>"+ formatDate(data[i].DateCreated) +"</p></div></div>");
                     error = false;
                     }
                  
@@ -300,14 +325,21 @@
                  
 
                     sendemail($('#txtEmail').val(),"RTU-Ticketing Management - Ticket Number:" + data,"<html><body>Hi "+ $('#txtEmpName').val() +"<br>You successfully created a ticket.<br><h2><b>Ticket Number: "+ data +"</b></h2><div style='padding-left: 3%;'>"+
-                                                                                "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Category</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
-                                                                                "<tr style='vertical-align: text-top;'><td>Title</td><td>"+ $('#txtTitle').val() +"</td></tr><tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
-                                                                                "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
-                    $('#divMessage').html("<div><b>Ticket Number:</b> " + data + "<div><b>Requestor's Name:</b> " + $('#txtEmpName').val() + "<div><b>Office:</b> " + $('#cmbOffice option:selected').text() + "<div><b>Category:</b> " + $('#cmbIncident option:selected').text() + 
-                    "<div><b>Issue:</b> " + $('#txtTitle').val() + "<div><b>Date Created:</b></div> " + "----Make this DATECREATED----"); 
+                                                                               "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Category</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
+                                                                            "<tr style='vertical-align: text-top;'><td>Title</td><td>"+ $('#txtTitle').val() +"</td></tr><tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
+                                                                               "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
 
+                   
+                    $('#divMessage').html("<div class='alert alert-info' role='alert'>" +
+                                      "<i class='fas fa-info-circle'></i> Your ticket has been successfully submitted. A confirmation email has been sent to your email account.</div>" + 
+                                      "<div><b>Ticket Number:</b> " + data + "</div>" +
+                                      "<div><b>Requestor's Name:</b> " + $('#txtEmpName').val() + "</div>" +
+                                      "<div><b>Office:</b> " + $('#cmbOffice option:selected').text() + "</div>" +
+                                      "<div><b>Category:</b> " + $('#cmbIncident option:selected').text() + "</div>" +
+                                      "<div><b>Issue:</b> " + $('#txtTitle').val() + "</div>" +
+                                      "<div><b>Date Created:</b> " + new Date().toLocaleString() + "</div>"); 
+                $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
 
-                    $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
                 }, 
                 error: function (e) {
                     alert(e);
@@ -355,29 +387,40 @@
     }
    
     function getOffice() {
-        $.ajax({
+    //Retrieved Offices 
+    var cmbOffice = document.getElementById("cmbOffice");
+    var selectedDept = $("#cmbDepartment").val();
+    if (selectedDept) {
+        if (selectedDept === "0") {
+            $("#cmbOffice").empty();
+            cmbOffice.disabled = true;
+        } else {
+            $.ajax({
                 async: false,
                 type: "POST",
                 url: 'controllers/indexControllers.php',
-                data: {getOffice: 1,department: $('#cmbDepartment').val()},
+                data: {getOffice: 1, department: selectedDept},
                 success: function(data) {
-                   
                     data = JSON.parse(data);
                     $("#cmbOffice").empty();
-                    var cmbOffice = document.getElementById("cmbOffice");
+                    cmbOffice.disabled = false;
                     for (var i=0; i< data.length; i++ ) {
                         var option = document.createElement("option");
                         option.text = data[i].name;
                         option.value = data[i].id;
                         cmbOffice.add(option);
                     }
-                  
                 }, 
                 error: function (e) {
                     alert(e);
                 }
-            })
-    }
+            });
+        }
+            } else {
+                $("#cmbOffice").empty();
+                cmbOffice.disabled = true;
+            }
+        }
 
     function replyTicket(tickedId,StatusId) {
         $('#divTitle').html("UPDATE TICKET");
@@ -430,7 +473,7 @@
                 const empField = document.getElementById('txtEmp');
                 const emp = empField.value;
                 const empRegex = /^\d{4}-\d{6}$/; // Match a 5-digit number
-                const empErrorMessage = "Please enter a valid employee number in the format 'YYYY-NNNNNN'";
+                const empErrorMessage = "Please enter a valid employee number('YYYY-NNNNNN')";
                 if (!emp || !emp.match(empRegex)) {
                     empField.classList.add('is-invalid');
                     document.getElementById('txtEmp-error').textContent = empErrorMessage;
@@ -463,8 +506,17 @@
                     titleNameField.classList.remove('is-invalid');
                     document.getElementById('txtTitle-error').textContent = '';
                 }
-                // Check other required fields...
-                return isValid;
+
+                var selectedOffice = $("#cmbOffice").val(); // get the selected office
+                    if (!selectedOffice) { // if no office is selected
+                        $(".text-danger").show(); // show error message
+                        isValid = false;
+                        event.preventDefault(); // prevent form submission
+                    } else {
+                        $(".text-danger").hide(); // hide error message
+                    }
+                    
+                    return isValid;
                 }
 
             function sendemail(recipient,subject,content) {
@@ -482,6 +534,18 @@
                 }
             })   } 
                 
+            function formatDate(dateString) {
+                var date = new Date(dateString);
+                var options = { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric', 
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true,
+                };
+                return date.toLocaleString('en-US', options);
+            }
     </script>
 </body>
 <?php   include 'footer.php'; ?>
