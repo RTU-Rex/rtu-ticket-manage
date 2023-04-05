@@ -16,10 +16,10 @@ include "dbConnect.php";
         if ($accessid == 2) {
             $user = $_SESSION['email'];
         }
-        
+        $prio = $_POST['priority'];
 
         $sql = "SELECT CASE WHEN Isnull(b.technicianId) then 'Unassign' ELSE c.statusName END Stas,
-                        a.title, a.description, e.IncidentName, a.Id, f.priorityName, g.Office,
+                        a.title, a.description, e.IncidentName, a.Id, f.priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
                         CASE WHEN ISNULL(b.datemodified) then a.DateCreated else b.datemodified end lastUpdate
                 FROM tblTicket a 
                 LEFT JOIN  (SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
@@ -29,11 +29,12 @@ include "dbConnect.php";
                 LEFT JOIN tblIncident e on e.id = a.incident
                 LEFT JOIN tblPriority f on f.id = a.priority
                 LEFT JOIN tblDepartment g on g.id = a.department
-                WHERE NOT(CASE WHEN ISNULL(c.id) THEN 5 ELSE c.id END = 4) AND (CASE WHEN c.id = 1 THEN d.email ELSE 1 END) = '$user';";
+                WHERE NOT(CASE WHEN ISNULL(c.id) THEN 5 ELSE c.id END = 4) AND (CASE WHEN c.id = 1 THEN d.email ELSE 1 END) = '$user' AND  (CASE WHEN $prio = -1 THEN -1 ELSE IFNULL(a.priority,0) END ) = $prio;";
        $result = mysqli_query($conn, $sql);
        if (mysqli_num_rows($result) >= 1) {
            $value = array();
            $int = 0;
+
            while ($row = mysqli_fetch_assoc($result)) {
                $value[$int] =  array(  "Id" => $row['Id'],
                                        "Stas" => $row['Stas'],
@@ -41,6 +42,7 @@ include "dbConnect.php";
                                        "description" => $row['description'],
                                        "IncidentName" => $row['IncidentName'],
                                        "Office" => $row['Office'],
+                                       "prioId" => $row['prioId'],
                                        "lastUpdate" => $row['lastUpdate']);
                $int = $int + 1;
            }           
