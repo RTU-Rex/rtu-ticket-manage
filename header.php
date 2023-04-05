@@ -19,7 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="shortcut icon" type="x-icon" href="../RTU_ticket_draft/img/rtulogo.png">
+    <link rel="shortcut icon" type="x-icon" href="../rtu-ticket-manage/img/rtulogo.svg">
 
 </head>
 <script src="js/jquery-3.6.3.min.js"></script>
@@ -32,9 +32,9 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             
             <!-- Sidebar - Brand -->
-            <a class=" d-flex align-items-center justify-content-center" href="index.html">
+            <a class="d-flex align-items-right justify-content-right" href="home.php" >
                
-                <img src="../RTU_ticket_draft/img/rtulogo.png" >
+                <img src="../rtu-ticket-manage/img/rtulogo.svg" >
                
             </a>
 
@@ -66,15 +66,15 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav Item - Messages -->
+                    <!-- Nav Item - Messages 
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
+                              
                                 <span class="badge badge-danger badge-counter">7</span>
                             </a>
-                            <!-- Dropdown - Messages -->
+                        
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="messagesDropdown">
                                 <h6 class="dropdown-header">
@@ -130,7 +130,7 @@
                                 </a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                             </div>
-                        </li>
+                        </li>  -->
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -144,7 +144,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" onclick="Logout()">
+                                <a class="dropdown-item" onclick="Logout()" style="cursor: pointer">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
