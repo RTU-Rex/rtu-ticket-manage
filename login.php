@@ -21,6 +21,23 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="../RTU_ticket_draft/img/rtulogo.png">
 
+    <style>
+
+	body{
+		width: 100%;
+	    height: calc(100%);
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+        background-color: #5BC0DE ;
+	}
+	main#main{
+		width:100%;
+		height: calc(100%);
+		display: flex;
+	}
+
+</style>
 </head>
 <script src="js/jquery-3.6.3.min.js"></script>
 <body >
@@ -44,60 +61,42 @@
 </div>
 
 
-    <div class="container">
-
+    <main id="main" > 
         <!-- Outer Row -->
-        <div class="row justify-content-center">
-
-            <div class="col-xl-12 col-lg-12 col-md-12">
-
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <!-- Nested Row within Card Body -->
-                        <div class="row">
-                            <div class="col-lg-6 bg-gradient-primary justify-content-center">
-
-                            <div class="d-flex align-items-center justify-content-center">
-               
-                                <img src="../RTU_ticket_draft/img/rtulogo.png" >
-              
-                            </div>
-                            <h1 class="h1 mb-0 text-white">
-                            Rizal Technological University
-                            </h1>
-                            <h3 class="h6 mb-0 text-white">
-                            Ticketing Management System
-                            </h3>
-                           
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <form class="user">
-                                        <div class="form-group">
-                                        <h6 class="m-0 font-weight-bold text-primary">USERNAME</h6>
-                                            <input type="email" class="form-control form-control-user"
-                                                id="txtEmail" aria-describedby="emailHelp">
-                                        </div>
-                                        <div class="form-group">
-                                        <h6 class="m-0 font-weight-bold text-primary">PASSWORD</h6>
-                                            <input type="password" class="form-control form-control-user" id="txtpassword">
-                                            <button type="button" onclick="forgetPass()" data-toggle="modal" data-target="#TicketModal" class="btn btn-link btn-sm">Forgot Password?</button>
-                                        </div>
-                                        <button onclick="getUserDetails()" type="button" data-toggle="modal" data-target="#TicketModal" class="btn btn-warning">LOGIN</button>
-                                        <hr>
-                                    </form>
-                                    
-                                </div>
-                            </div>
+        <div class="container align-self-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                <div class="card shadow-lg no-animation">
+                    <div class="card-body  p-5">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-4 text-center">
+                        <img src="../rtu-ticket-manage/img/rtulogo.png" class="img-fluid" alt="RTU Logo">
+                        </div>
+                        <div class="col-md-8">
+                        <h1 class="h2 mb-0"><b>Rizal Technological University</b></h1>
+                        <p class="lead mb-0">Ticketing Management System</p>
                         </div>
                     </div>
+                    <form class="user">
+                        <div class="form-group">
+                        <label for="txtEmail" class="font-weight-bold text-primary">Username</label>
+                        <input type="email" class="form-control form-control-user" id="txtEmail" aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group">
+                        <label for="txtpassword" class="font-weight-bold text-primary">Password</label>
+                        <input type="password" class="form-control form-control-user" id="txtpassword">
+                        <a href="#" onclick="forgetPass()" data-toggle="modal" data-target="#TicketModal" class="text-secondary small">Forgot password?</a>
+                        </div>
+                        <button onclick="getUserDetails()" type="button" data-toggle="modal" data-target="#TicketModal" class="btn btn-primary btn-block">Login</button>
+                    </form>
+                    </div>
                 </div>
-
+                </div>
             </div>
-
-        </div>
-
+            </div>
+            </main>
     </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
