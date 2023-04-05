@@ -18,7 +18,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                    
 
                     <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
+                    <div class="card shadow mb-4 no-animation">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Ticket List</h6>
                         </div>
@@ -67,11 +67,21 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                 echo '<tr><td><button class="btn btn-link" data-toggle="modal" data-target="#TicketModal" onClick="viewTicket('.$row['Id'].')">'.$row['Id'].'</button></td>';
                                 echo '<td>'.$row['Stas'].'</td>';
                                 echo '<td>'.$row['title'].'</td>';
-                                echo '<td>'.$row['priorityName'].'</td>';
+                                echo '<td>';
+                                if ($row['priorityName'] == 'Critical') {
+                                    echo '<span class="badge rounded-pill badge-danger">'.$row['priorityName'].'</span>';
+                                } elseif ($row['priorityName'] == 'High') {
+                                    echo '<span class="badge rounded-pill badge-warning">'.$row['priorityName'].'</span>';
+                                } elseif ($row['priorityName'] == 'Moderate') {
+                                    echo '<span class="badge rounded-pill badge-info">'.$row['priorityName'].'</span>';
+                                } elseif ($row['priorityName'] == 'Low') {
+                                    echo '<span class="badge rounded-pill badge-success">'.$row['priorityName'].'</span>';
+                                }
+                                echo '</td>';
                                 echo '<td>'.$row['Office'].'</td>';
                                 echo '<td>'.$row['Assigned'].'</td>';
                                 echo '<td>'.$row['name'].'</td>';
-                                echo '<td>'.$row['lastUpdate'].'</td></tr>';                                
+                                echo '<td>'.date('M d, Y h:i A', strtotime($row['lastUpdate'])).'</td></tr>';                                
                              }           
                           
                          
@@ -262,11 +272,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
     </script>
 
     <script src="./js/ticketManagement.js"></script>
-
-
+   
 
 </body>
-
+</style>
 </html>
 
 <?php 
