@@ -16,7 +16,7 @@
 <h1 class="text-center font-weight-bold text-primary" >Frequently Asked Questions</h1>
 <div class="accordion">
   
-<div class="card">
+<div class="card no-animation">
 <div class="card-body p-10">
  <h3>Computer FAQs</h3>
  
@@ -48,7 +48,7 @@
   </div> 
 </div>
 
-  <div class="card">
+  <div class="card no-animation">
   <div class="card-body">
   <h3>Monitor FAQs</h3>
   <div class="accordeon">
@@ -85,7 +85,7 @@
 </div>
 </div>
 
-  <div class="card">
+  <div class="card no-animation">
   <div class="card-body">
   <h3>Windows FAQs</h3>
   <div class="accordeon">
@@ -124,7 +124,7 @@
   </div></div></div>
   </div>
 
-  <div class="card">
+  <div class="card no-animation">
   <div class="card-body">
    <h3>Printer FAQs</h3>
    <div class="accordeon">

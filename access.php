@@ -20,7 +20,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                
 
                     <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
+                    <div class="card shadow mb-4 no-animation">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Access Menu</h6>
                         </div>
