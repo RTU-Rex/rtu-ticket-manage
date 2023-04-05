@@ -126,6 +126,23 @@ include "dbConnect.php";
 
         }
     }
+
+    if(isset($_POST['getMainMenu'])){
+        $sql = "SELECT DISTINCT Child FROM tblMenu;";
+		$result = mysqli_query($conn, $sql);
+    	if (mysqli_num_rows($result) >= 1) {
+            $value = array();
+            $int = 0;
+            while ($row = mysqli_fetch_assoc($result)) {
+                $value[$int] =  array("id" => $row['Child'],"name" => $row['Child'] );
+                $int = $int + 1;
+            }           
+            echo json_encode($value);
+          
+		}
+    }
+
+
   
 
   

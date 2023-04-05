@@ -11,7 +11,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                 <div class="row">
                     <div class="col"><h1 class="h3 mb-2 text-gray-800">Access Management</h1> </div>
                     <div  class="col"> <button style="float:right;" class="btn btn-primary" data-toggle="modal" data-target="#TicketModal" onClick="NewAccess()"> New Access</button> 
-                    <button style="float:right;" class="btn btn-warning" data-toggle="modal" data-target="#TicketModal" onClick="NewAccess()"> New Menu</button></div>
+                    <button style="float:right;" class="btn btn-warning" data-toggle="modal" data-target="#TicketModal" onClick="NewMenu()"> New Menu</button></div>
 
 
                 </div>
@@ -280,6 +280,64 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 
   
   }
+
+  function NewMenu() {
+        $('#divTitle').html("CREATE MENU");
+        $('#divMessage').html(  "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtMenuName' placeholder='Menu Name'></div>"+
+                                "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtMenuURL' placeholder='Menu URL'></div>"+
+                                "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtMenuIcon' placeholder='Menu Icon'></div>"+
+        "<div class='form-group'><select class='form-control form-control-user' onChange='hideText()' id='cmbMain'></select></div>"+
+                              "<div class='form-group' id='newMain'><input type='text' class='form-control form-control-user' id='txtDepartment' placeholder='Department Name'></div>" );
+        $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button><button type='button' class='btn btn-warning'  onclick='CreateDept()' data-dismiss='modal'>Save</button>");
+            
+
+        var element = document.getElementById("newMain");
+        element.style.visibility = "hidden";
+
+
+        $.ajax({
+            async: false,
+            type: "POST",
+            url: 'controllers/accessController.php',
+            data: {getMainMenu: 1},
+            success: function(data) {
+                data = JSON.parse(data);
+                $("#cmbMain").empty();
+                var cmbInc = document.getElementById("cmbMain");
+                var option = document.createElement("option");
+                    option.text = 'SELECT DEPARTMENT';
+                    option.value = 0;
+                    cmbInc.add(option);
+                for (var i=0; i< data.length; i++ ) {
+                    var option = document.createElement("option");
+                    option.text = data[i].name;
+                    option.value = data[i].id;
+                    cmbInc.add(option);
+                }
+                var option = document.createElement("option");
+                    option.text = 'NEW DEPARTMENT';
+                    option.value = -1;
+                    cmbInc.add(option);
+            }, 
+            error: function (e) {
+                alert(e);
+            }
+        });
+
+    
+    }
+
+    function hideText() {
+        if ($('#cmbMain').val() == -1) {
+            var element = document.getElementById("newMain");
+            element.style.visibility = "visible";
+        } else {
+            var element = document.getElementById("newMain");
+            element.style.visibility = "hidden";
+
+        }
+
+    }
     
 
     </script>
