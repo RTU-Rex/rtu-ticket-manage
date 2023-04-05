@@ -10,7 +10,7 @@ include "dbConnect.php";
     }
 
     if(isset($_POST['getAccess'])){
-        $sql = "SELECT id, accessName FROM tblAccess";
+        $sql = "SELECT id, accessName FROM tblAccess where isActive = 1";
 		$result = mysqli_query($conn, $sql);
     	if (mysqli_num_rows($result) >= 1) {
             $value = array();

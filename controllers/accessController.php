@@ -46,16 +46,17 @@ include "dbConnect.php";
 
         $id = validate($_POST['id']);
 
-        $sql = "SELECT a.id, b.menuName 
+        $sql = "SELECT a.id, b.menuName, c.isActive
                 FROM tblAccessMenu a
                 LEFT JOIN tblMenu b on a.menuId = b.id
-                WHERE accessId = $id;";
+                LEFT JOIN tblAccess c on c.id = a.accessId
+                WHERE accessId = $id and isnull(b.id) = false;";
 		$result = mysqli_query($conn, $sql);
     	if (mysqli_num_rows($result) >= 1) {
             $value = array();
             $int = 0;
             while ($row = mysqli_fetch_assoc($result)) {
-                $value[$int] =  array("id" => $row['id'],"name" => $row['menuName'] );
+                $value[$int] =  array("id" => $row['id'],"name" => $row['menuName'], "isActive" => $row['isActive']  );
                 $int = $int + 1;
             }           
             echo json_encode($value);
@@ -117,10 +118,10 @@ include "dbConnect.php";
 
     if(isset($_POST['deleteAccessName'])){
         $AccessId = validate($_POST['AccessId']);
-
-        $sql = "DELETE FROM tblAccess WHERE id = $AccessId;";
+        $isActive = validate($_POST['isActive']);
+        $sql = "UPDATE tblAccess SET isActive=$isActive  WHERE id = $AccessId;";
         if(mysqli_query($conn, $sql)) {
-            $message = "You Successfully Created a new Access Level";
+            $message = "You Successfully Deactivate Access Level";
 
             echo json_encode($message);
 
@@ -140,6 +141,68 @@ include "dbConnect.php";
             echo json_encode($value);
           
 		}
+    }
+
+    if(isset($_POST['newMenu'])){
+        $name = validate($_POST['name']);
+        $url = validate($_POST['url']);
+        $icon = $_POST['icon'];
+        $mainMenu = validate($_POST['mainMenu']);
+
+        $sql = "INSERT INTO tblMenu ( menuName, Child, URL, icon) VALUES ('$name','$mainMenu','$url','$icon');";
+        if(mysqli_query($conn, $sql)) {
+            $message = "You successfully created menu";
+
+            echo json_encode($message);
+
+        }
+    }
+
+    if(isset($_POST['deleteMenu'])){
+        $MenuId = validate($_POST['MenuId']);
+
+        $sql = "DELETE FROM tblMenu WHERE id = $MenuId;";
+        if(mysqli_query($conn, $sql)) {
+            $message = "You Successfully Created a new Access Level";
+
+            echo json_encode($message);
+
+        }
+    }
+
+    if(isset($_POST['getMenuDetails'])){
+        $menuId = validate($_POST['menuId']);
+
+        $sql = "SELECT * FROM tblMenu WHERE id = $menuId;";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) >= 1) {
+            $value = array();
+            $int = 0;
+            while ($row = mysqli_fetch_assoc($result)) {
+                $value[$int] =  array(  "menuName" => $row['menuName'],
+                                        "Child" => $row['Child'],
+                                        "URL" => $row['URL'],
+                                        "icon" => $row['icon']);
+                $int = $int + 1;
+            }           
+            echo json_encode($value);
+          
+        }
+    }
+
+    if(isset($_POST['updateMenu'])){
+        $name = validate($_POST['name']);
+        $url = validate($_POST['url']);
+        $icon = $_POST['icon'];
+        $mainMenu = validate($_POST['mainMenu']);
+        $id = validate($_POST['id']);
+
+        $sql = "UPDATE tblMenu SET menuName='$name',Child='$mainMenu',URL='$url',icon='$icon' WHERE id= $id";
+        if(mysqli_query($conn, $sql)) {
+            $message = "You successfully updated menu";
+            echo json_encode($message);
+
+        }
     }
 
 
