@@ -12704,3 +12704,19 @@ body.sidebar-toggled footer.sticky-footer {
     height: 100px;
     display: block;
 }
+
+.card:hover {
+    transform: scale(1.05);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .no-animation {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .priority-cell .badge {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 6px 12px;
+}
