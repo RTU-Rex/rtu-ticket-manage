@@ -20,7 +20,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 
                     <div class="row">
 
-                        <div onClick="ticketAll(1)" class="col-xl-2 col-md-2 mb-2">
+                        <div onClick="ticketAll(1)" class="col-xl-2 col-md-2 mb-2" style="cursor: pointer">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -38,7 +38,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                         </div>
 
                         <!-- Earnings (Monthly) Card Example -->
-                        <div onClick="ticketAll(2)" class="col-xl-2 col-md-2 mb-2">
+                        <div onClick="ticketAll(2)" class="col-xl-2 col-md-2 mb-2" style="cursor: pointer">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -56,7 +56,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                         </div>
 
                         <!-- Earnings (Monthly) Card Example -->
-                        <div onClick="ticketAll(3)" class="col-xl-2 col-md-2 mb-2">
+                        <div onClick="ticketAll(3)" class="col-xl-2 col-md-2 mb-2" style="cursor: pointer">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -78,7 +78,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                         </div>
 
                         <!-- Pending Requests Card Example -->
-                        <div onClick="ticketAll(4)" class="col-xl-2 col-md-2 mb-2">
+                        <div onClick="ticketAll(4)" class="col-xl-2 col-md-2 mb-2" style="cursor: pointer">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -95,7 +95,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                             </div>
                         </div>
 
-                        <div onClick="ticketAll(0)" class="col-xl-2 col-md-2 mb-2">
+                        <div onClick="ticketAll(0)" class="col-xl-2 col-md-2 mb-2" style="cursor: pointer">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -112,7 +112,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                             </div>
                         </div>
 
-                        <div onClick="ticketAll(-1)" class="col-xl-2 col-md-2 mb-2">
+                        <div onClick="ticketAll(-1)" class="col-xl-2 col-md-2 mb-2" style="cursor: pointer">
                             <div class="card border-left-secondary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -170,12 +170,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                      document.getElementById("divActiveTicket").innerHTML += "<div data-toggle='modal' data-target='#TicketModal' onClick='viewTicket("+ data[i].Id +")' class='col-4'>"  +
                                                     "<div class='card shadow mb-4'>" +
                                                     "<div class='card-header py-3'>" +
-                                                    "<h6 class='m-0 font-weight-bold text-warning'>"+ data[i].Stas +" - "+ data[i].Id +"</h6>" +
+                                                    "<h6 class='m-0 font-weight-bold text-warning' style='cursor: pointer'>"+ data[i].Stas +" - "+ data[i].Id +"</h6>" +
                                                     "</div>" +
                                                     "<div class='card-body'>" +
-                                                    "Incident: "+ data[i].IncidentName +"" +
-                                                    "<br> Title: "+ data[i].title +" <br> Description: "+ data[i].description +" <br> Department: "+ data[i].Office +"" +
-                                                    "<hr> <p class='mb-1'>"+ data[i].lastUpdate +"</p>"+
+                                                    "<b>Title:</b> <span class='badge badge-primary'>" +data[i].title +"</span><br> <b>Description:</b> "+ data[i].description +" <br> <b>Department:</b> "+ data[i].Office +"<br>" +
+                                                    "<b> Incident:</b> "+ data[i].IncidentName +
+                                                    "<hr> <p class='mb-1'><b>"+ formatDate(data[i].lastUpdate) +"</b></p>"+
                                                     "</div>"+
                                                     "</div>"+
                                                     "</div>";
@@ -240,6 +240,19 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
            });
 
    }
+
+   function formatDate(dateString) {
+                var date = new Date(dateString);
+                var options = { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric', 
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true,
+                };
+                return date.toLocaleString('en-US', options);
+            }
     </script>
 
     <script src="./js/ticketManagement.js"></script>
