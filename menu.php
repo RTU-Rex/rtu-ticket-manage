@@ -1,7 +1,6 @@
-
-
 <!-- Divider -->
-<hr class="sidebar-divider my-1">
+
+<hr class="sidebar-divider my-2">
 <div id="divmenu">
 
 </div>

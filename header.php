@@ -22,7 +22,7 @@
     <link rel="shortcut icon" type="x-icon" href="../rtu-ticket-manage/img/rtulogo.png">
 
 </head>
-<script src="js/jquery-3.6.3.min.js"></script>
+<script src="js/jquery-3.6.3.min.js"></script>  
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -32,11 +32,11 @@
         <ul class="navbar-nav bg-primary sidebar sidebar-dark collapsed" id="accordionSidebar">
             
             <!-- Sidebar - Brand -->
-            <a class="d-flex align-items-right justify-content-right" href="home.php" >
-            <img src="../rtu-ticket-manage/img/rtulogo.png" alt="Logo" style="max-width: 100%;">
+            <a class="d-flex align-items-right justify-content-center" href="home.php" >
+            <img src="../rtu-ticket-manage/img/rtulogo.png" alt="Logo" style="max-width: 60%;">
             </a>
 
-            <?php   include 'menu.php';      ?>
+            <?php include 'menu.php'; ?>
             
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">

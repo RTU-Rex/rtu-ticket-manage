@@ -11676,7 +11676,7 @@ a:focus {
 
 .sidebar .sidebar-heading {
     text-align: center;
-    padding: 0 1rem;
+    padding: 0.25rem;
     font-weight: 800;
     font-size: .65rem
 }
@@ -11780,7 +11780,7 @@ a:focus {
     }
 
     .sidebar .sidebar-heading {
-        text-align: left
+        text-align: center
     }
 
     .sidebar.toggled {
@@ -12740,4 +12740,7 @@ body.sidebar-toggled footer.sticky-footer {
     transition: all 0.3s ease-out;
   }
   
+  .sidebar li:hover {
+    background-color: rgba(0, 123, 255, 0.5); /* change the background color on hover */
+  }
   
