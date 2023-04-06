@@ -19,7 +19,7 @@ include "dbConnect.php";
         $prio = $_POST['priority'];
 
         $sql = "SELECT CASE WHEN Isnull(b.technicianId) then 'Unassign' ELSE c.statusName END Stas,
-                        a.title, a.description, e.IncidentName, a.Id, f.priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
+                        a.title, a.description,a.name, e.IncidentName, a.Id, f.priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
                         CASE WHEN ISNULL(b.datemodified) then a.DateCreated else b.datemodified end lastUpdate
                 FROM tblTicket a 
                 LEFT JOIN  (SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
@@ -34,14 +34,22 @@ include "dbConnect.php";
        if (mysqli_num_rows($result) >= 1) {
            $value = array();
            $int = 0;
+           $badge_class = array('badge rounded-pill badge-danger', 'badge rounded-pill badge-warning', 'badge rounded-pill badge-info', 'badge rounded-pill badge-success');
 
            while ($row = mysqli_fetch_assoc($result)) {
+            $prioId = $row['prioId'];
+            $priorityName = $row['priorityName'];
+            $badge_class_index = $prioId > 0 ? $prioId - 1 : 0;
+            $priorityNameWithBadge = '<span class="badge ' . $badge_class[$badge_class_index] . '">' . $priorityName . '</span>';
+
                $value[$int] =  array(  "Id" => $row['Id'],
                                        "Stas" => $row['Stas'],
                                        "title" => $row['title'],
                                        "description" => $row['description'],
                                        "IncidentName" => $row['IncidentName'],
+                                       "name" => $row['name'],
                                        "Office" => $row['Office'],
+                                       "priorityName" => $priorityNameWithBadge,
                                        "prioId" => $row['prioId'],
                                        "lastUpdate" => $row['lastUpdate']);
                $int = $int + 1;

@@ -24,10 +24,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                         </div>
                         <div class="card-body">
                             <div id="divTable" class="table-responsive">
-                                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                                <table class="table table-bordered table-striped" id="dataTable1" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
+                                            <th>TICKET</th>
                                             <th>STATUS</th>
                                             <th>TITLE</th>
                                             <th>PRIORITY</th>
@@ -64,9 +64,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                          if (mysqli_num_rows($result) >= 1) {
                           
                              while ($row = mysqli_fetch_assoc($result)) {
-                                echo '<tr><td><button class="btn btn-link" data-toggle="modal" data-target="#TicketModal" onClick="viewTicket('.$row['Id'].')">'.$row['Id'].'</button></td>';
+                                echo '<tr><td><b>'.$row['Id'].'</b></td>';
                                 echo '<td>'.$row['Stas'].'</td>';
-                                echo '<td>'.$row['title'].'</td>';
+                                echo '<td data-toggle="modal" data-target="#TicketModal" class="text-primary text-capitalize" style="cursor: pointer" onClick="viewTicket('.$row['Id'].')"> <ins>'.$row['title'].'</ins> </td>';
                                 echo '<td>';
                                 if ($row['priorityName'] == 'Critical') {
                                     echo '<span class="badge rounded-pill badge-danger">'.$row['priorityName'].'</span>';

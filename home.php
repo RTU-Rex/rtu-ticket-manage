@@ -21,7 +21,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                     <div class="row">
 
                         <div onClick="ticketAll(1)" class="col-xl-2 col-md-2 mb-2" style="cursor: pointer">
-                            <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card border-left-danger shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
@@ -39,7 +39,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 
                         <!-- Earnings (Monthly) Card Example -->
                         <div onClick="ticketAll(2)" class="col-xl-2 col-md-2 mb-2" style="cursor: pointer">
-                            <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
@@ -79,7 +79,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 
                         <!-- Pending Requests Card Example -->
                         <div onClick="ticketAll(4)" class="col-xl-2 col-md-2 mb-2" style="cursor: pointer">
-                            <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
@@ -101,7 +101,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                Other</div>
+                                                Unassigned</div>
                                             <div id="divOther" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                                         </div>
                                         <div class="col-auto">
@@ -167,14 +167,17 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                 data = JSON.parse(data);
                 if (data.length > 0) {
                     for (var i=0; i< data.length; i++ ) {
-                     document.getElementById("divActiveTicket").innerHTML += "<div data-toggle='modal' data-target='#TicketModal' onClick='viewTicket("+ data[i].Id +")' class='col-4'>"  +
+                     document.getElementById("divActiveTicket").innerHTML += "<div class='col-4'>"  +
                                                     "<div class='card shadow mb-4'>" +
                                                     "<div class='card-header py-3'>" +
-                                                    "<h6 class='m-0 font-weight-bold text-warning' style='cursor: pointer'>"+ data[i].Stas +" - "+ data[i].Id +"</h6>" +
+                                                    "<h6 class='m-0 font-weight-bold text-warning'>"+ data[i].Stas +" - "+ data[i].Id +"</h6>" +
                                                     "</div>" +
                                                     "<div class='card-body'>" +
-                                                    "<b>Title:</b> <span class='badge badge-primary'>" +data[i].title +"</span><br> <b>Description:</b> "+ data[i].description +" <br> <b>Department:</b> "+ data[i].Office +"<br>" +
-                                                    "<b> Incident:</b> "+ data[i].IncidentName +
+                                                    "<b>Title:</b> <span data-toggle='modal' data-target='#TicketModal' class='text-primary text-capitalize' style='cursor: pointer' onClick='viewTicket("+ data[i].Id +")'> <ins>" +data[i].title +"</ins></span><br>"+
+                                                    "<b>Requestor's Name:</b> "+ data[i].name +" <br>"+
+                                                    "<b>Office/Department:</b> "+ data[i].Office +"<br>" +
+                                                    "<b>Priority: </b>" + data[i].priorityName +
+                                                    "<br><b> Category:</b> "+ data[i].IncidentName +
                                                     "<hr> <p class='mb-1'><b>"+ formatDate(data[i].lastUpdate) +"</b></p>"+
                                                     "</div>"+
                                                     "</div>"+
