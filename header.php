@@ -19,7 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="shortcut icon" type="x-icon" href="../rtu-ticket-manage/img/rtulogo.svg">
+    <link rel="shortcut icon" type="x-icon" href="../rtu-ticket-manage/img/rtulogo.png">
 
 </head>
 <script src="js/jquery-3.6.3.min.js"></script>
@@ -29,13 +29,11 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-primary sidebar sidebar-dark collapsed" id="accordionSidebar">
             
             <!-- Sidebar - Brand -->
             <a class="d-flex align-items-right justify-content-right" href="home.php" >
-               
-                <img src="../rtu-ticket-manage/img/rtulogo.svg" >
-               
+            <img src="../rtu-ticket-manage/img/rtulogo.png" alt="Logo" style="max-width: 100%;">
             </a>
 
             <?php   include 'menu.php';      ?>

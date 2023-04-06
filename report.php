@@ -19,7 +19,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                     <!-- Content Row -->
                   
 
-                    <div class="card shadow mb-4 no-animation">
+                    <div class="card shadow mb-4 no-animation fade-up">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Ticket Summary</h6>
                                 </div>
@@ -32,7 +32,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                             </div>
 
 
-                    <div class="card shadow mb-4 no-animation">
+                    <div class="card shadow mb-4 no-animation fade-up">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Ticket Status</h6>
                                 </div>

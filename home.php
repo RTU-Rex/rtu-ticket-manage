@@ -168,7 +168,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                 if (data.length > 0) {
                     for (var i=0; i< data.length; i++ ) {
                      document.getElementById("divActiveTicket").innerHTML += "<div class='col-4'>"  +
-                                                    "<div class='card shadow mb-4'>" +
+                                                    "<div class='card shadow mb-4 fade-up'>" +
                                                     "<div class='card-header py-3'>" +
                                                     "<h6 class='m-0 font-weight-bold text-warning'>"+ data[i].Stas +" - "+ data[i].Id +"</h6>" +
                                                     "</div>" +

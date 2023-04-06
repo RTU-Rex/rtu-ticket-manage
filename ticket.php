@@ -18,7 +18,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                    
 
                     <!-- DataTales Example -->
-                    <div class="card shadow mb-4 no-animation">
+                    <div class="card shadow mb-4 no-animation fade-up">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Ticket List</h6>
                         </div>
@@ -31,7 +31,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                             <th>STATUS</th>
                                             <th>TITLE</th>
                                             <th>PRIORITY</th>
-                                            <th>CATEGORY</th>
+                                            <th>OFFICE/DEPARTMENT</th>
                                             <th>TECHNICIAN</th>
                                             <th>REQUESTOR</th>
                                             <th>LAST UPDATE</th>

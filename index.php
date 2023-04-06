@@ -40,7 +40,7 @@
         <!-- Outer Row -->
         <div class="row justify-content-center">
                     <div class="col-xl-12 col-lg-12 col-md-12">
-                        <div class="card o-hidden border-1 shadow-lg my-5 no-animation">
+                        <div class="card o-hidden border-1 shadow-lg my-5 no-animation fade-up">
                         <div class="card-body">
                             <div class="row">
                             <div class="col-lg-8">
@@ -68,7 +68,7 @@
                             </div>
                             <div class="col-lg-4 d-none d-lg-block bg-password1-image">
                                 <div class="d-flex align-items-center justify-content-center">
-                                <img src="../rtu-ticket-manage/img/RTUTicketHub.png" >
+                                <img src="../rtu-ticket-manage/img/RTUTicketHub.png">
                                 </div>
                             </div>
                             </div>

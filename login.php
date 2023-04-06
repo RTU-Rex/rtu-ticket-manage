@@ -66,7 +66,7 @@
         <div class="container align-self-center">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                <div class="card shadow-lg no-animation">
+                <div class="card shadow-lg no-animation fade-up">
                     <div class="card-body  p-5">
                     <div class="row align-items-center mb-4">
                         <div class="col-md-4 text-center">

@@ -12721,4 +12721,23 @@ body.sidebar-toggled footer.sticky-footer {
     padding: 6px 12px;
 }
 
+@keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .fade-up {
+    animation: fade-up 1.0s ease-out;
+  }
+  
+  .sidebar {
+    transition: all 0.3s ease-out;
+  }
+  
   
