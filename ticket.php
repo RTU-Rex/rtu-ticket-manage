@@ -42,7 +42,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                     <tbody>
 
                                     <?php   
-                                    
+                                     $accessid = $_SESSION['accessId'];
+                                     $user = "1";
+                                     if ($accessid == 2) {
+                                         $user = $_SESSION['id'];
+                                     }
                                     include "./controllers/dbConnect.php";   
                                      $sql = "SELECT CASE WHEN Isnull(b.technicianId) then 'Unassign' ELSE c.statusName END Stas,
                                      a.title, e.IncidentName, a.Id, f.priorityName, g.Office,
@@ -57,7 +61,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                              LEFT JOIN tblIncident e on e.id = a.incident
                              LEFT JOIN tblPriority f on f.id = a.priority
                              LEFT JOIN tblDepartment g on g.id = a.department
-                             WHERE YEAR(a.DateCreated) = Year(now());";
+                             WHERE (CASE WHEN 2=$accessid then b.technicianId else $user end) = $user;";
                      
                          $result = mysqli_query($conn, $sql);
                         
