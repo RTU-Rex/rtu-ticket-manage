@@ -33,7 +33,7 @@
             
             <!-- Sidebar - Brand -->
             <a class="d-flex align-items-right justify-content-center" href="home.php" >
-            <img src="../rtu-ticket-manage/img/rtulogo.png" alt="Logo" style="max-width: 60%;">
+            <img src="../rtu-ticket-manage/img/rtulogo.png" alt="RTULogo" style="max-width: 60%;">
             </a>
 
             <?php include 'menu.php'; ?>

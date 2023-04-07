@@ -19,7 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="shortcut icon" type="x-icon" href="../RTU_ticket_draft/img/rtulogo.png">
+    <link rel="shortcut icon" type="x-icon" href="../rtu-ticket-manage/img/rtulogo.png">
 
     <style>
 
@@ -29,7 +29,7 @@
 	    position: fixed;
 	    top: 0;
 	    left: 0;
-        background-color: #5BC0DE ;
+        background-color: #265999 ;
 	}
 	main#main{
 		width:100%;
@@ -66,7 +66,7 @@
         <div class="container align-self-center">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                <div class="card shadow-lg no-animation fade-up">
+                <div class="card shadow-sm no-animation fade-up">
                     <div class="card-body  p-5">
                     <div class="row align-items-center mb-4">
                         <div class="col-md-4 text-center">

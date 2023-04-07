@@ -11,11 +11,14 @@
  
 </head>
 
-<body id="page-top">
-<div class="container">
-<h1 class="text-center font-weight-bold text-primary" >Frequently Asked Questions</h1>
-<div class="accordion">
-  
+<body class="bg-light" id="page-top">
+
+<div class="container container-fluid mt-5 fade-up" id="faqs">
+<div>
+<h1 class="text-center" >Frequently Asked Questions</h1>
+<div class="accordion border-0">
+</div>
+
 <div class="card no-animation">
 <div class="card-body p-10">
  <h3>Computer FAQs</h3>
@@ -147,9 +150,8 @@
   <div class="accordeon-content">
     <p>Thankfully a missing printer installation disk is not the end of the world and will not require you to wait until a new disk can be sent to you. Today all printer and other hardware manufacturers are providing downloads on the Internet to their software programs and drivers that are included with their products.</p>
   </div></div></div>
-
+  </div>
 </div>
-
 <script>
 
 const accordionItems = document.querySelectorAll('.accordion-item');

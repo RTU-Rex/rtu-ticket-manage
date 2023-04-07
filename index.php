@@ -19,68 +19,74 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="../rtu-ticket-manage/img/rtulogo.png">
-<style>
-    body {
-    background-image: url("img/background1.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-
-    }
-</style>
+    <style>
+        
+    </style>
 </head>
 <script src="js/jquery-3.6.3.min.js"></script>
 <body>
+      
+    <?php include 'message.php' ?>
+    <!-- Navbar -->
+            <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background: #265999;">
+            <div class="container">
+                <a class="navbar-brand text-white strong" href="index.php"><img src="../rtu-ticket-manage/img/rtulogo.png" class="img-fluid" alt="RTU Logo" style="max-width: 15%;"> Rizal Technological University</a>
+                <button id="home" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"> </i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link text-white" href="#home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#faqs">FAQs</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link text-white" href="login.php">Sign-in</a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>-->
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-  <div class="container">
-  
-  <?php include 'message.php' ?>
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container mt-5 fade-up">
+        <div class="row">
+            <div class="col-lg-8">
+            <h1 class="display-4">Welcome to Rizal Technological University Ticketing Management System</h1>
+            <p class="lead">Your comprehensive solution for technical service requests and issue reporting. Our cutting-edge platform empowers you to submit your concerns with ease, enabling our team to respond promptly and efficiently. Whether you require assistance or have feedback to provide, we're here to help.</p>
+            <form class="user">
+            <a href="login.html" id="btnNewTicket" class="btn btn-primary btn-user mb-3 text-white btn-block" data-toggle="modal" data-target="#TicketModal">Create Ticket</a>
+                                        <div class="form-group">
+                                            <div class="justify-content-center">
+                                            <input type="text" class="form-control form-control-user mb-1 " id="txtTickNumber" placeholder="Enter Ticket Number to view ticket" required>
+                                            <a href="login.html" id="btnView" data-toggle="modal" data-target="#TicketModal" class="btn btn-primary btn-user btn-block text-white">View Ticket History</a>
+                                            </div>
+                                            </div>
+                </form>
+            </div>
+            <div class="col-lg-4 d-none d-lg-block">
+            <div class="d-flex align-items-center justify-content-center fade-up">
+                <img src="../rtu-ticket-manage/img/RTUTicketHub.png">
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <?php include 'faqs.php' ?>
+
+    <div class="container text-center mt-5 fade-up">
+        <hr>
+        <h4 class="mb-4">Help us improve our service</h4>
+        <button type="button" id="btnFeedback" class="btn btn-primary" data-toggle="modal" data-target="#TicketModal">Submit Feedback</button>
+    </div>
 
 
-        <!-- Outer Row -->
-        <div class="row justify-content-center">
-                    <div class="col-xl-12 col-lg-12 col-md-12">
-                        <div class="card o-hidden border-1 shadow-lg my-5 no-animation fade-up">
-                        <div class="card-body">
-                            <div class="row">
-                            <div class="col-lg-8">
-                                <div class="p-5">
-                                <div class="text-left">
-                                    <h1 class="font-weight-bold text-primary">Welcome to Rizal Technological University Ticketing Management System</h1>
-                                    <p class="mb-4">Request technical services and submit issues virtually.</p>
-                                </div>
-                                <form class="user">
-                                    <div class="card card-body">
-                                    <a href="login.html" id="btnNewTicket" class="btn btn-primary btn-user mb-3 text-white" data-toggle="modal" data-target="#TicketModal">Create Ticket</a>
-                                    <div class="form-group">
-                                    
-                                        <div class="justify-content-center">
-                                        <input type="text" class="form-control form-control-user mb-1 " id="txtTickNumber" placeholder="Enter Ticket Number to view ticket" required>
-                                        <a href="login.html" id="btnView" data-toggle="modal" data-target="#TicketModal" class="btn btn-primary btn-user btn-block text-white">View Ticket History</a>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <p class="mb-4">Help us improve our service.</p>
-                                    <button type="button" id="btnFeedback" class="btn btn-primary btn-user btn-block text-white" data-toggle="modal" data-target="#TicketModal">Submit Feedback</button>
-                                </form>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 d-none d-lg-block bg-password1-image">
-                                <div class="d-flex align-items-center justify-content-center">
-                                <img src="../rtu-ticket-manage/img/RTUTicketHub.png">
-                                </div>
-                            </div>
-                            </div>
-                            <br><br><hr>
-                            <?php include 'faqs.php' ?>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
-
-               
-              
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -91,9 +97,19 @@
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
     <script> 
+
+    $('a[href^="#"]').on('click', function(event) {
+    var target = $(this.getAttribute('href'));
+    if( target.length ) {
+        event.preventDefault();
+        $('html, body').stop().animate({
+            scrollTop: target.offset().top
+        }, 1000);
+    }
+        });
     $(document).ready(function() {
-       
-       
+
+    
     $('#btnNewTicket').click(function(e) {   
 
         
@@ -232,7 +248,7 @@
                     "<br><br>Thank you for your valuable feedback!</p>" +
                     "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Your Feedback</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Share your thoughts and suggestions' required></textarea><div class='invalid-feedback'>Please put some feedback.</div></div>");
                     $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" + 
-                        "<button type='button' onclick='createFeedback()' class='btn btn-warning' id='btnSubmitFeed'>Submit</button>");
+                        "<button type='button' onclick='createFeedback()' class='btn btn-primary' id='btnSubmitFeed'>Submit</button>");
                     });
 
               
@@ -363,27 +379,27 @@
                     return;
                 } else {
                     // submit form
-                    $('#feedbackForm').submit();
+                    $('#divTitle').html("RTU Ticketing Message"); 
+                    $.ajax({
+                        async: false,
+                        type: "POST",
+                        url: 'controllers/indexControllers.php',
+                        data: { txtdescription: $('#txtdescription').val(),
+                            createFeedBack: 1
+                            },
+                        success: function(data) {
+                            data = JSON.parse(data);
+                            $('#divMessage').html(data)
+                            $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
+                        
+                        }, 
+                        error: function (e) {
+                            alert(e);
+                        }
+                         })
                 }
-        $('#divTitle').html("RTU Ticketing Message"); 
-            $.ajax({
-                async: false,
-                type: "POST",
-                url: 'controllers/indexControllers.php',
-                data: {txtEmpName: $('#txtEmpName').val(),
-                       txtdescription: $('#txtdescription').val(),
-                       createFeedBack: 1
-                    },
-                success: function(data) {
-                    data = JSON.parse(data);
-                    $('#divMessage').html(data)
-                    $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
-                   
-                }, 
-                error: function (e) {
-                    alert(e);
-                }
-            })
+
+  
     }
    
     function getOffice() {

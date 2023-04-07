@@ -2,13 +2,15 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; TICKETING SYSTEM 2023</span>
+            <footer class="pt-3 pb-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col text-center">
+                        <p class="m-0 text-muted">&copy; 2023 Rizal Technological University. All rights reserved.</p>
                     </div>
                 </div>
-            </footer>
+            </div>
+        </footer>
             <!-- End of Footer -->
 
         </div>
