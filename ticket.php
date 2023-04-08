@@ -10,8 +10,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                 <div class="container-fluid">
                 <div class="row">
                     <div class="col"><h1 class="h3 mb-2 text-gray-800">Ticket Management</h1> </div>
-                    <div  class="col"><button style="float:right; " class="btn btn-danger" onClick="exportdata()"> EXPORT</button>
-                    <button style="float:right; margin-right: 2%" class="btn btn-warning" data-toggle="modal" data-target="#TicketModal" onClick="ViewCreateTicket()"> CREATE TICKET</button> 
+                    <div  class="col">
+                    <button style="float:right; margin-right: 2%" class="btn btn-warning" data-toggle="modal" data-target="#TicketModal" onClick="ViewCreateTicket()"> Add New Ticket</button> 
                 </div>
                     
 
@@ -25,8 +25,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Ticket List</h6>
                         </div>
+                        
                         <div class="card-body">
                             <div id="divTable" class="table-responsive">
+                            <button class= "btn btn-primary" onClick="exportdata()" style='float:right;'> Export Data <i class='fas fa-file-export'></i></button>
                                 <table class="table table-bordered table-striped" id="dataTable1" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
@@ -383,8 +385,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                 }
             })    
     }
-<<<<<<< HEAD
-=======
 
     function exportdata() {
         $.ajax({
@@ -474,7 +474,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 
    
 
->>>>>>> fe743d7351fa7d6dd26c94e29afec2985f490c76
     </script>
 
     <script src="./js/ticketManagement.js"></script>
