@@ -94,6 +94,7 @@ include "dbConnect.php";
         $ticketId = validate($_POST['ticketId']);
  
         $sql = "SELECT 	email,
+                        empId,
                         name,
                         b.Department,
                         a.department as Offices,
@@ -112,6 +113,7 @@ include "dbConnect.php";
            $int = 0;
            while ($row = mysqli_fetch_assoc($result)) {
                $value[$int] =  array(  "email" => $row['email'],
+                                       "empId" => $row['empId'],
                                        "name" => $row['name'],
                                        "Department" => $row['Department'],
                                        "Offices" => $row['Offices'],
@@ -200,7 +202,7 @@ include "dbConnect.php";
                $value[$int] =  array(  "ticketMessage" => $row['ticketMessage'],
                                        "statusName" => $row['statusName'],
                                        "name" => $row['name'],
-                                       "dateModified" => $row['dateModified'],
+                                       "dateModified" => date('M d, Y h:i A', strtotime($row['dateModified'])),
                                        "modifiedFrom" => $row['modifiedFrom'],
                                        "email" => $row['email'],
                                        "technicianId" => $row['technicianId'],

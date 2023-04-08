@@ -126,20 +126,51 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
     });
 
     function ViewCreateTicket() {
+    $('#divTitle').html("Add New Ticket");
+    $('#divMessage').html("<p class='text-justify mb-4'>Please fill out all required fields marked with an asterisk (*).</p>" +
+        "<div class='row'>" + "<br>" +
+            "<div class='col-md-6'>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Email</label><input type='email' class='form-control' id='txtEmail' placeholder='Enter Email Address' required><small class='text-danger' id='txtEmail-error' style='display: none;'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Employee No.</label><input type='text' class='form-control' id='txtEmp' placeholder='Enter Employee Number' required><small class='text-danger' id='txtEmp-error' style='display: none;'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Employee Name</label><input type='text' class='form-control' id='txtEmpName' placeholder='Complete Name' required><small class='text-danger' id='txtEmpName-error' style='display: none;'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Title</label><input type='text' class='form-control' id='txtTitle' placeholder='What is the major issue?' required><small class='text-danger' id='txtTitle-error' style='display: none;'></small></div>" +
+            "</div>" +
+            "<div class='col-md-6'>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Priority</label><select class='form-control' id='cmbPrio'></select></div>" +
+                "<div class='form-group'><label class ='text-dark'>Category</label><select class='form-control' id='cmbIncident' required></select></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Office Under</label><select class='form-control ' onchange='getOffice()' id='cmbDepartment' required></select><small class='text-danger' style='display: none;'>Please select an office.</small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Department</label><select class='form-control' id='cmbOffice' required></select></div>" +
+            "</div>" +
+            "<div class='col-md-12'>" +
+            "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Description</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Provide a detailed description of the issue you are experiencing.'required></textarea><small class='text-danger' id='txtdescription-error' style='display: none;'></small></div>" +
+            "</div>" +
+        "</div>");
+        
+        $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
+            " <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
 
-        $('#divTitle').html("SUMBIT TICKET");
-        $('#divMessage').html("<p class='mb-4'>Create Incident to assists you in your issue</p> <div id='error'> </div> <br> <div class='form-group'> " +
-                                "<input type='email' class='form-control form-control-user' id='txtEmail' placeholder='Email Address'></div>" +
-                                "<div class='form-group'>" +
-                                "<input type='text' class='form-control form-control-user' id='txtEmp' placeholder='Employee Number'></div>" +
-                                "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtEmpName' placeholder='Complete Name'></div>" +
-                                "<div class='form-group'><select class='form-control form-control-user' id='cmbIncident'></select></div>" +
-                                "<div class='form-group'><select class='form-control form-control-user' onchange='getOffice()' id='cmbDepartment'></select></div>" +
-                                "<div class='form-group'><select class='form-control form-control-user' id='cmbOffice'></select></div>" +
-                                "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtTitle' placeholder='Title'><textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>");
-        $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
-                                "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
-    
+
+           //retrieved priorities
+           $.ajax({
+            async: false,
+            type: "POST",
+            url: "controllers/indexControllers.php",
+            data: { getPrio: 1 },
+            success: function (data) {
+            data = JSON.parse(data);
+            $("#cmbPrio").empty();
+            var cmbInc = document.getElementById("cmbPrio");
+            for (var i = 0; i < data.length; i++) {
+                var option = document.createElement("option");
+                option.text = data[i].name;
+                option.value = data[i].id;
+                cmbInc.add(option);
+            }
+            },
+            error: function (e) {
+            alert(e);
+            },
+        });
        //Retrived incidents
        $.ajax({
                 async: false,
@@ -209,51 +240,130 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
             });
     }
 
+        // May error dito, ayaw mag record sa database ng new ticket (refertoIndexController)
     function createTicket() {
-        $('#divTitle').html("RTU Ticketing Message"); 
-        var email = $('#txtEmail').val()
-        var Emp = $('#txtEmp').val()
-        var name = $('#txtEmpName').val()
-        var title = $('#txtTitle').val()
-        var desc = $('#txtdescription').val()
-
-        if (!((email == '') || (Emp == '') || (name == '') || (title == '') || (desc == ''))) { 
+        if (validateForm()) {
+        $('#divTitle').html("Success"); 
             $.ajax({
                 async: false,
                 type: "POST",
-                url: 'controllers/indexControllers.php',
+                url: "controllers/indexControllers.php",
                 data: {txtEmail: $('#txtEmail').val(), 
                        txtEmp: $('#txtEmp').val(),
                        txtEmpName: $('#txtEmpName').val(),
                        cmbIncident: $('#cmbIncident').val(),
                        cmbDepartment: $('#cmbOffice').val(),
+                       cmbPrio: $("#cmbPrio").val(),
                        txtTitle: $('#txtTitle').val(),
                        txtdescription: $('#txtdescription').val(),
                        createTicket: 1
                     },
-                success: function(data) {
+                    success: function(data) {
                     data = JSON.parse(data);
+
+
                     sendemail($('#txtEmail').val(),"RTU-Ticketing Management - Ticket Number:" + data,"<html><body>Hi "+ $('#txtEmpName').val() +"<br>You successfully created a ticket.<br><h2><b>Ticket Number: "+ data +"</b></h2><div style='padding-left: 3%;'>"+
                                                                                 "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Incident</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
                                                                                 "<tr style='vertical-align: text-top;'><td>Title</td><td>"+ $('#txtTitle').val() +"</td></tr><tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
-                                                                                "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
-                    $('#divMessage').html("You successfully created ticket. Please take note of this reference number."+ data);
-                    $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
+                                                                              "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
+                     
+                    $('#divMessage').html("<div class='alert alert-info' role='alert'>" +
+                                      "<i class='fas fa-info-circle'></i> Your ticket has been successfully submitted. A confirmation email has been sent to your email account.</div>" + 
+                                      "<div><b>Ticket Number:</b> " + data + "</div>" +
+                                      "<div><b>Requestor's Name:</b> " + $('#txtEmpName').val() + "</div>" +
+                                      "<div><b>Office:</b> " + $('#cmbOffice option:selected').text() + "</div>" +
+                                      "<div><b>Category:</b> " + $('#cmbIncident option:selected').text() + "</div>" +
+                                      "<div><b>Issue:</b> " + $('#txtTitle').val() + "</div>" +
+                                      "<div><b>Date Created:</b> " + new Date().toLocaleString() + "</div>"); 
+                $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
+
                 }, 
                 error: function (e) {
                     alert(e);
                 }
-            })
-            location.reload();
-
-        } else { 
-            $('#error').html("Please Fill up the required fields");
-            $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
-                                "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
-
+            })  
+            } else {    $('#error').html("An error occured");
+                        $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
+                                            "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
+                    }
         }
-           
-    }
+
+        function validateForm() {
+                let isValid = true;
+
+            
+                const emailField = document.getElementById('txtEmail');
+                const email = emailField.value;
+                const emailErrorMessage = "Please enter a valid Email Address";
+                if (!email) {
+                    emailField.classList.add('is-invalid');
+                    document.getElementById('txtEmail-error').textContent = emailErrorMessage;
+                    isValid = false;
+                } else {
+                    emailField.classList.remove('is-invalid');
+                    document.getElementById('txtEmail-error').textContent = '';
+                }
+
+                const empField = document.getElementById('txtEmp');
+                const emp = empField.value;
+                const empRegex = /^\d{4}-\d{6}$/; // Match a 5-digit number
+                const empErrorMessage = "Please enter a valid employee number('YYYY-NNNNNN')";
+                if (!emp || !emp.match(empRegex)) {
+                    empField.classList.add('is-invalid');
+                    document.getElementById('txtEmp-error').textContent = empErrorMessage;
+                    isValid = false;
+                } else {
+                    empField.classList.remove('is-invalid');
+                    document.getElementById('txtEmp-error').textContent = '';
+                }
+                
+                const empNameField = document.getElementById('txtEmpName');
+                const empName = empNameField.value;
+                const empNameErrorMessage = "Please enter your name";
+                if (!empName) {
+                    empNameField.classList.add('is-invalid');
+                    document.getElementById('txtEmpName-error').textContent = empNameErrorMessage;
+                    isValid = false;
+                } else {
+                    empNameField.classList.remove('is-invalid');
+                    document.getElementById('txtEmpName-error').textContent = '';
+                }
+
+                const titleNameField = document.getElementById('txtTitle');
+                const titleName = titleNameField.value;
+                const titleErrorMessage = "Please enter the issue title";
+                if (!titleName) {
+                    titleNameField.classList.add('is-invalid');
+                    document.getElementById('txtTitle-error').textContent = titleErrorMessage;
+                    isValid = false;
+                } else {
+                    titleNameField.classList.remove('is-invalid');
+                    document.getElementById('txtTitle-error').textContent = '';
+                }
+
+                const descField = document.getElementById('txtdescription');
+                const txtdescription = descField.value;
+                const descriptionErrorMessage = "Please a brief description of your issue";
+                if (!txtdescription) {
+                    descField.classList.add('is-invalid');
+                    document.getElementById('txtdescription-error').textContent = descriptionErrorMessage;
+                    isValid = false;
+                } else {
+                    descField.classList.remove('is-invalid');
+                    document.getElementById('txtdescription-error').textContent = '';
+                }
+
+                var selectedOffice = $("#cmbOffice").val(); // get the selected office
+                    if (!selectedOffice) { // if no office is selected
+                        $(".text-danger").show(); // show error message
+                        isValid = false;
+                        event.preventDefault(); // prevent form submission
+                    } else {
+                        $(".text-danger").hide(); // hide error message
+                    }
+                    
+                    return isValid;
+                }
 
     function sendemail(recipient,subject,content) {
         $.ajax({
@@ -270,9 +380,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                 }
             })    
     }
-
-   
-
     </script>
 
     <script src="./js/ticketManagement.js"></script>

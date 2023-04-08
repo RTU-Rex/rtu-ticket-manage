@@ -25,7 +25,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 Critical Priority</div>
                                             <div id="divCritical" class="h5 mb-0 font-weight-bold text-gray-800">1</div>
                                         </div>
@@ -43,7 +43,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 High Priority</div>
                                             <div id="divHigh" class="h5 mb-0 font-weight-bold text-gray-800">3</div>
                                         </div>
@@ -83,7 +83,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Low</div>
                                             <div id="divLow" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                                         </div>
@@ -96,12 +96,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                         </div>
 
                         <div onClick="ticketAll(0)" class="col-xl-2 col-md-2 mb-2" style="cursor: pointer">
-                            <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card border-left-dark  shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                Unassigned</div>
+                                            <div class="text-xs font-weight-bold text-dark  text-uppercase mb-1">
+                                                Others</div>
                                             <div id="divOther" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                                         </div>
                                         <div class="col-auto">

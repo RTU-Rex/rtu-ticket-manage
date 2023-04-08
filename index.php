@@ -19,9 +19,6 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="../rtu-ticket-manage/img/rtulogo.png">
-    <style>
-        
-    </style>
 </head>
 <script src="js/jquery-3.6.3.min.js"></script>
 <body>
@@ -128,7 +125,7 @@
                 "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Department</label><select class='form-control' id='cmbOffice' required></select></div>" +
             "</div>" +
             "<div class='col-md-12'>" +
-            "<div class='form-group'><label class ='text-dark'>Description</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Provide a detailed description of the issue you are experiencing.'></textarea></div>" +
+            "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Description</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Provide a detailed description of the issue you are experiencing.'required></textarea><small class='text-danger' id='txtdescription-error' style='display: none;'></small></div>" +
             "<div class='alert alert-info' role='alert'>" +
             "<i class='fas fa-info-circle'></i> Once you submit a ticket, you can check its status and updates using the ticket tracking number provided in the confirmation message. Our support team will also contact you via email or phone to provide updates or request additional information as needed. Thank you for using Rizal Technological University's Ticketing System.</div>"+
             "</div>" +
@@ -265,7 +262,7 @@
                     data = JSON.parse(data);
                     for (var i=0; i< data.length; i++ ) {
                         
-                        $('#divMessage').html("<div class='card shadow mb-4'> "+
+                        $('#divMessage').html("<div class='no-animation card shadow mb-4'> "+
                                    "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-primary'>RTU sysTicket</h6></div>" +
                                    "<div class='card-body'> Ticket Number: "+ data[i].id +" <br> Incident: "+ data[i].IncidentName +" <br> Title: "+ data[i].title +" <br> Description: "+ data[i].description +" <br> Requestor: "+ data[i].name +" ("+ data[i].email +") <br> Department: "+ data[i].Office + 
                                    "<hr> <p class='mb-1'>"+ formatDate(data[i].DateCreated) +"</p></div></div>");
@@ -294,12 +291,12 @@
                     if (data.length > 0) {
                     for (var i=0; i< data.length; i++ ) {
                         if (data[i].modifiedFrom == "requestor") {
-                            document.getElementById("divMessage").innerHTML += "<div class='card shadow mb-4'> "+
+                            document.getElementById("divMessage").innerHTML += "<div class='card no-animation shadow mb-4'> "+
                                    "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-right text-warning'>"+ data[i].name +"</h6></div>" +
                                    "<div class='card-body'>"+ data[i].ticketMessage +
                                    "<hr> <p class='mb-1 text-right'>"+ data[i].dateModified +" - "+ data[i].statusName +"</p></div></div>";
                         } else {
-                            document.getElementById("divMessage").innerHTML += "<div class='card shadow mb-4'> "+
+                            document.getElementById("divMessage").innerHTML += "<div class='card no-animation shadow mb-4'> "+
                                    "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-left text-primary'>"+ data[i].Tech +"</h6></div>" +
                                    "<div class='card-body'>"+ data[i].ticketMessage +
                                    "<hr> <p class='mb-1 text-left'>"+ data[i].dateModified +" - "+ data[i].statusName +"</p></div></div>";
@@ -367,8 +364,6 @@
                                             "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
 
                     }
-
-
     }
 
     function createFeedback() {
@@ -514,13 +509,25 @@
                 const titleNameField = document.getElementById('txtTitle');
                 const titleName = titleNameField.value;
                 const titleErrorMessage = "Please enter the issue title";
-                if (!empName) {
+                if (!titleName) {
                     titleNameField.classList.add('is-invalid');
                     document.getElementById('txtTitle-error').textContent = titleErrorMessage;
                     isValid = false;
                 } else {
                     titleNameField.classList.remove('is-invalid');
                     document.getElementById('txtTitle-error').textContent = '';
+                }
+
+                const descField = document.getElementById('txtdescription');
+                const txtdescription = descField.value;
+                const descriptionErrorMessage = "Please a brief description of your issue";
+                if (!txtdescription) {
+                    descField.classList.add('is-invalid');
+                    document.getElementById('txtdescription-error').textContent = descriptionErrorMessage;
+                    isValid = false;
+                } else {
+                    descField.classList.remove('is-invalid');
+                    document.getElementById('txtdescription-error').textContent = '';
                 }
 
                 var selectedOffice = $("#cmbOffice").val(); // get the selected office

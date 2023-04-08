@@ -12744,3 +12744,19 @@ body.sidebar-toggled footer.sticky-footer {
   .sidebar li:hover {
     background-color: rgba(0, 123, 255, 0.5); /* change the background color on hover */
   }
+
+  .email-container {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+  .position-fixed {
+    z-index: 10;
+  }
+
+  .border-right-warning {
+  border-right: 5px solid #ffc107; /* set the color to your desired warning color */
+}

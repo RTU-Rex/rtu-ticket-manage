@@ -4,41 +4,59 @@ function viewTicket(id) {
   var access = 0;
   var techid = 0;
 
-  $("#divTitle").html("Ticket Journey");
-  $.ajax({
-    async: false,
-    type: "POST",
-    url: "controllers/homeControllers.php",
-    data: { ticketId: id, getTicketsJourney: 1 },
-    success: function (data) {
-      data = JSON.parse(data);
-      for (var i = 0; i < data.length; i++) {
-        $("#divMessage").html(
-          "<div class='card shadow mb-4'> " +
-            "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-primary'>RTU sysTicket</h6></div>" +
-            "<div class='card-body'> Ticket Number: " +
-            data[i].id +
-            " <br> Incident: " +
-            data[i].IncidentName +
-            " <br> Title: " +
-            data[i].title +
-            " <br> Description: " +
-            data[i].description +
-            " <br> Requestor: " +
-            data[i].name +
-            " (" +
-            data[i].email +
-            ") <br> Department: " +
-            data[i].Office +
-            "<hr> <p class='mb-1'>" +
-            data[i].DateCreated +
-            "</p></div></div>"
-        );
-        access = data[i].access;
-      }
-    },
-  });
+    $("#divTitle").html("<div class = 'mb-4'>Ticket Journey</div>");
 
+    $.ajax({
+      async: false,
+      type: "POST",
+      url: "controllers/homeControllers.php",
+      data: { ticketId: id, getTicketsJourney: 1 },
+      success: function (data) {
+        data = JSON.parse(data);
+        for (var i = 0; i < data.length; i++) {
+   
+          $("#divMessage").html(
+            "<div class='card shadow mb-4 mt-0 no-animation text-bg-dark'>" +
+              "<div class='card-header py-2'>" +
+                "<h6 class='mt-3 font-weight-bold text-dark text-right'> "+ data[i].statusName +" - " + data[i].id + "</h6>" +
+              "</div>" +
+              "<div class='card-body'>" +
+                "<h3 class='text-capitalize font-weight-bold text-dark'>" + data[i].title + "</h3>" +
+                "<small class='text-mute'>" +
+                  " Created: " + formatDate(data[i].DateCreated) +
+                  " by: " + "<b>" + data[i].name + "</b>" + " (" + data[i].email + ")" +
+                  " located at: " + "<b>" + data[i].Office + "</b>" + " , " + "Issue: " + "<b>" + data[i].IncidentName + "</b>" +
+                "</small>" +
+                "<div class='email-container mt-3'>" +
+                  "<div class='text-dark'>" + data[i].description + "</div>" +
+                "</div><hr></hr>" +
+              "</div>" +
+            "</div>"
+          );
+          
+          access = data[i].access;
+        }
+      
+      },
+    });
+    function formatDate(dateString) {
+      var date = new Date(dateString);
+      var dateFormat = { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric' 
+      };
+      var timeFormat = {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+      
+      };
+      var formattedDate = date.toLocaleString('en-US', dateFormat);
+      var formattedTime = date.toLocaleString('en-US', timeFormat);
+      return formattedDate + " at " + formattedTime;
+    }
+    
   $.ajax({
     async: false,
     type: "POST",
@@ -50,28 +68,28 @@ function viewTicket(id) {
       for (var i = 0; i < data.length; i++) {
         if (data[i].modifiedFrom == "User") {
           document.getElementById("divMessage").innerHTML +=
-            "<div class='card shadow mb-4'> " +
+            "<div class='card border-right-warning shadow mb-4 no-animation '> " +
             "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-right text-warning'>" +
             data[i].name +
             "</h6></div>" +
-            "<div class='card-body'>" +
+            "<div class='card-body text-right text-dark'>" +
             data[i].ticketMessage +
-            "<hr> <p class='mb-1 text-right'>" +
-            data[i].dateModified +
-            " - " +
+            "<hr> <p class='mb-0 text-left'><small>" +
+            formatDate(data[i].dateModified) +
+            " - " + "<ins>" +
             data[i].statusName +
             "</p></div></div>";
         } else {
           document.getElementById("divMessage").innerHTML +=
-            "<div class='card shadow mb-4'> " +
-            "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-left text-primary'>" +
+            "<div class='card border-left-info shadow mb-4 no-animation conversation-card mb-3'> " +
+            "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-left text-info'>" +
             data[i].Tech +
             "</h6></div>" +
-            "<div class='card-body'>" +
+            "<div class='card-body card-text text-left text-dark'>" +
             data[i].ticketMessage +
-            "<hr> <p class='mb-1 text-left'>" +
-            data[i].dateModified +
-            " - " +
+            "<hr> <p class='mb-0 text-right'><small>" +
+            formatDate(data[i].dateModified) +
+            " - " + "<ins>" +
             data[i].statusName +
             "</p></div></div>";
         }
@@ -113,6 +131,8 @@ function replyTicket(id, techId, access) {
       "<div  class='form-group'><select class='form-control form-control-user' id='cmbStatus'></select></div>" +
       "<div id='divTech' class='form-group'><select class='form-control form-control-user' id='cmbTech'></select></div>"
   );
+
+
   $.ajax({
     async: false,
     type: "POST",
@@ -299,18 +319,52 @@ function getOffice() {
 }
 
 function updateTicketview(id) {
-  $("#divTitle").html("Updating Ticket");
-
-  $("#divMessage").html(
-    "<p class='mb-4'><b>Ticket Information</b> <div id='error'> </div> <br> </p><div class='form-group'> <input type='email' class='form-control form-control-user' id='txtEmail' placeholder='Email Address'></div>" +
-      "<div class='form-group'>" +
-      "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtEmpName' placeholder='Complete Name'></div>" +
-      "<div class='form-group'><select class='form-control form-control-user' id='cmbPrio'></select></div>" +
-      "<div class='form-group'><select class='form-control form-control-user' id='cmbIncident'></select></div>" +
-      "<div class='form-group'><select class='form-control form-control-user' onchange='getOffice()' id='cmbDepartment'></select></div>" +
-      "<div class='form-group'><select class='form-control form-control-user' id='cmbOffice'></select></div>" +
-      "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtTitle' placeholder='Title'><textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>"
+  $("#divTitle").html("<h4 class='text-dark text-center'><b> Ticket No " + id + " Form </b> </div> <br> </h4>");
+  $("#divMessage").html("<p class='mb-4'><b>Ticket Information</b> <div class = 'text-danger' id='error'> </div> <br> </p>" +
+    "<div class='row'>" + "<br>" +
+    "<div class='col-md-6'>" +
+    "<div class='form-group'>" +
+    "<label for='txtEmail'>Email Address</label>" +
+    "<input type='email' class='form-control form-control-user form-floating' id='txtEmail' placeholder='Email Address' disabled>" +
+    "</div>" +
+    "<div class='form-group'>" +
+    "<label for ='txtEmp'>Employee No.</label>" +
+    "<input type='text' class='form-control form-control-user form-floating' id='txtEmp' placeholder='Employee Number' disabled>" +
+    "</div>" +
+    "<div class='form-group'>" +
+    "<label for='txtEmpName'>Employee Name</label>" +
+    "<input type='text' class='form-control form-control-user form-floating' id='txtEmpName' placeholder='Complete Name'disabled>" +
+    "</div>" +
+    "<div class='form-group'>" +
+    "<label for='txtTitle'><span class='required-indicator'>*</span>Title</label>" +
+    "<input type='text' class='form-control form-control-user form-floating' id='txtTitle' placeholder='Title'>" +
+    "</div>" +
+    "</div>" +
+    "<div class='col-md-6'>" +
+    "<div class='form-group'>" +
+    "<label for='cmbPrio'><span class='required-indicator'>*</span>Priority</label>" +
+    "<select class='form-control form-control-user form-floating' id='cmbPrio'></select>" +
+    "</div>" +
+    "<div class='form-group'>" +
+    "<label for='cmbIncident'><span class='required-indicator'>*</span>Category</label>" +
+    "<select class='form-control form-control-user form-floating' id='cmbIncident'></select>" +
+    "</div>" +
+    "<div class='form-group'>" +
+    "<label for='cmbDepartment'>Office Under: </label>" +
+    "<select class='form-control form-control-user form-floating' onchange='getOffice()' id='cmbDepartment'disabled></select>" +
+    "</div>" +
+    "<div class='form-group'>" +
+    "<label for='cmbOffice'>Office/Department</label>" +
+    "<select class='form-control form-control-user form-floating' id='cmbOffice'disabled></select>" +
+    "</div>" +
+    "</div>" +
+    "<div class='col-md-12'>" +
+    "<div class='form-group'>" +
+    "<label for='txtdescription'><span class='required-indicator'>*</span>Description</label>" +
+    "<textarea class='form-control form-floating' rows='5' id='txtdescription' placeholder='Description'></textarea>" +
+    "</div>"
   );
+  
   $("#divButtons").html(
     " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button><button type='button' class='btn btn-warning'  onclick='updateTicket(" +
       id +
@@ -391,7 +445,9 @@ function updateTicketview(id) {
     success: function (data) {
       data = JSON.parse(data);
       for (var i = 0; i < data.length; i++) {
+
         $("#txtEmail").val(data[i].email);
+        $("#txtEmp").val(data[i].empId);
         $("#txtEmpName").val(data[i].name);
         $("#cmbPrio").val(data[i].priority);
         $("#cmbIncident").val(data[i].incident);
@@ -409,14 +465,12 @@ function updateTicketview(id) {
 }
 
 function updateTicket(id) {
-  $("#divTitle").html("RTU Ticketing Message");
+  $("#divTitle").html("<h4 class='text-dark text-center'><b> Ticket No " + id + " Form </b> </div> <br> </h4>");
 
-  var email = $('#txtEmail').val()
-  var name = $('#txtEmpName').val()
   var title = $('#txtTitle').val()
   var desc = $('#txtdescription').val()
 
-  if (!((email == '') || (name == '') || (title == '') || (desc == ''))) {  
+  if (!((title == '') || (desc == ''))) {  
     $.ajax({
         async: false,
         type: "POST",
@@ -446,7 +500,7 @@ function updateTicket(id) {
       location.reload();
 
   } else {
-    $('#error').html("Please Fill up the required fields");
+    $('#error').html("Please fill out all required fields marked with an asterisk (*)");
     $("#divButtons").html(
         " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button><button type='button' class='btn btn-warning'  onclick='updateTicket(" +
           id +
