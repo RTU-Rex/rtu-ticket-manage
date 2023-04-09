@@ -13,7 +13,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 
                 <div class="row">
                     <div class="col"><h1 class="h3 mb-2 text-gray-800">REPORT</h1> </div>
-                    <div  class="col"> <form action="TechnicalServiceReport.php"> <button style="float:right;" class="btn btn-danger" data-toggle="modal" data-target="#TicketModal" onClick="NewUser()">EXPORT</button></div>
+                    <div  class="col"> <form target="_blank" action="TechnicalServiceReport.php" method="POST"><button type="submit" name="Print" style="float:right;" value="36" class="btn btn-danger"> PRINT</button></form></div>
 
                 </div>
 

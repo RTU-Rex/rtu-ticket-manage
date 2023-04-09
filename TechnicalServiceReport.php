@@ -1,3 +1,71 @@
+<?php
+session_start(); 
+include "./controllers/dbConnect.php";
+
+
+if(isset($_POST['Print'])){ 
+  $id = $_POST['Print'];
+  $rname = "";
+  $office = "";
+  $incident = "";
+  $title = "";
+  $description = "";
+  $dCreate = "";
+  $message = "";
+  $status = "";
+  $dStatus = "";
+  $techni = "";
+
+
+  $sql = "SELECT a.id, a.name, g.Office, e.IncidentName, a.title, a.description, 
+          DATE(a.DateCreated) as DateCreated, TIME(a.DateCreated) as TimeCreated, 
+          b.ticketMessage, b.dateModified, 
+          DATE(b.dateModified) as dateModified, TIME(b.dateModified) as timeModified, 
+          c.statusName, concat( d.firstName,' ', d.lastName ) Technician
+  FROM tblTicket a 
+  LEFT JOIN  (SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
+              FROM `tblTicketHistory`) b on a.Id = b.ticketId and row_num = 1
+  LEFT JOIN tblStatus c on c.id = b.ticketStatus
+  LEFT JOIN tblUser d on d.id = b.technicianId
+  LEFT JOIN tblIncident e on e.id = a.incident
+  LEFT JOIN tblPriority f on f.id = a.priority
+  LEFT JOIN tblDepartment g on g.id = a.department
+  WHERE a.id = $id;";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) >= 1) {
+   
+      while ($row = mysqli_fetch_assoc($result)) {
+      
+      $rname = $row['name'] ;
+      $office = $row['Office']; 
+      
+      if ($row['IncidentName'] == "Hardware") {
+        $incident = "<td style='padding: 5px;'><input type='checkbox' checked> EDP </td><td style='padding: 5px;'><input type='checkbox' > Network Division </td><td style='padding: 5px;'><input type='checkbox' > Technical Division </td>";
+      } else if( $row['IncidentName'] == "Software") {
+        $incident = "<td style='padding: 5px;'><input type='checkbox'> EDP </td><td style='padding: 5px;'><input type='checkbox' checked> Network Division </td><td style='padding: 5px;'><input type='checkbox' > Technical Division </td>";
+      } else {
+        $incident = "<td style='padding: 5px;'><input type='checkbox'> EDP </td><td style='padding: 5px;'><input type='checkbox'> Network Division </td><td style='padding: 5px;'><input type='checkbox' checked> Technical Division </td>";
+      }
+      $title = $row['title']; 
+      $description = $row['description']; 
+      $dCreate = $row['DateCreated']; 
+      $tCreate = $row['TimeCreated']; 
+      $message = $row['ticketMessage']; 
+      $status = $row['statusName']; 
+      $dStatus = $row['dateModified']; 
+      $tStatus = $row['timeModified']; 
+      $techni =  $row['Technician']; 
+
+      }           
+
+  }
+
+}
+
+
+?>
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -47,7 +115,7 @@
                 <strong><p>RTU-FA-MIC-F-004 RIZAL <br> TECHNOLOGICAL UNIVERSITY</p></strong>
             </div>
             <div class="col text-right h5">
-                 <strong><p>Control No.: ___-___-___ <!--Ticket Number--><p></strong>
+                 <strong><p>Control No.: <?php echo $id; ?> <!--Ticket Number--><p></strong>
             </div>
           </div>
           
@@ -63,11 +131,11 @@
                   </colgroup>
               <tr>
                 <td>Contact Person:</td>
-                <td><!--Requestor Name--></td>
+                <td><?php echo $rname; ?> </td>
               </tr>
               <tr>
                 <td>Department:</td>
-                <td><!--Department Name--></td>
+                <td><?php echo $office; ?> </td>
               </tr>
               <tr>
                 <td>Serial Number:</td>
@@ -81,9 +149,7 @@
 
             <table class="col d-flex justify-content-center align-items-center">
                 <tr>
-                <td style="padding: 5px;"><input type="checkbox"> EDP </td> 
-                <td style="padding: 5px;"><input type="checkbox"> Network Division </td>
-                <td style="padding: 5px;"><input type="checkbox" checked> Technical Division </td>
+                <?php echo $incident; ?>
                 </tr>
 
             <table class="table table-bordered">
@@ -92,7 +158,10 @@
             <td style="width: 8.50cm">Reported Problem:</td>
             <td style="width: 8.50cm">Time:<!--insert time ticket was created--></td>
             <td tyle="width: 7.50cm">Date:<!--insert date ticket was created--></td>
-            <tr><td colspan="3" style="height: 3.90cm"><!--Insert Title and Decription of the Ticket--> </td></tr>
+            <tr><td style="height: 3.90cm"><p> <?php echo $title; ?>  </p> <p> <?php echo $description; ?>  </p> </td>
+            <td style="height: 3.90cm"><p> <?php echo $tCreate; ?>  </p> </td>
+            <td style="height: 3.90cm"><p> <?php echo $dCreate; ?>  </p> </td>
+          </tr>
             </tr>
             </tbody>
 
@@ -103,7 +172,9 @@
                     <td style="width: 8.50cm">Action Taken:</td>
                     <td style="width: 8.50cm">Time:<!--insert timestamp --></td>
                     <td tyle="width: 7.50cm">Date: <!--insert datestamp --></td>
-                    <tr><td colspan="3" style="height: 3.90cm"><!--Insert Technical Action Report--> </td></tr>
+                    <tr> <td style="height: 3.90cm"><p> <?php echo $message; ?>  </p></td>
+            <td style="height: 3.90cm"><p> <?php echo $tStatus; ?>  </p> </td>
+            <td style="height: 3.90cm"><p> <?php echo $dStatus; ?>  </p> </td> </tr>
                   </tr>
                 </tbody>
             
@@ -127,14 +198,16 @@
                   <td style="width: 8.50cm">Status:</td>
                   <td style="width: 8.50cm">Time:<!--insert timestamp where the ticket was resolved--></td>
                   <td tyle="width: 7.50cm">Date: <!--insert datestamp--></td>
-                  <tr><td colspan="3" style="height: 1.50cm"><!--insert status of the ticket--> </td></tr>
+                  <tr><td style="height: 3.90cm"><p> <?php echo $status; ?>  </p></td>
+            <td style="height: 3.90cm"><p> <?php echo $tStatus; ?>  </p> </td>
+            <td style="height: 3.90cm"><p> <?php echo $dStatus; ?>  </p> </td></tr>
               </tbody>
 
               
             <table class="table border-0">
                         <tr>
                             <td style="width: 10cm">Client: 
-                            <td style="border-bottom: 0.9px solid black;"><!--insert name of the requestor--></td>
+                            <td style="border-bottom: 0.9px solid black;"><?php echo $rname; ?></td>
                             <td style="border-bottom: 0.9px solid black;"><!----></td>  
                         </tr>
                         <tr>
@@ -145,7 +218,7 @@
                                                             
                         <tr>
                             <td style="width: 10cm">  Technician/Trainee: 
-                            <td style="border-bottom: 0.9px solid black;"><!--insert technician name--></td>
+                            <td style="border-bottom: 0.9px solid black;"><?php echo $techni; ?></td>
                             <td style="border-bottom: 0.9px solid black;"></td>  
                         </tr>
                         <tr>
