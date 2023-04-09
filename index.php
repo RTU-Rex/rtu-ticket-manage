@@ -126,6 +126,13 @@
             "</div>" +
             "<div class='col-md-12'>" +
             "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Description</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Provide a detailed description of the issue you are experiencing.'required></textarea><small class='text-danger' id='txtdescription-error' style='display: none;'></small></div>" +
+            "<div class='form-group'>"+
+            "<div class='form-check'>"+
+            " <input type='checkbox' class='form-check-input' id='chkAgree' required>"+
+            "<label class='form-check-label' for='chkAgree'>I confirm that the information provided is true and correct.</label>"+
+            "<div class='invalid-feedback'>You must confirm that the information provided is true and correct.</div>"+
+            "</div>"+
+            "</div>"+
             "<div class='alert alert-info' role='alert'>" +
             "<i class='fas fa-info-circle'></i> Once you submit a ticket, you can check its status and updates using the ticket tracking number provided in the confirmation message. Our support team will also contact you via email or phone to provide updates or request additional information as needed. Thank you for using Rizal Technological University's Ticketing System.</div>"+
             "</div>" +
@@ -243,6 +250,7 @@
                     $('#divTitle').html("Submit Feedback");
                     $('#divMessage').html("<p class='mb-4 text-justify'>We value your opinion and strive to improve our services based on your feedback. Please let us know how we're doing by sharing your thoughts and suggestions with us. Your feedback is anonymous and will be used to help us enhance our ticketing management system, optimize our processes, and deliver a better user experience for you and all our clients." + 
                     "<br><br>Thank you for your valuable feedback!</p>" +
+                    "<div class='form-group'>Your Name<input type='text' class='form-control form-control-user' id='txtEmpName' placeholder='Optional'></div>" +
                     "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Your Feedback</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Share your thoughts and suggestions' required></textarea><div class='invalid-feedback'>Please put some feedback.</div></div>");
                     $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" + 
                         "<button type='button' onclick='createFeedback()' class='btn btn-primary' id='btnSubmitFeed'>Submit</button>");
@@ -338,8 +346,8 @@
                  
 
                     sendemail($('#txtEmail').val(),"RTU-Ticketing Management - Ticket Number:" + data,"<html><body>Hi "+ $('#txtEmpName').val() +"<br>You successfully created a ticket.<br><h2><b>Ticket Number: "+ data +"</b></h2><div style='padding-left: 3%;'>"+
-                                                                               "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Category</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
-                                                                            "<tr style='vertical-align: text-top;'><td>Title</td><td>"+ $('#txtTitle').val() +"</td></tr><tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
+                                                                              "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Category</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
+                                                                           "<tr style='vertical-align: text-top;'><td>Title</td><td>"+ $('#txtTitle').val() +"</td></tr><tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
                                                                                "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
 
                    
@@ -364,6 +372,12 @@
                                             "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
 
                     }
+                    if (!$('#chkAgree').is(':checked')) {
+                $('#chkAgree').addClass('is-invalid');
+                return;
+                } else {
+                $('#chkAgree').removeClass('is-invalid');
+                }
     }
 
     function createFeedback() {
@@ -379,10 +393,11 @@
                         async: false,
                         type: "POST",
                         url: 'controllers/indexControllers.php',
-                        data: { txtdescription: $('#txtdescription').val(),
+                        data: { txtEmpName: $('#txtEmpName').val(),
+                            txtdescription: $('#txtdescription').val(),
                             createFeedBack: 1
                             },
-                        success: function(data) {
+                             success: function(data) {
                             data = JSON.parse(data);
                             $('#divMessage').html(data)
                             $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
@@ -393,7 +408,6 @@
                         }
                          })
                 }
-
   
     }
    

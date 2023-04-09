@@ -320,7 +320,7 @@ function getOffice() {
 
 function updateTicketview(id) {
   $("#divTitle").html("<h4 class='text-dark text-center'><b> Ticket No " + id + " Form </b> </div> <br> </h4>");
-  $("#divMessage").html("<p class='mb-4'><b>Ticket Information</b> <div class = 'text-danger' id='error'> </div> <br> </p>" +
+  $("#divMessage").html("<div class = 'text-danger' id='error'> </div>" +
     "<div class='row'>" + "<br>" +
     "<div class='col-md-6'>" +
     "<div class='form-group'>" +
@@ -500,7 +500,7 @@ function updateTicket(id) {
       location.reload();
 
   } else {
-    $('#error').html("Please fill out all required fields marked with an asterisk (*)");
+    $('#error').html("<div class='alert alert-danger'>Please fill out all required fields marked with an asterisk (*).</div>");
     $("#divButtons").html(
         " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button><button type='button' class='btn btn-warning'  onclick='updateTicket(" +
           id +

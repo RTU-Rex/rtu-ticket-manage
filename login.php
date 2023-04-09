@@ -79,7 +79,7 @@
                     </div>
                     <form class="user">
                         <div class="form-group">
-                        <label for="txtEmail" class="font-weight-bold text-primary">Username</label>
+                        <label for="txtEmail" class="font-weight-bold text-primary">E-mail</label>
                         <input type="email" class="form-control form-control-user" id="txtEmail" aria-describedby="emailHelp">
                         </div>
                         <div class="form-group">
@@ -137,10 +137,10 @@
 
     function forgetPass() {
     
-        $('#divTitle').html("RTU Ticketing Message"); 
-        $('#divMessage').html("<p class='mb-4'>Forget Password?</p> <div class='form-group'> " +
-                                "<input type='email' class='form-control form-control-user' id='txtUsername' placeholder='Please enter email address'></div>");
-        $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button> <button type='button' onclick='OTPPass()' class='btn btn-warning' data-dismiss='modal'>Submit</button>");
+        $('#divTitle').html("Forgot Password"); 
+        $('#divMessage').html("<p class='mb-0'><b class='text-dark'>Enter your email address</p></b> <div class='form-group'> " +
+                                "<input type='email' class='form-control form-control-user' id='txtUsername' placeholder='Email address'></div>");
+        $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button> <button type='button' onclick='OTPPass()' class='btn btn-primary' data-dismiss='modal'>Submit</button>");
           
     }
 
@@ -157,11 +157,14 @@
                     data = JSON.parse(data);
                     console.log(data);
                     if (data[0].id != "0") {
-                        $('#divTitle').html("RTU Ticketing Message"); 
-                        $('#divMessage').html("<div id='error'></div></div><p class='mb-4'>Code Verification "+ email +"</p> <div class='form-group'> " +
-                                              "<input class='form-control form-control-user' id='txtOTP' placeholder='Please enter OTP sent to your email'></div>");
+                        $('#divTitle').html("Code Verification"); 
+                        $('#divMessage').html("<div id='error'></div></div><p class='mb-0'><b class='text-dark'>Enter OTP</b> "+ email +"</p> <div class='form-group'> " +
+                                              "<input class='form-control form-control-user' id='txtOTP' placeholder='Enter OTP'></div>" +
+                                              "<div class='alert alert-info' role='alert'>" +
+                                                "<i class='fas fa-info-circle'></i> We've sent you the password reset OTP, please check your email.</div>"+
+                                                "</div>");
                         var OTPs = OTPGenerate(data[0].id);
-                        $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button> <button type='button' class='btn btn-warning' onClick='NewPassword("+ data[0].id +")' data-dismiss='modal'>Verify</button>");
+                        $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button> <button type='button' class='btn btn-primary' onClick='NewPassword("+ data[0].id +")' data-dismiss='modal'>Verify</button>");
                         sendemail(email,"RTU-Ticketing Management - Reset Password","Hi "+data[0].name+"<br>Here's the OTP for request of password reset.<br><h2><b>"+ OTPs +"</b></h2>Thanks,<br><b>RTU Ticketing System</b>");
                     
                     } else { 

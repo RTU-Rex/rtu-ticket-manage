@@ -30,20 +30,19 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                             <div id="divTable" class="table-responsive">
                             <button class= "btn btn-primary" onClick="exportdata()" style='float:right;'> Export Data <i class='fas fa-file-export'></i></button>
                                 <table class="table table-bordered table-striped" id="dataTable1" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>TICKET</th>
-                                            <th>STATUS</th>
-                                            <th>TITLE</th>
-                                            <th>PRIORITY</th>
-                                            <th>OFFICE/DEPARTMENT</th>
-                                            <th>TECHNICIAN</th>
-                                            <th>REQUESTOR</th>
-                                            <th>LAST UPDATE</th>
+                                        <thead>
+                                            <tr>
+                                                <th class="sortable" >TICKET <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                                <th class="sortable">STATUS <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                                <th class="sortable">TITLE <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                                <th class="sortable">PRIORITY <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                                <th class="sortable">OFFICE/DEPARTMENT <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                                <th class="sortable">TECHNICIAN <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                                <th class="sortable">REQUESTOR <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                                <th class="sortable">LAST UPDATE <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                            </tr>
+                                        </thead>
 
-                                       
-                                        </tr>
-                                    </thead>
                                     <tbody>
 
                                     <?php   
@@ -131,8 +130,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
     });
 
     function ViewCreateTicket() {
-    $('#divTitle').html("Add New Ticket");
-    $('#divMessage').html("<p class='text-justify mb-4'>Please fill out all required fields marked with an asterisk (*).</p>" +
+    $('#divTitle').html("<h4 class='text-dark'><b> Ticket Form </b> </div> <br> </h4>");
+    $('#divMessage').html("<p id='error'></p></p>" +
         "<div class='row'>" + "<br>" +
             "<div class='col-md-6'>" +
                 "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Email</label><input type='email' class='form-control' id='txtEmail' placeholder='Enter Email Address' required><small class='text-danger' id='txtEmail-error' style='display: none;'></small></div>" +
@@ -159,7 +158,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
            $.ajax({
             async: false,
             type: "POST",
-            url: "controllers/indexControllers.php",
+            url: "controllers/homeControllers.php",
             data: { getPrio: 1 },
             success: function (data) {
             data = JSON.parse(data);
@@ -258,9 +257,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                        txtEmpName: $('#txtEmpName').val(),
                        cmbIncident: $('#cmbIncident').val(),
                        cmbDepartment: $('#cmbOffice').val(),
-                       cmbPrio: $("#cmbPrio").val(),
                        txtTitle: $('#txtTitle').val(),
                        txtdescription: $('#txtdescription').val(),
+                       cmbPrio: $('#cmbPrio').val(),
                        createTicket: 1
                     },
                     success: function(data) {
@@ -277,6 +276,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                       "<div><b>Ticket Number:</b> " + data + "</div>" +
                                       "<div><b>Requestor's Name:</b> " + $('#txtEmpName').val() + "</div>" +
                                       "<div><b>Office:</b> " + $('#cmbOffice option:selected').text() + "</div>" +
+                                      "<div><b>Priority:</b> " + $('#cmbPrio option:selected').text() + "</div>" +
                                       "<div><b>Category:</b> " + $('#cmbIncident option:selected').text() + "</div>" +
                                       "<div><b>Issue:</b> " + $('#txtTitle').val() + "</div>" +
                                       "<div><b>Date Created:</b> " + new Date().toLocaleString() + "</div>"); 
@@ -287,7 +287,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                     alert(e);
                 }
             })  
-            } else {    $('#error').html("An error occured");
+            } else {    $('#error').html("<div class='alert alert-danger'>Please fill out all required fields marked with an asterisk (*).</div>");
                         $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
                                             "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
                     }

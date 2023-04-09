@@ -8,21 +8,6 @@ include "dbConnect.php";
         return $data;
     }
 
-       if(isset($_POST['getPrio'])){
-        $sql = "SELECT * FROM tblPriority";
-		$result = mysqli_query($conn, $sql);
-    	if (mysqli_num_rows($result) >= 1) {
-            $value = array();
-            $int = 0;
-            while ($row = mysqli_fetch_assoc($result)) {
-                $value[$int] =  array("id" => $row['id'],"name" => $row['priorityName'] );
-                $int = $int + 1;
-            }           
-            echo json_encode($value);
-          
-		}
-    }
-    // May error dito, ayaw mag record sa database ng new ticket
     if(isset($_POST['createTicket'])){
         $email = validate($_POST['txtEmail']);
         $empId = validate($_POST['txtEmp']);
@@ -31,21 +16,15 @@ include "dbConnect.php";
         $department = validate($_POST['cmbDepartment']);
         $title = validate($_POST['txtTitle']);
         $description = validate($_POST['txtdescription']);
-        $priorityName = validate($_POST['cmbPrio']);
+
     
-        $sql = "SELECT id FROM tblPriority WHERE priorityName = '$priorityName'";
-        $result = mysqli_query($conn, $sql);
-        $row = mysqli_fetch_assoc($result);
-        $priorityId = $row['id'];
-    
-        $sql = "INSERT INTO tblTicket (email, name, empId, department, description, incident, title, priorityId) 
-                VALUES ('$email', '$name', '$empId', '$department', '$description', '$incident', '$title', $priorityId)";
-    
+        $sql = "INSERT INTO tblTicket ( email, name, empId, department, description, incident, title) VALUES ('$email','$name','$empId','$department','$description','$incident','$title');";
         if(mysqli_query($conn, $sql)) {
-            $id = mysqli_insert_id($conn);
-            $message = $id;
-    
+            $id =  mysqli_insert_id($conn);
+            $message =  $id;
+
             echo json_encode($message);
+
         }
     }
     
