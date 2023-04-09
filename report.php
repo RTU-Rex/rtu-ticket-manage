@@ -11,11 +11,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Report</h1>
-                    </div>
+                <div class="row">
+                    <div class="col"><h1 class="h3 mb-2 text-gray-800">REPORT</h1> </div>
+                    <div  class="col"> <form action="TechnicalServiceReport.php"> <button style="float:right;" class="btn btn-danger" data-toggle="modal" data-target="#TicketModal" onClick="NewUser()">EXPORT</button></div>
 
+                </div>
+
+        <br>
                     <!-- Content Row -->
                   
 

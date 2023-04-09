@@ -10,7 +10,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                 <div class="container-fluid">
                 <div class="row">
                     <div class="col"><h1 class="h3 mb-2 text-gray-800">Office and Department Management</h1> </div>
-                    <div  class="col"> <button style="float:right;" class="btn btn-warning" data-toggle="modal" data-target="#TicketModal" onClick="NewOffice()"> ADD NEW OFFICE</button></div>
+                    <div  class="col"> <button style="float:right;" class="btn btn-warning" data-toggle="modal" data-target="#TicketModal" onClick="NewOffice()"> NEW OFFICE</button></div>
 
 
                 </div>
