@@ -15,13 +15,14 @@ if(isset($_POST['Print'])){
   $status = "";
   $dStatus = "";
   $techni = "";
+  $recommend = "";
 
 
   $sql = "SELECT a.id, a.name, g.Office, e.IncidentName, a.title, a.description, 
           DATE(a.DateCreated) as DateCreated, TIME(a.DateCreated) as TimeCreated, 
           b.ticketMessage, b.dateModified, 
           DATE(b.dateModified) as dateModified, TIME(b.dateModified) as timeModified, 
-          c.statusName, concat( d.firstName,' ', d.lastName ) Technician
+          c.statusName, concat( d.firstName,' ', d.lastName ) Technician , b.recomend, b.recomendDes
   FROM tblTicket a 
   LEFT JOIN  (SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
               FROM `tblTicketHistory`) b on a.Id = b.ticketId and row_num = 1
@@ -55,6 +56,15 @@ if(isset($_POST['Print'])){
       $dStatus = $row['dateModified']; 
       $tStatus = $row['timeModified']; 
       $techni =  $row['Technician']; 
+      if ($row['recomend'] == 1) {
+        $recommend  = "<input type='checkbox' name='partreplacement' value='1' checked> Parts Replacement (Specify):  ". $row['recomendDes'] ." <br> <input type='checkbox' name='unservicable' value='2'> Unserviceable / To Be Surrendered <br> <input type='checkbox' name='others' value='3'> Others (Specify) : ";
+      } else if ($row['recomend'] == 2) {
+
+        $recommend  = "<input type='checkbox' name='partreplacement' value='1'> Parts Replacement (Specify): <br> <input type='checkbox' name='unservicable' value='2' checked> Unserviceable / To Be Surrendered <br> <input type='checkbox' name='others' value='3'> Others (Specify) : ";
+      } else {
+        $recommend  = "<input type='checkbox' name='partreplacement' value='1' > Parts Replacement (Specify): <br> <input type='checkbox' name='unservicable' value='2'> Unserviceable / To Be Surrendered <br> <input type='checkbox' name='others' value='3' checked> Others (Specify) : ". $row['recomendDes'] ." ";
+
+      }
 
       }           
 
@@ -186,9 +196,8 @@ if(isset($_POST['Print'])){
                   <td style="width: 8.50cm">Time:<!--insert data--></td>
                   <td tyle="width: 7.50cm">Date: <!--insert data--></td>
                 </tr>
-                   <td colspan="3" style="padding: 10px;"><input type="checkbox" name="partreplacement" value="1"> Parts Replacement (Specify):  <!--OPTIONAL:insert 'partreplacement' textfield-->
-                    <br> <input type="checkbox" name="unservicable" value="2"> Unserviceable / To Be Surrendered
-                    <br> <input type="checkbox" name="others" value="3"> Others (Specify) : <!--OPTIONAL:insert 'others' textfield--> </td>
+                   <td colspan="3" style="padding: 10px;"> <?php echo $recommend; ?>
+                    </td>
               </tbody>   
               
 

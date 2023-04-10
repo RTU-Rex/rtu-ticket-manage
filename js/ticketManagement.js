@@ -129,9 +129,12 @@ function replyTicket(id, techId, access) {
   $("#divMessage").html(
     "<div id='error'> </div> <br><div class='form-group'><textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>" +
       "<div  class='form-group'><select class='form-control form-control-user' id='cmbStatus'></select></div>" +
-      "<div id='divTech' class='form-group'><select class='form-control form-control-user' id='cmbTech'></select></div>"
+      "<div id='divTech' class='form-group'><select class='form-control form-control-user' id='cmbTech'></select></div>" +
+      "<div class='form-group'><select onChange='hideText()' class='form-control form-control-user' id='cmbRecomend'></select></div>" + 
+      "<div id='divRecomend' class='form-group'><textarea class='form-control' rows='5' id='txtrDes' placeholder='Recommendation'></textarea></div>"
   );
 
+  
 
   $.ajax({
     async: false,
@@ -175,6 +178,27 @@ function replyTicket(id, techId, access) {
     },
   });
 
+  $.ajax({
+    async: false,
+    type: "POST",
+    url: "controllers/homeControllers.php",
+    data: { getRecomend: 1 },
+    success: function (data) {
+      data = JSON.parse(data);
+      $("#cmbRecomend").empty();
+      var cmbInc = document.getElementById("cmbRecomend");
+      for (var i = 0; i < data.length; i++) {
+        var option = document.createElement("option");
+        option.text = data[i].name;
+        option.value = data[i].id;
+        cmbInc.add(option);
+      }
+    },
+    error: function (e) {
+      alert(e);
+    },
+  });
+
   if (techId != 0) {
     $("#cmbTech").val(techId);
     if (access != 2) {
@@ -182,6 +206,13 @@ function replyTicket(id, techId, access) {
       element.style.visibility = "hidden";
     }
   }
+
+  if (  $("#cmbRecomend").val() == 2) {
+    var element = document.getElementById("divRecomend");
+    element.style.visibility = "hidden";
+  }
+  
+ 
 
   $("#divButtons").html(
     "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
@@ -193,6 +224,19 @@ function replyTicket(id, techId, access) {
       access +
       ")' id='btnUpdate'>Send</button>"
   );
+}
+
+function hideText() {
+  if ($('#cmbRecomend').val() == 2) {
+     
+      var element = document.getElementById("divRecomend");
+      element.style.visibility = "hidden";
+  } else {
+    var element = document.getElementById("divRecomend");
+    element.style.visibility = "visible";
+
+  }
+
 }
 
 function updateTech(id, techid, access) {
@@ -227,6 +271,8 @@ function updateTech(id, techid, access) {
         cmbStatus: $("#cmbStatus").val(),
         txtdescription: $("#txtdescription").val(),
         cmbTech: editTech,
+        recommend: $("#cmbRecomend").val() , 
+        dRecomend: $("#txtrDes").val(),
         createJourney: 1,
       },
       success: function (data) {

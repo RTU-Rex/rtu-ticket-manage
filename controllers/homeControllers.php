@@ -90,6 +90,21 @@ include "dbConnect.php";
 		}
     }
 
+    if(isset($_POST['getRecomend'])){
+        $sql = "SELECT id, name FROM tblRecomend;";
+		$result = mysqli_query($conn, $sql);
+    	if (mysqli_num_rows($result) >= 1) {
+            $value = array();
+            $int = 0;
+            while ($row = mysqli_fetch_assoc($result)) {
+                $value[$int] =  array("id" => $row['id'],"name" => $row['name'] );
+                $int = $int + 1;
+            }           
+            echo json_encode($value);
+          
+		}
+    }
+
     if(isset($_POST['getTicketDetails'])){
         $ticketId = validate($_POST['ticketId']);
  
@@ -162,6 +177,8 @@ include "dbConnect.php";
         $cmbStatus = validate($_POST['cmbStatus']);
         $txtdescription = validate($_POST['txtdescription']);
         $tech = validate($_POST['cmbTech']);
+        $recommend = validate($_POST['recommend']);
+        $dRecomend = validate($_POST['dRecomend']);
         $sessionId = $_SESSION['id'];
        
 
@@ -171,8 +188,8 @@ include "dbConnect.php";
                               ticketMessage,
                               technicianId, 
                               modifiedBy,
-                              fileAttach) 
-                VALUES ($ticketId,$cmbStatus,'$txtdescription',$tech,$sessionId,'1');";
+                              fileAttach, recomend, recomendDes) 
+                VALUES ($ticketId,$cmbStatus,'$txtdescription',$tech,$sessionId,'1',$recommend, '$dRecomend' );";
         if(mysqli_query($conn, $sql)) {
             $message = "You successfully updated ticket";
             echo json_encode($message);
