@@ -142,10 +142,10 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" onclick="Logout()" style="cursor: pointer">
+                                <button class="dropdown-item" onclick="Logout()">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
-                                </a>
+                                </button>
                             </div>
                         </li>
 
@@ -156,23 +156,21 @@
                 <script> 
   
   function Logout() {
-   
-          $.ajax({
-              async: false,
-              type: "POST",
-              url: 'controllers/loginControllers.php',
-              data: {getLogout: 1},
-              success: function(data) {
-                  console.log(data)
-                  data = JSON.parse(data);
-                  if (data == "1") {
-                      window.location.href = "login.php";
-                  } else { 
-                    alert("error");
-                  }
-                
-              }
-          })
-  }
-
+  $.ajax({
+    async: false,
+    type: "POST",
+    url: 'controllers/loginControllers.php',
+    data: {getLogout: 1},
+    success: function(data) {
+      console.log(data)
+      data = JSON.parse(data);
+      if (data == "1") {
+        window.location.href('login.php');
+      } else { 
+        alert("error");
+      }
+    }
+  });
+  location.reload();
+}
   </script>

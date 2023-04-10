@@ -87,7 +87,7 @@
                         <input type="password" class="form-control form-control-user" id="txtpassword">
                         <a href="#" onclick="forgetPass()" data-toggle="modal" data-target="#TicketModal" class="text-secondary small">Forgot password?</a>
                         </div>
-                        <button onclick="getUserDetails()" type="button" data-toggle="modal" data-target="#TicketModal" class="btn btn-primary btn-block">Login</button>
+                        <button id="login-btn" onclick="getUserDetails()" type="button" data-toggle="modal" data-target="#TicketModal" class="btn btn-primary btn-block">Login</button>
                     </form>
                     </div>
                 </div>
@@ -109,31 +109,40 @@
     <script src="js/sb-admin-2.min.js"></script>
 
     <script> 
-  
-    function getUserDetails() {
-        $('#divTitle').html("RTU Ticketing Message"); 
-            $.ajax({
-                async: false,
-                type: "POST",
-                url: 'controllers/loginControllers.php',
-                data: { txtEmail: $('#txtEmail').val(), 
+       function getUserDetails() {
+                $('#divTitle').html("RTU Ticketing Message");
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: 'controllers/loginControllers.php',
+                    data: {
+                        txtEmail: $('#txtEmail').val(),
                         txtpassword: $('#txtpassword').val(),
                         getLoginDetails: 1
                     },
-                success: function(data) {
-                    console.log(data)
-                    data = JSON.parse(data);
-                    if (data == "1") {
-                        window.location.href = "home.php";
-                        $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
-                    } else { 
-                        $('#divMessage').html(data);
-                        $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
+                    success: function (data) {
+                        console.log(data)
+                        data = JSON.parse(data);
+                        if (data == "1") {
+                            window.location.href = "home.php";
+                            $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
+                        } else {
+                            $('#divMessage').html(data);
+                            $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
+                        }
+
                     }
-                  
-                }
-            })
-    }
+                })
+            }
+
+            $(document).ready(function() {
+                $('#txtpassword').keypress(function(event) {
+                    if (event.keyCode === 13) {
+                        $('#login-btn').click();
+                    }
+                });
+            });
+
 
     function forgetPass() {
     

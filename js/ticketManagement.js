@@ -106,7 +106,7 @@ function viewTicket(id) {
         techid +
         ", " +
         access +
-        ")' id='btnUpdate'>Techincal Report</button>"
+        ")' id='btnUpdate'>Technical Report</button>"
     );
   } else {
     $("#divButtons").html(
@@ -119,7 +119,7 @@ function viewTicket(id) {
         techid +
         ", " +
         access +
-        ")' id='btnUpdate'>Techincal Report</button>"
+        ")' id='btnUpdate'>Technical Report</button>"
     );
   }
 }
