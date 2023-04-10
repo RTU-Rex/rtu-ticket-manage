@@ -16,20 +16,21 @@ function viewTicket(id) {
         for (var i = 0; i < data.length; i++) {
    
           $("#divMessage").html(
-            "<div class='card shadow mb-4 mt-0 no-animation text-bg-dark'>" +
-              "<div class='card-header py-2'>" +
-                "<h6 class='mt-3 font-weight-bold text-dark text-right'> "+ data[i].statusName +" - " + data[i].id + "</h6>" +
+            "<div class='card shadow mb-4 mt-0 no-animation'>" +
+              "<div class='card-header py-3 mt-2'>" +
+                "<h4 class='text-capitalize font-weight-bold text-dark'>" + data[i].title + "Ticket # " + data[i].id + "</h4>" +
               "</div>" +
-              "<div class='card-body'>" +
-                "<h3 class='text-capitalize font-weight-bold text-dark'>" + data[i].title + "</h3>" +
+              "<div class='card-body'>"+
                 "<small class='text-mute'>" +
                   " Created: " + formatDate(data[i].DateCreated) +
                   " by: " + "<b>" + data[i].name + "</b>" + " (" + data[i].email + ")" +
                   " located at: " + "<b>" + data[i].Office + "</b>" + " , " + "Issue: " + "<b>" + data[i].IncidentName + "</b>" +
-                "</small>" +
+                "</small>" +  
                 "<div class='email-container mt-3'>" +
                   "<div class='text-dark'>" + data[i].description + "</div>" +
-                "</div><hr></hr>" +
+                "</div><hr><p class='mb-0 text-right'><small> Updated at: " +
+                formatDate(data[i].dateModified) +
+                "</p></hr>" +
               "</div>" +
             "</div>"
           );

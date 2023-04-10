@@ -101,7 +101,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-dark  text-uppercase mb-1">
-                                                Others</div>
+                                                Open </div>
                                             <div id="divOther" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                                         </div>
                                         <div class="col-auto">
@@ -168,17 +168,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                 if (data.length > 0) {
                     for (var i=0; i< data.length; i++ ) {
                      document.getElementById("divActiveTicket").innerHTML += "<div class='col-4'>"  +
-                                                    "<div class='card shadow mb-4 fade-up'>" +
+                                                    "<div class='card shadow mb-4 fade-up' style='cursor: pointer' data-toggle='modal' data-target='#TicketModal' onClick='viewTicket("+ data[i].Id +")'>" +
                                                     "<div class='card-header py-3'>" +
-                                                    "<h6 class='m-0 font-weight-bold text-warning'>"+ data[i].Stas +" - "+ data[i].Id +"</h6>" +
+                                                    "<h5 class='m-0 font-weight-bold text-dark text-capitalize hover-danger'>"+ 
+                                                     data[i].title + "<span class='text-right'> Ticket # "+ data[i].Id + "</h5></span>" +
                                                     "</div>" +
-                                                    "<div class='card-body'>" +
-                                                    "<b>Title:</b> <span data-toggle='modal' data-target='#TicketModal' class='text-primary text-capitalize' style='cursor: pointer' onClick='viewTicket("+ data[i].Id +")'> <ins>" +data[i].title +"</ins></span><br>"+
-                                                    "<b>Requestor's Name:</b> "+ data[i].name +" <br>"+
+                                                    "<div class='card-body m-0'>" +
+                                                    "<b>Requestor's Name:</b> "+ data[i].name +"<br>"+
                                                     "<b>Office/Department:</b> "+ data[i].Office +"<br>" +
                                                     "<b>Priority: </b>" + data[i].priorityName +
                                                     "<br><b> Category:</b> "+ data[i].IncidentName +
-                                                    "<hr> <p class='mb-1'><b>"+ formatDate(data[i].lastUpdate) +"</b></p>"+
+                                                    "<br><b> Assigned to:</b> "+ data[i].technicianName +
+                                                    "<hr> <small class='mb-1'><b> Last udpate: "+ formatDate(data[i].lastUpdate) + " - " + "<ins>" + data[i].Stas + "</b></small>" +
                                                     "</div>"+
                                                     "</div>"+
                                                     "</div>";

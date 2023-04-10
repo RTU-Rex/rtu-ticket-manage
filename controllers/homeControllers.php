@@ -18,45 +18,53 @@ include "dbConnect.php";
         }
         $prio = $_POST['priority'];
 
-        $sql = "SELECT CASE WHEN Isnull(b.technicianId) then 'Unassign' ELSE c.statusName END Stas,
-                        a.title, a.description,a.name, e.IncidentName, a.Id, f.priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
-                        CASE WHEN ISNULL(b.datemodified) then a.DateCreated else b.datemodified end lastUpdate
-                FROM tblTicket a 
-                LEFT JOIN  (SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
-                            FROM `tblTicketHistory`) b on a.Id = b.ticketId and row_num = 1
-                LEFT JOIN tblStatus c on c.id = b.ticketStatus
-                LEFT JOIN tblUser d on d.id = b.technicianId
-                LEFT JOIN tblIncident e on e.id = a.incident
-                LEFT JOIN tblPriority f on f.id = a.priority
-                LEFT JOIN tblDepartment g on g.id = a.department
-                WHERE NOT(CASE WHEN ISNULL(c.id) THEN 5 ELSE c.id END = 4) AND (CASE WHEN c.id = 1 THEN d.email ELSE 1 END) = '$user' AND  (CASE WHEN $prio = -1 THEN -1 ELSE IFNULL(a.priority,0) END ) = $prio;";
-       $result = mysqli_query($conn, $sql);
-       if (mysqli_num_rows($result) >= 1) {
-           $value = array();
-           $int = 0;
-           $badge_class = array('badge rounded-pill badge-danger', 'badge rounded-pill badge-warning', 'badge rounded-pill badge-info', 'badge rounded-pill badge-success');
+        $sql = "SELECT CASE WHEN Isnull(c.statusName) then 'Open' ELSE c.statusName END Stas,
+        a.title, a.description, a.name, e.IncidentName, a.Id, f.priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
+        d.firstName, d.lastName,
+        CASE WHEN ISNULL(b.datemodified) then a.DateCreated else b.datemodified end lastUpdate
+        FROM tblTicket a 
+        LEFT JOIN  (SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
+                    FROM `tblTicketHistory`) b on a.Id = b.ticketId and row_num = 1
+        LEFT JOIN tblStatus c on c.id = b.ticketStatus
+        LEFT JOIN tblUser d on d.id = b.technicianId
+        LEFT JOIN tblIncident e on e.id = a.incident
+        LEFT JOIN tblPriority f on f.id = a.priority
+        LEFT JOIN tblDepartment g on g.id = a.department
+        WHERE NOT(CASE WHEN ISNULL(c.id) THEN 5 ELSE c.id END = 4) AND (CASE WHEN c.id = 1 THEN d.email ELSE 1 END) = '$user' AND  (CASE WHEN $prio = -1 THEN -1 ELSE IFNULL(a.priority,0) END ) = $prio;";
 
-           while ($row = mysqli_fetch_assoc($result)) {
-            $prioId = $row['prioId'];
-            $priorityName = $row['priorityName'];
-            $badge_class_index = $prioId > 0 ? $prioId - 1 : 0;
-            $priorityNameWithBadge = '<span class="badge ' . $badge_class[$badge_class_index] . '">' . $priorityName . '</span>';
+        $result = mysqli_query($conn, $sql);
 
-               $value[$int] =  array(  "Id" => $row['Id'],
-                                       "Stas" => $row['Stas'],
-                                       "title" => $row['title'],
-                                       "description" => $row['description'],
-                                       "IncidentName" => $row['IncidentName'],
-                                       "name" => $row['name'],
-                                       "Office" => $row['Office'],
-                                       "priorityName" => $priorityNameWithBadge,
-                                       "prioId" => $row['prioId'],
-                                       "lastUpdate" => $row['lastUpdate']);
-               $int = $int + 1;
-           }           
-           echo json_encode($value);
-         
-       }
+        if (mysqli_num_rows($result) >= 1) {
+        $value = array();
+        $int = 0;
+        $badge_class = array('badge rounded-pill badge-danger', 'badge rounded-pill badge-warning', 'badge rounded-pill badge-info', 'badge rounded-pill badge-success');
+
+        while ($row = mysqli_fetch_assoc($result)) {
+        $prioId = $row['prioId'];
+        $priorityName = $row['priorityName'];
+        $badge_class_index = $prioId > 0 ? $prioId - 1 : 0;
+        $priorityNameWithBadge = '<span class="badge ' . $badge_class[$badge_class_index] . '">' . $priorityName . '</span>';
+        $technicianName = $row['firstName'] . ' ' . $row['lastName'];
+        
+        $value[$int] =  array(
+            "Id" => $row['Id'],
+            "Stas" => $row['Stas'],
+            "title" => $row['title'],
+            "description" => $row['description'],
+            "IncidentName" => $row['IncidentName'],
+            "name" => $row['name'],
+            "Office" => $row['Office'],
+            "priorityName" => $priorityNameWithBadge,
+            "prioId" => $row['prioId'],
+            "lastUpdate" => $row['lastUpdate'],
+            "technicianName" => $technicianName
+        );
+        $int = $int + 1;
+        }
+
+        echo json_encode($value);
+        }
+
     }
 
 
@@ -237,7 +245,7 @@ include "dbConnect.php";
         $ticketId = validate($_POST['ticketId']);
         $accessId = $_SESSION['accessId']; 
 
-        $sql = "SELECT a.Id, email, name, title, description, b.IncidentName, c.Office, a.DateCreated 
+        $sql = "SELECT a.Id, email, name, title, description, b.IncidentName, c.Office, a.DateCreated, a.dateModified
                 FROM tblTicket a left join tblIncident b on a.incident = b.id 
                 left join tblDepartment c on a.department = c.id  WHERE a.Id = $ticketId ";
 		$result = mysqli_query($conn, $sql);
@@ -253,6 +261,7 @@ include "dbConnect.php";
                                         "IncidentName" => $row['IncidentName'],
                                         "Office" => $row['Office'],
                                         "access" => $accessId,
+                                        "dateModified" => date('M d, Y h:i A', strtotime($row['dateModified'])),
                                         "DateCreated" => $row['DateCreated'] );
                 $int = $int + 1;
             }           
