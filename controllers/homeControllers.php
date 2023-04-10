@@ -37,7 +37,7 @@ include "dbConnect.php";
         if (mysqli_num_rows($result) >= 1) {
         $value = array();
         $int = 0;
-        $badge_class = array('badge rounded-pill badge-danger', 'badge rounded-pill badge-warning', 'badge rounded-pill badge-info', 'badge rounded-pill badge-success');
+        $badge_class = array('badge badge-danger', 'badge badge-warning', 'badge badge-info', 'badge badge-success');
 
         while ($row = mysqli_fetch_assoc($result)) {
         $prioId = $row['prioId'];

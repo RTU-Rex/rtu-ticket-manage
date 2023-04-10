@@ -169,21 +169,29 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                     for (var i=0; i< data.length; i++ ) {
                      document.getElementById("divActiveTicket").innerHTML += "<div class='col-4'>"  +
                                                     "<div class='card shadow mb-4 fade-up' style='cursor: pointer' data-toggle='modal' data-target='#TicketModal' onClick='viewTicket("+ data[i].Id +")'>" +
-                                                    "<div class='card-header py-3'>" +
-                                                    "<h5 class='m-0 font-weight-bold text-dark text-capitalize hover-danger'>"+ 
-                                                     data[i].title + "<span class='text-right'> Ticket # "+ data[i].Id + "</h5></span>" +
-                                                    "</div>" +
-                                                    "<div class='card-body m-0'>" +
+                                                    " <div class='card-header py-3'>"  +
+                                                    "<div class='row'>"  +
+                                                    " <div class='col'>"  +
+                                                    " <h5 class='m-0 font-weight-bold text-dark text-capitalize hover-danger'>"  +
+                                                    " <i class='fas fa-ticket-alt mr-2'></i>"  +
+                                                    " Ticket # "+ data[i].Id + " - " + data[i].title + 
+                                                    " </h5>"  +
+                                                    "</div>"  +
+                                                    "<div class='col-auto'>"  +
+                                                    " <span class='badge " + "badge_class[badge_class_index]" + "'>" + data[i].Stas + "</span>"  +
+                                                    " </div>"  +
+                                                    "</div>"  +
+                                                    "</div>"  +
+                                                    "<div class='card-body ml-2'>" +
                                                     "<b>Requestor's Name:</b> "+ data[i].name +"<br>"+
                                                     "<b>Office/Department:</b> "+ data[i].Office +"<br>" +
                                                     "<b>Priority: </b>" + data[i].priorityName +
                                                     "<br><b> Category:</b> "+ data[i].IncidentName +
                                                     "<br><b> Assigned to:</b> "+ data[i].technicianName +
-                                                    "<hr> <small class='mb-1'><b> Last udpate: "+ formatDate(data[i].lastUpdate) + " - " + "<ins>" + data[i].Stas + "</b></small>" +
+                                                    "<hr> <small class='mb-1'> Last udpate: "+ formatDate(data[i].lastUpdate) +
                                                     "</div>"+
                                                     "</div>"+
                                                     "</div>";
-
                     } 
 
                 } else {

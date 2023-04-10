@@ -77,13 +77,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                 echo '<td data-toggle="modal" data-target="#TicketModal" class="text-primary text-capitalize" style="cursor: pointer" onClick="viewTicket('.$row['Id'].')"> <ins>'.$row['title'].'</ins> </td>';
                                 echo '<td>';
                                 if ($row['priorityName'] == 'Critical') {
-                                    echo '<span class="badge rounded-pill badge-danger">'.$row['priorityName'].'</span>';
+                                    echo '<span class="badge badge-danger">'.$row['priorityName'].'</span>';
                                 } elseif ($row['priorityName'] == 'High') {
-                                    echo '<span class="badge rounded-pill badge-warning">'.$row['priorityName'].'</span>';
+                                    echo '<span class="badge badge-warning">'.$row['priorityName'].'</span>';
                                 } elseif ($row['priorityName'] == 'Moderate') {
-                                    echo '<span class="badge rounded-pill badge-info">'.$row['priorityName'].'</span>';
+                                    echo '<span class="badge badge-info">'.$row['priorityName'].'</span>';
                                 } elseif ($row['priorityName'] == 'Low') {
-                                    echo '<span class="badge rounded-pill badge-success">'.$row['priorityName'].'</span>';
+                                    echo '<span class="badge badge-success">'.$row['priorityName'].'</span>';
                                 }
                                 echo '</td>';
                                 echo '<td>'.$row['Office'].'</td>';

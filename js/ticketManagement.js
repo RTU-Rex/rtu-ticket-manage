@@ -4,7 +4,7 @@ function viewTicket(id) {
   var access = 0;
   var techid = 0;
 
-    $("#divTitle").html("<div class = 'mb-4'>Ticket Journey</div>");
+    $("#divTitle").html("<div class = 'ml-2'>Ticket Journey</div>");
 
     $.ajax({
       async: false,
@@ -16,10 +16,12 @@ function viewTicket(id) {
         for (var i = 0; i < data.length; i++) {
    
           $("#divMessage").html(
-            "<div class='card shadow mb-4 mt-0 no-animation'>" +
-              "<div class='card-header py-3 mt-2'>" +
-                "<h4 class='text-capitalize font-weight-bold text-dark'>" + data[i].title + "Ticket # " + data[i].id + "</h4>" +
-              "</div>" +
+            "<div class='card shadow mb-4 no-animation'>" +
+              "<div class='card-header py-3'>" +
+              " <h5 class='m-0 font-weight-bold text-dark text-capitalize hover-danger'>"  +
+              " <i class='fas fa-ticket-alt mr-2'></i>"  +
+              " Ticket # "+ data[i].id + " - " + data[i].title + 
+              " </h5>"  + "</div>" +
               "<div class='card-body'>"+
                 "<small class='text-mute'>" +
                   " Created: " + formatDate(data[i].DateCreated) +
