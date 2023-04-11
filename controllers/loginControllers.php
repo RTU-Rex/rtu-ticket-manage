@@ -117,6 +117,47 @@ include "dbConnect.php";
         echo json_encode($message);
     }
 
+
+    if(isset($_POST['checkPass'])){
+        $password = validate($_POST['pass']);
+        $sessionId = $_SESSION['id'];
+
+        $sql = "SELECT id, email, firstName, lastName, accessId, password FROM tblUser WHERE id = $sessionId;";
+		$result = mysqli_query($conn, $sql);
+		if (mysqli_num_rows($result) === 1) {
+			$row = mysqli_fetch_assoc($result);
+            $hashcheck = password_verify($password, $row['password']);
+                if ($hashcheck) {
+                    $message = "1";
+                    echo json_encode($message);
+
+                } else {
+                    $message = "0";
+                    echo json_encode($message);
+
+                }
+              
+		}else{
+            $message = "0";
+            echo json_encode($message);
+		}
+    }
+
+    if(isset($_POST['updatePassHome'])){
+        $sessionId = $_SESSION['id'];
+        $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
+       
+        $sql = "UPDATE tblUser 
+                SET password='$password',modifiedBy= $sessionId,dateModified=CURRENT_TIMESTAMP() 
+                WHERE id =  $sessionId;";
+        if(mysqli_query($conn, $sql)) {
+            echo json_encode('1');
+        } else {
+            $message = "Something went wrong.";
+            echo json_encode($message);
+        }
+    }
+
   
 
 ?>
