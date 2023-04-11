@@ -27,7 +27,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 Critical Priority</div>
-                                            <div id="divCritical" class="h5 mb-0 font-weight-bold text-gray-800">1</div>
+                                            <div id="divCritical" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -45,7 +45,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 High Priority</div>
-                                            <div id="divHigh" class="h5 mb-0 font-weight-bold text-gray-800">3</div>
+                                            <div id="divHigh" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>

@@ -109,7 +109,7 @@ function viewTicket(id) {
         techid +
         ", " +
         access +
-        ")' id='btnUpdate'>Technical Report</button>"
+        ")' id='btnUpdate'>Techincal Report</button> <form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> PRINT</button></form>"
     );
   } else {
     $("#divButtons").html(
@@ -314,11 +314,19 @@ function updateTech(id, techid, access) {
               "</table></div>" +
               "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>"
           );
+          $("#divMessage").html(data);
+          $("#divButtons").html(
+            " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button> <form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> PRINT</button></form>"
+          );
+
+        } else {
+          $("#divMessage").html(data);
+          $("#divButtons").html(
+            " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
+          );
+
         }
-        $("#divMessage").html(data);
-        $("#divButtons").html(
-          " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
-        );
+      
       },
       error: function (e) {
         alert(e);

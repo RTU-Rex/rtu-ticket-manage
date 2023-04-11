@@ -85,7 +85,7 @@ if(isset($_POST['Print'])){
       <style>
         body {
           font-family: Arial, sans-serif;
-          font-size: 14.3333px;
+          font-size: 10px;
         }      
   
       @page {
@@ -113,152 +113,192 @@ if(isset($_POST['Print'])){
     border:1px solid black;
     }
  
-      </style>
+  </style>
   </head>
 
 
-
+  <script src="js/jquery-3.6.3.min.js"></script>  
+  <script src="./dist/html2pdf.bundle.min.js"></script>
   <body>
-    <div class="container mx-auto">
-        <div class="row">
-            <div class="col h6">
-                <strong><p>RTU-FA-MIC-F-004 RIZAL <br> TECHNOLOGICAL UNIVERSITY</p></strong>
-            </div>
-            <div class="col text-right h5">
-                 <strong><p>Control No.: <?php echo $id; ?> <!--Ticket Number--><p></strong>
-            </div>
-          </div>
-          
-          <strong><h1 class="text-center">Technical Service Report</h1><strong>
-      <div class="row">
+  <button class="btn btn-warning" id="cmd" onClick="hideText()">DOWNLOAD</button>
 
-        <div class="col-md-11">
-          <table class="table table-bordered">
-            <tbody>
-                <colgroup>
-                    <col style="width: 5.39cm">
-                    <col style="width: 11.48cm">
-                  </colgroup>
-              <tr>
-                <td>Contact Person:</td>
-                <td><?php echo $rname; ?> </td>
-              </tr>
-              <tr>
-                <td>Department:</td>
-                <td><?php echo $office; ?> </td>
-              </tr>
-              <tr>
-                <td>Serial Number:</td>
-                <td><!--None--></td>
-              </tr>
-              <tr>
-                <td>Property Number:</td>
-                <td><!--None--></td>
-              </tr>
-            </tbody>
-
-            <table class="col d-flex justify-content-center align-items-center">
-                <tr>
-                <?php echo $incident; ?>
-                </tr>
-
-            <table class="table table-bordered">
-            <tbody>
-            <tr>
-            <td style="width: 8.50cm">Reported Problem:</td>
-            <td style="width: 8.50cm">Time:<!--insert time ticket was created--></td>
-            <td tyle="width: 7.50cm">Date:<!--insert date ticket was created--></td>
-            <tr><td style="height: 3.90cm"><p> <?php echo $title; ?>  </p> <p> <?php echo $description; ?>  </p> </td>
-            <td style="height: 3.90cm"><p> <?php echo $tCreate; ?>  </p> </td>
-            <td style="height: 3.90cm"><p> <?php echo $dCreate; ?>  </p> </td>
-          </tr>
-            </tr>
-            </tbody>
-
-
-            <table class="table table-bordered">
-                <tbody>
-                  <tr>
-                    <td style="width: 8.50cm">Action Taken:</td>
-                    <td style="width: 8.50cm">Time:<!--insert timestamp --></td>
-                    <td tyle="width: 7.50cm">Date: <!--insert datestamp --></td>
-                    <tr> <td style="height: 3.90cm"><p> <?php echo $message; ?>  </p></td>
-            <td style="height: 3.90cm"><p> <?php echo $tStatus; ?>  </p> </td>
-            <td style="height: 3.90cm"><p> <?php echo $dStatus; ?>  </p> </td> </tr>
-                  </tr>
-                </tbody>
-            
-
-            <table class="table table-bordered">
-              <tbody>
-                <tr>
-                  <td style="width: 8.50cm">Recommendation:</td>
-                  <td style="width: 8.50cm">Time:<!--insert data--></td>
-                  <td tyle="width: 7.50cm">Date: <!--insert data--></td>
-                </tr>
-                   <td colspan="3" style="padding: 10px;"> <?php echo $recommend; ?>
-                    </td>
-              </tbody>   
-              
-
-            <table class="table table-bordered">
-              <tbody>
-                <tr>
-                  <td style="width: 8.50cm">Status:</td>
-                  <td style="width: 8.50cm">Time:<!--insert timestamp where the ticket was resolved--></td>
-                  <td tyle="width: 7.50cm">Date: <!--insert datestamp--></td>
-                  <tr><td style="height: 3.90cm"><p> <?php echo $status; ?>  </p></td>
-            <td style="height: 3.90cm"><p> <?php echo $tStatus; ?>  </p> </td>
-            <td style="height: 3.90cm"><p> <?php echo $dStatus; ?>  </p> </td></tr>
-              </tbody>
-
-              
-            <table class="table border-0">
-                        <tr>
-                            <td style="width: 10cm">Client: 
-                            <td style="border-bottom: 0.9px solid black;"><?php echo $rname; ?></td>
-                            <td style="border-bottom: 0.9px solid black;"><!----></td>  
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td style="text-align: center;">Name</td>
-                            <td style="text-align: center;">Signature</td>
-                        </tr>
-                                                            
-                        <tr>
-                            <td style="width: 10cm">  Technician/Trainee: 
-                            <td style="border-bottom: 0.9px solid black;"><?php echo $techni; ?></td>
-                            <td style="border-bottom: 0.9px solid black;"></td>  
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td style="text-align: center;">Name</td>
-                            <td style="text-align: center;">Signature</td>
-                        </tr>
-
-                        <tr>
-                            <td style="width: 10cm">  Immediate Head 
-                            <td style="border-bottom: 0.9px solid black;"><!--insert Admin name--></td>
-                            <td style="border-bottom: 0.9px solid black;"><!--insert data--></td>  
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td style="text-align: center;">Name</td>
-                            <td style="text-align: center;">Signature</td>
-                        </tr>
-                </table>
-        </table>
-    
-        </div>
-    </div>
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col h6">
-                    <br><br><br><br>
-                    <tr><strong>RIZAL TECHNOLOGICAL UNIVERSITY<span style="margin-left: 200px;">Rev.1<span style="margin-left: 300px;">Oct 1, 2019</span></strong></tr>
-                </div>
+  <div id="content" class="container mx-auto"> 
+    <div class="row">
+              <div class="col">
+                  <p>RTU-FA-MIC-F-004 RIZAL TECHNOLOGICAL UNIVERSITY</p>
               </div>
-      </footer>
+              <div class="col text-right">
+                  <p>Control No.: <?php echo $id; ?> <!--Ticket Number--><p>
+              </div>
+             
+    </div>
+    <div class="text-center" class="row">  <strong><h5>Technical Service Report</h5><strong> </div>
+    <div class="row" style="margin-left: 1%; margin-right: 1%;"> 
+                <table class="table table-bordered">
+                  <tbody>
+                      <colgroup>
+                          <col style="width: 5.39cm">
+                          <col style="width: 11.48cm">
+                      </colgroup>
+                    <tr>
+                      <td>Contact Person:</td>
+                      <td><?php echo $rname; ?> </td>
+                    </tr>
+                    <tr>
+                      <td>Department:</td>
+                      <td><?php echo $office; ?> </td>
+                    </tr>
+                    <tr>
+                      <td>Serial Number:</td>
+                      <td><!--None--></td>
+                    </tr>
+                    <tr>
+                      <td>Property Number:</td>
+                      <td><!--None--></td>
+                    </tr>
+                  </tbody>
+                </table>
+    </div>
+
+    <table class="col d-flex justify-content-center align-items-center"><tr><?php echo $incident; ?></tr></table>
+    <div class="row" style="margin-left: 1%; margin-right: 1%;"> 
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td style="width: 8.50cm">Reported Problem:</td>
+                        <td style="width: 8.50cm">Time:<!--insert time ticket was created--></td>
+                        <td tyle="width: 7.50cm">Date:<!--insert date ticket was created--></td>
+                      </tr>
+                      <tr>
+                        <td style="height: 2.90cm"><p> <?php echo $title; ?>  </p> <p> <?php echo $description; ?>  </p> </td>
+                        <td style="height: 2.90cm"><p> <?php echo $tCreate; ?>  </p> </td>
+                        <td style="height: 2.90cm"><p> <?php echo $dCreate; ?>  </p> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+    </div>
+    <div class="row" style="margin-left: 1%; margin-right: 1%;"> 
+                    <table class="table table-bordered">
+                      <tbody>
+                        <tr>
+                          <td style="width: 8.50cm">Action Taken:</td>
+                          <td style="width: 8.50cm">Time:<!--insert timestamp --></td>
+                          <td tyle="width: 7.50cm">Date: <!--insert datestamp --></td>
+                        </tr>
+                        <tr> 
+                          <td style="height: 1.90cm"><p> <?php echo $message; ?>  </p></td>
+                          <td style="height: 1.90cm"><p> <?php echo $tStatus; ?>  </p> </td>
+                          <td style="height: 1.90cm"><p> <?php echo $dStatus; ?>  </p> </td> </tr>
+                        </tr>
+                      </tbody>
+                    </table>
+    </div>
+
+    <div class="row" style="margin-left: 1%; margin-right: 1%;"> 
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td style="width: 8.50cm">Recommendation:</td>
+                        <td style="width: 8.50cm">Time:<!--insert data--></td>
+                        <td tyle="width: 7.50cm">Date: <!--insert data--></td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" style="padding: 10px; height: 1.90cm;"> <?php echo $recommend; ?>
+                          </td>
+                      </tr>
+                    </tbody>
+                  </table>   
+    </div>
+    <div class="row" style="margin-left: 1%; margin-right: 1%;"> 
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td style="width: 8.50cm">Status:</td>
+                        <td style="width: 8.50cm">Time:<!--insert timestamp where the ticket was resolved--></td>
+                        <td tyle="width: 7.50cm">Date: <!--insert datestamp--></td>
+                      </tr>
+                      <tr>
+                        <td style="height: 1.90cm"><p> <?php echo $status; ?>  </p></td>
+                        <td style="height: 1.90cm"><p> <?php echo $tStatus; ?>  </p> </td>
+                        <td style="height: 1.90cm"><p> <?php echo $dStatus; ?>  </p> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+    
+    </div>
+   
+
+    <div class="row" style="margin-left: 10%; margin-right: 10%;"> 
+                        <table class="table border-0">
+                              <tr>
+                                  <td style="width: 5cm">Client: 
+                                  <td style="border-bottom: 0.9px solid black;" class="text-center"><?php echo $rname; ?></td>
+                                  <td style="border-bottom: 0.9px solid black;"><!----></td>  
+                              </tr>
+                              <tr>
+                                  <td></td>
+                                  <td style="text-align: center;">Name</td>
+                                  <td style="text-align: center;">Signature</td>
+                              </tr>
+                                                                  
+                              <tr>
+                                  <td style="width: 5cm">  Technician/Trainee: 
+                                  <td style="border-bottom: 0.9px solid black;" class="text-center"><?php echo $techni; ?></td>
+                                  <td style="border-bottom: 0.9px solid black;"></td>  
+                              </tr>
+                              <tr>
+                                  <td></td>
+                                  <td style="text-align: center;">Name</td>
+                                  <td style="text-align: center;">Signature</td>
+                              </tr>
+
+                              <tr>
+                                  <td style="width: 5cm">  Immediate Head 
+                                  <td style="border-bottom: 0.9px solid black;"><!--insert Admin name--></td>
+                                  <td style="border-bottom: 0.9px solid black;"><!--insert data--></td>  
+                              </tr>
+                              <tr>
+                                  <td></td>
+                                  <td style="text-align: center;">Name</td>
+                                  <td style="text-align: center;">Signature</td>
+                              </tr>
+                      </table>
+
+    </div> 
+
+    <div class="row">
+                  <div class="col">
+                     <br>
+                      <strong>RIZAL TECHNOLOGICAL UNIVERSITY<span style="margin-left: 200px;">Rev.1<span style="margin-left: 300px;">Oct 1, 2019</span></strong>
+                  </div>
+                </div>
+            </div>
+
+
+  </div>
+  
+  
+
+    <script> 
+
+      function hideText() {
+        var element = document.getElementById('content'); 
+        var opt = 
+        {
+          margin:       0,
+          filename:     'pageContent_tech'+'.pdf',
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2 },
+          jsPDF:        { unit: 'in', orientation: 'portrait' }
+        };
+
+			  html2pdf().set(opt).from(element).save();
+
+      }
+  
+    
+
+  </script>
   </body>
+ 
 </html>
