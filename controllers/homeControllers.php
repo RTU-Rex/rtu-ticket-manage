@@ -19,7 +19,7 @@ include "dbConnect.php";
         $prio = $_POST['priority'];
 
         $sql = "SELECT CASE WHEN Isnull(c.statusName) then 'Open' ELSE c.statusName END Stas,
-        a.title, a.description, a.name, IFNULL(e.IncidentName, 'Not Assigned') AS IncidentName, a.Id, f.priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
+        a.title, a.description, a.name, IFNULL(e.IncidentName, 'Not Assigned') AS IncidentName, a.Id, IFNULL(f.priorityName, 'Not Assigned') as priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
         d.firstName, d.lastName,
         CASE WHEN ISNULL(b.datemodified) then a.DateCreated else b.datemodified end lastUpdate
         FROM tblTicket a 
@@ -32,12 +32,13 @@ include "dbConnect.php";
         LEFT JOIN tblDepartment g on g.id = a.department
         WHERE NOT(CASE WHEN ISNULL(c.id) THEN 5 ELSE c.id END = 4) AND (CASE WHEN c.id = 1 THEN d.email ELSE 1 END) = '$user' AND  (CASE WHEN $prio = -1 THEN -1 ELSE IFNULL(a.priority,0) END ) = $prio;";
 
+
         $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) >= 1) {
         $value = array();
         $int = 0;
-        $badge_class = array('badge badge-danger', 'badge badge-warning', 'badge badge-info', 'badge badge-success');
+        $badge_class = array('','badge badge-danger', 'badge badge-warning', 'badge badge-info', 'badge badge-success');
 
         while ($row = mysqli_fetch_assoc($result)) {
         $prioId = $row['prioId'];
@@ -45,6 +46,8 @@ include "dbConnect.php";
         $badge_class_index = $prioId > 0 ? $prioId - 1 : 0;
         $priorityNameWithBadge = '<span class="badge ' . $badge_class[$badge_class_index] . '">' . $priorityName . '</span>';
         $technicianName = $row['firstName'] . ' ' . $row['lastName'];
+        $technicianName = empty($row['firstName']) && empty($row['lastName']) ? 'Not assigned' : $row['firstName'] . ' ' . $row['lastName'];
+
         
         $value[$int] =  array(
             "Id" => $row['Id'],
@@ -252,7 +255,7 @@ include "dbConnect.php";
         $ticketId = validate($_POST['ticketId']);
         $accessId = $_SESSION['accessId']; 
 
-        $sql = "SELECT a.Id, email, name, title, description, b.IncidentName, c.Office, a.DateCreated, 
+        $sql = "SELECT a.Id, email, name, title, description, IFNULL(b.IncidentName, 'Unassigned') AS IncidentName, c.Office, a.DateCreated, 
                 CASE 
                     WHEN a.dateModified IS NULL THEN a.DateCreated 
                     ELSE a.dateModified 

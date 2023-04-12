@@ -85,6 +85,7 @@
                         <div class="form-group">
                         <label for="txtpassword" class="font-weight-bold text-primary">Password</label>
                         <input type="password" class="form-control form-control-user" id="txtpassword">
+                        <input type="checkbox" id="showPassword"> Show Password <br>
                         <a href="#" onclick="forgetPass()" data-toggle="modal" data-target="#TicketModal" class="text-secondary small">Forgot password?</a>
                         </div>
                         <button id="login-btn" onclick="getUserDetails()" type="button" data-toggle="modal" data-target="#TicketModal" class="btn btn-primary btn-block">Login</button>
@@ -109,6 +110,15 @@
     <script src="js/sb-admin-2.min.js"></script>
 
     <script> 
+    $(document).ready(function(){
+    $('#showPassword').click(function(){
+        if($(this).is(':checked')){
+            $('#txtpassword').attr('type', 'text');
+        }else{
+            $('#txtpassword').attr('type', 'password');
+        }
+    });
+    });
        function getUserDetails() {
                 $('#divTitle').html("RTU Ticketing Message");
                 $.ajax({
@@ -247,7 +257,7 @@
            })
         } else {
           
-            $('#error').html("Please make sure new and confirm password is match and alteast 8 character");
+            $('#error').html("<div class='alert alert-danger'>Please make sure new and confirm password is match and alteast 8 character");
             $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button><button type='button' class='btn btn-warning' onClick='UpdatePass("+ ids +")' data-dismiss='modal'>Update</button>");
 
         }

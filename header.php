@@ -143,13 +143,46 @@ function Logout() {
 }
 
 function ResetPassword() {
-    $('#divTitle').html("RESET PASSWORD");
-        $('#divMessage').html("<div id='error'></div><div class='form-group'><input type='text' class='form-control form-control-user' id='txtCurrent' placeholder='CURRENT PASSWORD'></div>" +
-        "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtNewP' placeholder='NEW PASSWORD'></div>" +  
-        "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtConfrimP' placeholder='CONFIRM PASSWORD'></div>" );
+    $('#divTitle').html("Password Reset");
+        $('#divMessage').html("<h5 class='text-dark text-center'> Manage your password </h5>  <div class='container'><div id='error'></div><div class='form-group'>" + 
+        "Current Password<input type='password' class='form-control form-control-user' id='txtCurrent' placeholder='Enter your Current Password'>" +
+        "<input type='checkbox' id='showCurrentPassword'><small> Show Current Password </small></div>" +
+        "New Password<div class='form-group'><input type='password' class='form-control form-control-user' id='txtNewP' placeholder='Enter New Password'>" +
+        "<input type='checkbox' id='showNewPassword'> <small>Show new password </small></div>" +  
+        "Confirm Password<div class='form-group'><input type='password' class='form-control form-control-user' id='txtConfrimP' placeholder='Confirm Password'>"+
+        "<input type='checkbox' id='showConfirmPassword'> <small> Show confirm password</small> </div>"
+        );
         $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button><button type='button' class='btn btn-warning'  onclick='UpdatePass()' data-dismiss='modal'>Update</button>");
+        
+        $('#showCurrentPassword').click(function(){
+            if($(this).is(':checked')){
+                $('#txtCurrent').attr('type', 'text');
+            }else{
+                $('#txtCurrent').attr('type', 'password');
+            }
+        });
+
+        $('#showNewPassword').click(function(){
+            if($(this).is(':checked')){
+                $('#txtNewP').attr('type', 'text');
+            }else{
+                $('#txtNewP').attr('type', 'password');
+            }
+        });
+
+        $('#showConfirmPassword').click(function(){
+            if($(this).is(':checked')){
+                $('#txtConfrimP').attr('type', 'text');
+            }else{
+                $('#txtConfrimP').attr('type', 'password');
+            }
+        });
  }
- 
+
+
+   
+
+
 function CheckPass(CPassword) {
 
 var result = false;
@@ -206,7 +239,7 @@ var result = false;
       
         } else {
           
-            $('#error').html("Please make sure new and confirm password is match and alteast 8 character");
+            $('#error').html("<div class='alert alert-danger'>Please make sure new and confirm password is match and alteast 8 character");
             $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button><button type='button' class='btn btn-warning'  onclick='UpdatePass()' data-dismiss='modal'>Update</button>");
 
         }
