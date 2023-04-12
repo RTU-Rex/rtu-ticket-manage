@@ -245,6 +245,24 @@ var result = false;
 
    }
 
+   function formatDate(dateString) {
+      var date = new Date(dateString);
+      var dateFormat = { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric' 
+      };
+      var timeFormat = {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+      
+      };
+      var formattedDate = date.toLocaleString('en-US', dateFormat);
+      var formattedTime = date.toLocaleString('en-US', timeFormat);
+      return formattedDate + " at " + formattedTime;
+    }
+
    function ticketDashHeader(prio) {
     
     $.ajax({
