@@ -120,20 +120,18 @@ if(isset($_POST['Print'])){
   <script src="js/jquery-3.6.3.min.js"></script>  
   <script src="./dist/html2pdf.bundle.min.js"></script>
   <body>
-  <button class="btn btn-warning" id="cmd" onClick="hideText()">DOWNLOAD</button>
-
   <div id="content" class="container mx-auto"> 
     <div class="row">
-              <div class="col">
-                  <p>RTU-FA-MIC-F-004 RIZAL TECHNOLOGICAL UNIVERSITY</p>
+              <div class="col h6" style="margin-left: 2%;" >
+                  <strong><p>RTU-FA-MIC-F-004 <br> RIZAL TECHNOLOGICAL UNIVERSITY</p></strong>
               </div>
-              <div class="col text-right">
-                  <p>Control No.: <?php echo $id; ?> <!--Ticket Number--><p>
+              <div class="col text-right h5 " style="margin-right: 2%;">
+                  <strong><p>Control No.: <?php echo $id; ?> <!--Ticket Number--><p></strong>
               </div>
              
     </div>
-    <div class="text-center" class="row">  <strong><h5>Technical Service Report</h5><strong> </div>
-    <div class="row" style="margin-left: 1%; margin-right: 1%;"> 
+    <div class="text-center" class="row">  <strong><h2>TECHNICAL SERVICE REPORT</h2><strong> </div>
+    <div class="row" style="margin-left: 2%; margin-right: 2%;"> 
                 <table class="table table-bordered">
                   <tbody>
                       <colgroup>
@@ -158,49 +156,37 @@ if(isset($_POST['Print'])){
                     </tr>
                   </tbody>
                 </table>
-    </div>
+      </div>
 
+    <div class="row" style="margin-left: 2%; margin-right: 2%;"> 
     <table class="col d-flex justify-content-center align-items-center"><tr><?php echo $incident; ?></tr></table>
-    <div class="row" style="margin-left: 1%; margin-right: 1%;"> 
                   <table class="table table-bordered">
                     <tbody>
                       <tr>
                         <td style="width: 8.50cm">Reported Problem:</td>
-                        <td style="width: 8.50cm">Time:<!--insert time ticket was created--></td>
-                        <td tyle="width: 7.50cm">Date:<!--insert date ticket was created--></td>
+                        <td style="width: 8.50cm">Time: <?php echo $tCreate; ?> </td>
+                        <td tyle="width: 7.50cm">Date: <?php echo $dCreate; ?></td>
+                        <tr><td colspan ="3" style="height: 3.90cm"> <h4> <?php echo $title; ?></h4> <br><h5> <?php echo $description; ?></h5></td></tr>
                       </tr>
-                      <tr>
-                        <td style="height: 2.90cm"><p> <?php echo $title; ?>  </p> <p> <?php echo $description; ?>  </p> </td>
-                        <td style="height: 2.90cm"><p> <?php echo $tCreate; ?>  </p> </td>
-                        <td style="height: 2.90cm"><p> <?php echo $dCreate; ?>  </p> </td>
-                      </tr>
-                    </tbody>
-                  </table>
-    </div>
-    <div class="row" style="margin-left: 1%; margin-right: 1%;"> 
+    
                     <table class="table table-bordered">
                       <tbody>
                         <tr>
                           <td style="width: 8.50cm">Action Taken:</td>
-                          <td style="width: 8.50cm">Time:<!--insert timestamp --></td>
-                          <td tyle="width: 7.50cm">Date: <!--insert datestamp --></td>
-                        </tr>
-                        <tr> 
-                          <td style="height: 1.90cm"><p> <?php echo $message; ?>  </p></td>
-                          <td style="height: 1.90cm"><p> <?php echo $tStatus; ?>  </p> </td>
-                          <td style="height: 1.90cm"><p> <?php echo $dStatus; ?>  </p> </td> </tr>
+                          <td style="width: 8.50cm">Time: <?php echo $tStatus; ?></td>
+                          <td tyle="width: 7.50cm">Date: <?php echo $dStatus; ?> </td>
+                          <tr><td colspan ="3" style="height: 3.90cm"> <h4><?php echo $message; ?></h4> </td></tr>
                         </tr>
                       </tbody>
                     </table>
-    </div>
-
-    <div class="row" style="margin-left: 1%; margin-right: 1%;"> 
+   
+    
                   <table class="table table-bordered">
                     <tbody>
                       <tr>
                         <td style="width: 8.50cm">Recommendation:</td>
-                        <td style="width: 8.50cm">Time:<!--insert data--></td>
-                        <td tyle="width: 7.50cm">Date: <!--insert data--></td>
+                        <td style="width: 8.50cm">Time:<?php echo $tStatus; ?></td>
+                        <td tyle="width: 7.50cm">Date: <?php echo $dStatus; ?></td>
                       </tr>
                       <tr>
                         <td colspan="3" style="padding: 10px; height: 1.90cm;"> <?php echo $recommend; ?>
@@ -208,31 +194,25 @@ if(isset($_POST['Print'])){
                       </tr>
                     </tbody>
                   </table>   
-    </div>
-    <div class="row" style="margin-left: 1%; margin-right: 1%;"> 
+   
+    
                   <table class="table table-bordered">
                     <tbody>
                       <tr>
                         <td style="width: 8.50cm">Status:</td>
-                        <td style="width: 8.50cm">Time:<!--insert timestamp where the ticket was resolved--></td>
-                        <td tyle="width: 7.50cm">Date: <!--insert datestamp--></td>
-                      </tr>
-                      <tr>
-                        <td style="height: 1.90cm"><p> <?php echo $status; ?>  </p></td>
-                        <td style="height: 1.90cm"><p> <?php echo $tStatus; ?>  </p> </td>
-                        <td style="height: 1.90cm"><p> <?php echo $dStatus; ?>  </p> </td>
+                        <td style="width: 8.50cm">Time: <?php echo $tStatus; ?></td>
+                        <td tyle="width: 7.50cm">Date: <?php echo $dStatus; ?></td>
+                        <tr><td colspan ="3" style="height: 3.90cm"> <h4><?php echo $status; ?> </h4></td></tr>
                       </tr>
                     </tbody>
-                  </table>
+              
     
-    </div>
-   
+  
 
-    <div class="row" style="margin-left: 10%; margin-right: 10%;"> 
                         <table class="table border-0">
                               <tr>
-                                  <td style="width: 5cm">Client: 
-                                  <td style="border-bottom: 0.9px solid black;" class="text-center"><?php echo $rname; ?></td>
+                                  <td style="width: 10cm">Client: 
+                                  <td style="border-bottom: 0.9px solid black; padding-bottom: 0; margin-bottom: 0;" class="text-center"><h7 class="text-uppercase"><?php echo $rname; ?></h7></td>
                                   <td style="border-bottom: 0.9px solid black;"><!----></td>  
                               </tr>
                               <tr>
@@ -242,8 +222,8 @@ if(isset($_POST['Print'])){
                               </tr>
                                                                   
                               <tr>
-                                  <td style="width: 5cm">  Technician/Trainee: 
-                                  <td style="border-bottom: 0.9px solid black;" class="text-center"><?php echo $techni; ?></td>
+                                  <td style="width: 10cm">  Technician/Trainee: 
+                                  <td style="border-bottom: 0.9px solid black; padding-bottom: 0; margin-bottom: 0;" class="text-center"><h7 class="text-uppercase"><?php echo $techni; ?></h7></td>
                                   <td style="border-bottom: 0.9px solid black;"></td>  
                               </tr>
                               <tr>
@@ -253,7 +233,7 @@ if(isset($_POST['Print'])){
                               </tr>
 
                               <tr>
-                                  <td style="width: 5cm">  Immediate Head 
+                                  <td style="width: 10cm">  Immediate Head 
                                   <td style="border-bottom: 0.9px solid black;"><!--insert Admin name--></td>
                                   <td style="border-bottom: 0.9px solid black;"><!--insert data--></td>  
                               </tr>
@@ -263,42 +243,18 @@ if(isset($_POST['Print'])){
                                   <td style="text-align: center;">Signature</td>
                               </tr>
                       </table>
-
-    </div> 
-
-    <div class="row">
-                  <div class="col">
-                     <br>
-                      <strong>RIZAL TECHNOLOGICAL UNIVERSITY<span style="margin-left: 200px;">Rev.1<span style="margin-left: 300px;">Oct 1, 2019</span></strong>
-                  </div>
-                </div>
-            </div>
-
-
+                      </table>
   </div>
-  
-  
-
-    <script> 
-
-      function hideText() {
-        var element = document.getElementById('content'); 
-        var opt = 
-        {
-          margin:       0,
-          filename:     'pageContent_tech'+'.pdf',
-          image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2 },
-          jsPDF:        { unit: 'in', orientation: 'portrait' }
-        };
-
-			  html2pdf().set(opt).from(element).save();
-
-      }
-  
-    
-
-  </script>
+  <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col h6">
+                    <br><br><br><br>
+                    <tr><strong>RIZAL TECHNOLOGICAL UNIVERSITY<span style="margin-left: 200px;">Rev.1<span style="margin-left: 300px;">Oct 1, 2019</span></strong></tr>
+                </div>
+              </div>
+      </footer>
+  </div> 
   </body>
  
 </html>
