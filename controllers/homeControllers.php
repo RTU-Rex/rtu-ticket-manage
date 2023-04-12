@@ -221,7 +221,7 @@ include "dbConnect.php";
         $ticketId = validate($_POST['ticketId']);
         $sessionId = $_SESSION['id'];
 
-        $sql = "SELECT a.ticketMessage, c.email, b.statusName, c.name, a.dateModified, IFNULL(a.technicianId,0) technicianId ,  IFNULL(CONCAT(f.firstName,' ',f.lastName),'') as techName , IFNULL(CONCAT(e.accessName,'(', d.firstName,' ', d.lastName, ')'), 'REQUESTOR') AS Tech , IFNULL(a.modifiedFrom, CASE WHEN a.modifiedBy = $sessionId then 'User' else 'admin' end ) modifiedFrom
+        $sql = "SELECT a.ticketMessage, IFNULL(a.ticketStatus,0) ticketStatus ,IFNULL(recomend,0) recomend, IFNULL(recomendDes, '') recomendDes,c.email, b.statusName, c.name, a.dateModified, IFNULL(a.technicianId,0) technicianId ,  IFNULL(CONCAT(f.firstName,' ',f.lastName),'') as techName , IFNULL(CONCAT(e.accessName,'(', d.firstName,' ', d.lastName, ')'), 'REQUESTOR') AS Tech , IFNULL(a.modifiedFrom, CASE WHEN a.modifiedBy = $sessionId then 'User' else 'admin' end ) modifiedFrom
                 FROM tblTicketHistory a 
                 LEFT JOIN tblStatus b on a.ticketStatus = b.id 
                 LEFT JOIN tblTicket c on c.Id = a.ticketId 
@@ -241,6 +241,9 @@ include "dbConnect.php";
                                        "modifiedFrom" => $row['modifiedFrom'],
                                        "email" => $row['email'],
                                        "technicianId" => $row['technicianId'],
+                                       "recomend" => $row['recomend'],
+                                       "recomendDes" => $row['recomendDes'],
+                                       "ticketStatus" => $row['ticketStatus'],
                                        "techName" => $row['techName'],
                                        "Tech" => $row['Tech'] );
                                        

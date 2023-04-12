@@ -348,9 +348,20 @@
                     }
                 }
             });
-            
-            $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"+
+
+            if (statusId == 4) {  
+                $('#divTitle').html("RTU Ticketing Message");
+                $('#divMessage').html("<div class='alert alert-info' role='alert'>" +
+                "<i class='fas fa-info-circle'></i> The ticket you entered is <b>already close</b> please ask administartor to open again the ticket.</div>");
+                $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
+
+            } else {
+                $('#divButtons').html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"+
                                   "<button type='button' class='btn btn-warning' onclick='replyTicket("+ techid +","+ statusId +")' id='btnUpdate'>Reply</button>" );
+
+            }
+            
+         
 
                  
             }

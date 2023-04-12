@@ -133,7 +133,7 @@ function replyTicket(id, techId, access) {
       "<div id='error'> </div><div class='form-group'><h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Action Taken </b></h6>"+
       "<textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>" +
       "<div  class='form-group'><h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Status</b></h6>" +
-      "<select class='form-control form-control-user' id='cmbStatus'></select></div>" + "<hr>" +
+      "<select class='form-control form-control-user' onChange='enableR()' id='cmbStatus'></select></div>" + "<hr>" +
       "<div class='form-group'><h6 class='text-dark fs-5'><b>Recommendation</b></h6>" +
       "<select onChange='hideText()' class='form-control form-control-user' id='cmbRecomend'></select></div>" + 
       "<div id='divRecomend' class='form-group'><textarea class='form-control' rows='5' id='txtrDes' placeholder='Recommendation'></textarea></div>" + "<hr>" +
@@ -153,10 +153,23 @@ function replyTicket(id, techId, access) {
       $("#cmbStatus").empty();
       var cmbStatus = document.getElementById("cmbStatus");
       for (var i = 0; i < data.length; i++) {
-        var option = document.createElement("option");
-        option.text = data[i].name;
-        option.value = data[i].id;
-        cmbStatus.add(option);
+
+        if (access == 2) { 
+            if (data[i].id == 2 || data[i].id == 3) {
+              var option = document.createElement("option");
+              option.text = data[i].name;
+              option.value = data[i].id;
+              cmbStatus.add(option);
+            }
+
+        } else {
+          var option = document.createElement("option");
+          option.text = data[i].name;
+          option.value = data[i].id;
+          cmbStatus.add(option);
+
+        }
+       
       }
     },
     error: function (e) {
@@ -214,23 +227,101 @@ function replyTicket(id, techId, access) {
     }
   }
 
+  enableR();
+
+
   if (  $("#cmbRecomend").val() == 2) {
     var element = document.getElementById("divRecomend");
     element.style.visibility = "hidden";
   }
   
+
+  $.ajax({
+    async: false,
+    type: "POST",
+    url: "controllers/homeControllers.php",
+    data: { ticketId: id, getTicketsJourneyHistory: 1 },
+    success: function (data) {
+      data = JSON.parse(data);
+      for (var i = 0; i < data.length; i++) {
+        $("#txtdescription").val(data[i].ticketMessage)
+        $("#cmbStatus").val(data[i].ticketStatus) 
+        $("#cmbRecomend").val(data[i].recomend)
+        $("#txtrDes").val(data[i].recomendDes)
+        if ( (data[i].ticketStatus == 3 || data[i].ticketStatus == 4 ) && access == 2) {
+          var element = document.getElementById("cmbRecomend");
+          var elementtext = document.getElementById("txtrDes");
+          var elementtech = document.getElementById("cmbTech");
+          var elementAction = document.getElementById("cmbStatus");
+          var elementStatus = document.getElementById("txtdescription");
+          element.disabled = true;
+          elementtext.disabled = true;
+          elementtech.disabled = true;
+          elementAction.disabled = true;
+          elementStatus.disabled = true;
+
+          $("#divButtons").html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
+       } else if (data[i].ticketStatus == 4) {
+          var element = document.getElementById("cmbRecomend");
+          var elementtext = document.getElementById("txtrDes");
+          var elementtech = document.getElementById("cmbTech");
+          elementtext.disabled = true;
+          elementtech.disabled = true;
+          element.disabled = true;
+
+          $("#divButtons").html(
+            "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
+              "<button type='button' class='btn btn-warning' onclick='updateTech(" +
+              id +
+              "," +
+              techId +
+              "," +
+              access +
+              ")' id='btnUpdate'>Send</button>"
+          );
+
+       } else {
+
+        $("#divButtons").html(
+          "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
+            "<button type='button' class='btn btn-warning' onclick='updateTech(" +
+            id +
+            "," +
+            techId +
+            "," +
+            access +
+            ")' id='btnUpdate'>Send</button>"
+        );
+
+       }
+
+
+      }
+    },
+  });
+
+
+
+
+
  
 
-  $("#divButtons").html(
-    "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
-      "<button type='button' class='btn btn-warning' onclick='updateTech(" +
-      id +
-      "," +
-      techId +
-      "," +
-      access +
-      ")' id='btnUpdate'>Send</button>"
-  );
+ 
+}
+
+
+function enableR() {
+  var element = document.getElementById("cmbRecomend");
+  var elementtext = document.getElementById("txtrDes");
+  element.disabled = true;
+  elementtext.disabled = true;
+  if ( $("#cmbStatus").val() == 3) {
+        var element = document.getElementById("cmbRecomend");
+       var elementtext = document.getElementById("txtrDes");
+        element.disabled = false;
+        elementtext.disabled = false;
+  }
+
 }
 
 function hideText() {
