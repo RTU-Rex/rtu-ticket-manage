@@ -109,7 +109,7 @@ function viewTicket(id) {
         techid +
         ", " +
         access +
-        ")' id='btnUpdate'>Techincal Report</button> <form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> PRINT</button></form>"
+        ")' id='btnUpdate'>Technical Report</button> <form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> PRINT</button></form>"
     );
   } else {
     $("#divButtons").html(
@@ -128,13 +128,17 @@ function viewTicket(id) {
 }
 
 function replyTicket(id, techId, access) {
-  $("#divTitle").html("UPDATE TICKET");
+  $("#divTitle").html("Technical Report");
   $("#divMessage").html(
-    "<div id='error'> </div> <br><div class='form-group'><textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>" +
-      "<div  class='form-group'><select class='form-control form-control-user' id='cmbStatus'></select></div>" +
-      "<div id='divTech' class='form-group'><select class='form-control form-control-user' id='cmbTech'></select></div>" +
-      "<div class='form-group'><select onChange='hideText()' class='form-control form-control-user' id='cmbRecomend'></select></div>" + 
-      "<div id='divRecomend' class='form-group'><textarea class='form-control' rows='5' id='txtrDes' placeholder='Recommendation'></textarea></div>"
+      "<div id='error'> </div><div class='form-group'><h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Action Taken </b></h6>"+
+      "<textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>" +
+      "<div  class='form-group'><h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Status</b></h6>" +
+      "<select class='form-control form-control-user' id='cmbStatus'></select></div>" + "<hr>" +
+      "<div class='form-group'><h6 class='text-dark fs-5'><b>Recommendation</b></h6>" +
+      "<select onChange='hideText()' class='form-control form-control-user' id='cmbRecomend'></select></div>" + 
+      "<div id='divRecomend' class='form-group'><textarea class='form-control' rows='5' id='txtrDes' placeholder='Recommendation'></textarea></div>" + "<hr>" +
+      "<h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Assigned to: </b></h6>"+
+      "<div id='divTech' class='form-group'> <select class='form-control form-control-user' id='cmbTech'></select></div>" 
   );
 
   
@@ -205,8 +209,8 @@ function replyTicket(id, techId, access) {
   if (techId != 0) {
     $("#cmbTech").val(techId);
     if (access != 2) {
-      var element = document.getElementById("divTech");
-      element.style.visibility = "hidden";
+      var element = document.getElementById("cmbTech");
+      element.disabled = true;
     }
   }
 
@@ -334,7 +338,7 @@ function updateTech(id, techid, access) {
     });
     //location.reload();
   } else {
-    $('#error').html("Please Fill up the required fields");
+    $('#error').html("<div class='alert alert-danger'>Please fill out all required fields marked with an asterisk (*).</div>");
     $("#divButtons").html(
         "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
           "<button type='button' class='btn btn-warning' onclick='updateTech(" +

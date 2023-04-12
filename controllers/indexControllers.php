@@ -91,7 +91,11 @@ include "dbConnect.php";
 
     if(isset($_POST['getTicketsJourney'])){
         $ticketId = validate($_POST['ticketId']);
-        $sql = "SELECT a.Id, email, name, title, description, b.IncidentName, c.Office, a.DateCreated 
+        $sql = "SELECT a.Id, email, name, title, description, IFNULL(b.IncidentName, 'Unassigned') AS IncidentName, c.Office, a.DateCreated,
+                    CASE 
+                    WHEN a.dateModified IS NULL THEN a.DateCreated 
+                    ELSE a.dateModified 
+                END AS dateModified
                 FROM tblTicket a left join tblIncident b on a.incident = b.id 
                 left join tblDepartment c on a.department = c.id  WHERE a.Id = $ticketId ";
 		$result = mysqli_query($conn, $sql);
@@ -106,7 +110,9 @@ include "dbConnect.php";
                                         "description" => $row['description'],
                                         "IncidentName" => $row['IncidentName'],
                                         "Office" => $row['Office'],
-                                        "DateCreated" => $row['DateCreated'] );
+                                        "dateModified" => date('M d, Y h:i A', strtotime($row['dateModified'])),
+                                        "DateCreated" => $row['DateCreated'] 
+                                    );
                 $int = $int + 1;
             }           
             echo json_encode($value);

@@ -19,7 +19,7 @@ include "dbConnect.php";
         $prio = $_POST['priority'];
 
         $sql = "SELECT CASE WHEN Isnull(c.statusName) then 'Open' ELSE c.statusName END Stas,
-        a.title, a.description, a.name, e.IncidentName, a.Id, f.priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
+        a.title, a.description, a.name, IFNULL(e.IncidentName, 'Not Assigned') AS IncidentName, a.Id, f.priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
         d.firstName, d.lastName,
         CASE WHEN ISNULL(b.datemodified) then a.DateCreated else b.datemodified end lastUpdate
         FROM tblTicket a 
@@ -252,9 +252,16 @@ include "dbConnect.php";
         $ticketId = validate($_POST['ticketId']);
         $accessId = $_SESSION['accessId']; 
 
-        $sql = "SELECT a.Id, email, name, title, description, b.IncidentName, c.Office, a.DateCreated, a.dateModified
-                FROM tblTicket a left join tblIncident b on a.incident = b.id 
-                left join tblDepartment c on a.department = c.id  WHERE a.Id = $ticketId ";
+        $sql = "SELECT a.Id, email, name, title, description, b.IncidentName, c.Office, a.DateCreated, 
+                CASE 
+                    WHEN a.dateModified IS NULL THEN a.DateCreated 
+                    ELSE a.dateModified 
+                END AS dateModified
+        FROM tblTicket a 
+        LEFT JOIN tblIncident b ON a.incident = b.id 
+        LEFT JOIN tblDepartment c ON a.department = c.id  
+        WHERE a.Id = $ticketId";
+
 		$result = mysqli_query($conn, $sql);
     	if (mysqli_num_rows($result) >= 1) {
             $value = array();

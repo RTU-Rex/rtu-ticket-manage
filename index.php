@@ -58,11 +58,11 @@
             <h1 class="display-4">Welcome to Rizal Technological University Ticketing Management System</h1>
             <p class="lead">Your comprehensive solution for technical service requests and issue reporting. Our cutting-edge platform empowers you to submit your concerns with ease, enabling our team to respond promptly and efficiently. Whether you require assistance or have feedback to provide, we're here to help.</p>
             <form class="user">
-            <a href="login.html" id="btnNewTicket" class="btn btn-primary btn-user mb-3 text-white btn-block" data-toggle="modal" data-target="#TicketModal">Create Ticket</a>
+            <a id="btnNewTicket" class="btn btn-primary btn-user mb-3 text-white btn-block" data-toggle="modal" data-target="#TicketModal">Create Ticket</a>
                                         <div class="form-group">
                                             <div class="justify-content-center">
                                             <input type="text" class="form-control form-control-user mb-1 " id="txtTickNumber" placeholder="Enter Ticket Number to view ticket" required>
-                                            <a href="login.html" id="btnView" data-toggle="modal" data-target="#TicketModal" class="btn btn-primary btn-user btn-block text-white">View Ticket History</a>
+                                            <a id="btnView" data-toggle="modal" data-target="#TicketModal" class="btn btn-primary btn-user btn-block text-white">View Ticket History</a>
                                             </div>
                                             </div>
                 </form>
@@ -271,10 +271,26 @@
                     data = JSON.parse(data);
                     for (var i=0; i< data.length; i++ ) {
                         
-                        $('#divMessage').html("<div class='no-animation card shadow mb-4'> "+
-                                   "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-primary'>RTU sysTicket</h6></div>" +
-                                   "<div class='card-body'> Ticket Number: "+ data[i].id +" <br> Incident: "+ data[i].IncidentName +" <br> Title: "+ data[i].title +" <br> Description: "+ data[i].description +" <br> Requestor: "+ data[i].name +" ("+ data[i].email +") <br> Department: "+ data[i].Office + 
-                                   "<hr> <p class='mb-1'>"+ formatDate(data[i].DateCreated) +"</p></div></div>");
+                        $('#divMessage').html(
+                            "<div class='card shadow mb-4 no-animation'>" +
+                            "<div class='card-header py-3'>" +
+                            " <h5 class='m-0 font-weight-bold text-dark text-capitalize hover-danger'>"  +
+                            " <i class='fas fa-ticket-alt mr-2'></i>"  +
+                            " Ticket # "+ data[i].id + " - " + data[i].title + 
+                            " </h5>"  + "</div>" +
+                            "<div class='card-body'>"+
+                                "<small class='text-mute'>" +
+                                " Created: " + formatDate(data[i].DateCreated) +
+                                " by: " + "<b>" + data[i].name + "</b>" + " (" + data[i].email + ")" +
+                                " located at: " + "<b>" + data[i].Office + "</b>" + " , " + "Issue: " + "<b>" + data[i].IncidentName + "</b>" +
+                                "</small>" +  
+                                "<div class='email-container mt-3'>" +
+                                "<div class='text-dark'>" + data[i].description + "</div>" +
+                                "</div><hr><p class='mb-0 text-right'><small> Updated at: " +
+                                formatDate(data[i].dateModified) +
+                                "</p></hr>" +
+                            "</div>" +
+                            "</div>");
                     error = false;
                     }
                  
@@ -300,15 +316,31 @@
                     if (data.length > 0) {
                     for (var i=0; i< data.length; i++ ) {
                         if (data[i].modifiedFrom == "requestor") {
-                            document.getElementById("divMessage").innerHTML += "<div class='card no-animation shadow mb-4'> "+
-                                   "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-right text-warning'>"+ data[i].name +"</h6></div>" +
-                                   "<div class='card-body'>"+ data[i].ticketMessage +
-                                   "<hr> <p class='mb-1 text-right'>"+ data[i].dateModified +" - "+ data[i].statusName +"</p></div></div>";
+                            document.getElementById("divMessage").innerHTML +=
+                            "<div class='card shadow mb-4 no-animation'> " +
+                            "<div class='border-right-warning card-header py-3'><h6 class='m-0 font-weight-bold text-right text-warning'>" +
+                            data[i].name +
+                            "</h6></div>" +
+                            "<div class='card-body text-right text-dark'>" +
+                            data[i].ticketMessage +
+                            "<hr> <p class='mb-0 text-left'><small>" +
+                            formatDate(data[i].dateModified) +
+                            " - " + "<ins>" +
+                            data[i].statusName +
+                            "</p></div></div>";
                         } else {
-                            document.getElementById("divMessage").innerHTML += "<div class='card no-animation shadow mb-4'> "+
-                                   "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-left text-primary'>"+ data[i].Tech +"</h6></div>" +
-                                   "<div class='card-body'>"+ data[i].ticketMessage +
-                                   "<hr> <p class='mb-1 text-left'>"+ data[i].dateModified +" - "+ data[i].statusName +"</p></div></div>";
+                            document.getElementById("divMessage").innerHTML +=
+                            "<div class='card shadow mb-4 no-animation conversation-card mb-3'> " +
+                            "<div class='border-left-info  card-header py-3'><h6 class='m-0 font-weight-bold text-left text-info'>" +
+                            data[i].Tech +
+                            "</h6></div>" +
+                            "<div class='card-body card-text text-left text-dark'>" +
+                            data[i].ticketMessage +
+                            "<hr> <p class='mb-0 text-right'><small>" +
+                            formatDate(data[i].dateModified) +
+                            " - " + "<ins>" +
+                            data[i].statusName +
+                            "</p></div></div>";
                         }
                       techid = data[i].TechId;
                       statusId = data[i].statusId;
