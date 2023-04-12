@@ -22,9 +22,9 @@ function validate($data){
       $mail->Host = "smtp.gmail.com";
       $mail->Port = 465; // or 587
       $mail->IsHTML(true);
-      $mail->Username = "tonnorombaba@gmail.com";
-      $mail->Password = "fzawbetvoqzfgwgc";
-      $mail->SetFrom("tonnorombaba1@gmail.com");
+      $mail->Username = "2019-104146@rtu.edu.ph";
+      $mail->Password = "xgmjfgdyoouccokd";
+      $mail->SetFrom("2019-104146@rtu.edu.ph");
       $mail->Subject = $subject;
       $mail->Body = $content;
       $mail->AddAddress($recipient);
