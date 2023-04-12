@@ -306,7 +306,7 @@ function updateTech(id, techid, access) {
               "<br>Ticket is now resolved<br><h2><b>Ticket Number: " +
               id +
               "</b></h2><div style='padding-left: 3%;'>" +
-              "<table style='border: 1px solid black; width: 30%;'><tr><td>Techician</td><td>" +
+              "<table style='border: 1px solid black; width: 30%;'><tr><td>Technician</td><td>" +
               techName +
               "</td></tr><tr><td>Description</td><td>" +
               $("#txtdescription").val() +

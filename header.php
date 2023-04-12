@@ -100,12 +100,12 @@
 
                                 <button class="dropdown-item" data-toggle="modal" data-target="#TicketModal" onclick="ResetPassword()">
                                     <i class="fas fa-unlock-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    RESET PASSWORD
+                                    Manage Password
                                 </button>
                                 
                                 <button class="dropdown-item" onclick="Logout()">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    LOG OUT
+                                    Log-out
                                 </button>
                             </div>
                         </li>
