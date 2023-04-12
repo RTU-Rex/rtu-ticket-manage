@@ -256,7 +256,7 @@ include "dbConnect.php";
                 CASE 
                     WHEN a.dateModified IS NULL THEN a.DateCreated 
                     ELSE a.dateModified 
-                END AS dateModified
+                END AS dateModified, IFNULL(fileAttach,'0') fileAttach
         FROM tblTicket a 
         LEFT JOIN tblIncident b ON a.incident = b.id 
         LEFT JOIN tblDepartment c ON a.department = c.id  
@@ -267,6 +267,11 @@ include "dbConnect.php";
             $value = array();
             $int = 0;
             while ($row = mysqli_fetch_assoc($result)) {
+                $link = $row['fileAttach'];
+                $file = "";
+                if ( !($link == '0'))   {
+                    $file = "<br>File : <a target='_blank' href='./uploads/$link'>View Attached</a>";
+                }
                 $value[$int] =  array(  "id" => $row['Id'],
                                         "email" => $row['email'],
                                         "name" => $row['name'],
@@ -275,6 +280,7 @@ include "dbConnect.php";
                                         "IncidentName" => $row['IncidentName'],
                                         "Office" => $row['Office'],
                                         "access" => $accessId,
+                                        "file" => $file,
                                         "dateModified" => date('M d, Y h:i A', strtotime($row['dateModified'])),
                                         "DateCreated" => $row['DateCreated'] );
                 $int = $int + 1;

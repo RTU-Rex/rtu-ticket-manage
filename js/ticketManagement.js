@@ -26,7 +26,7 @@ function viewTicket(id) {
                 "<small class='text-mute'>" +
                   " Created: " + formatDate(data[i].DateCreated) +
                   " by: " + "<b>" + data[i].name + "</b>" + " (" + data[i].email + ")" +
-                  " located at: " + "<b>" + data[i].Office + "</b>" + " , " + "Issue: " + "<b>" + data[i].IncidentName + "</b>" +
+                  " located at: " + "<b>" + data[i].Office + "</b>" + " , " + "Issue: " + "<b>" + data[i].IncidentName + "</b> " +  data[i].file  +
                 "</small>" +  
                 "<div class='email-container mt-3'>" +
                   "<div class='text-dark'>" + data[i].description + "</div>" +
