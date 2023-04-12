@@ -22,6 +22,7 @@
     <link rel="shortcut icon" type="x-icon" href="../rtu-ticket-manage/img/rtulogo.png">
 
 </head>
+<script src ="js/ticketManagement.js"></script>
 <script src="js/jquery-3.6.3.min.js"></script>  
 <body id="page-top">
 
@@ -230,7 +231,7 @@ var result = false;
                             limit =  data.length;
                         }
                         for (var i=0; i < limit; i++ ) {
-                        document.getElementById("divmessagetick").innerHTML += " <a class='dropdown-item d-flex align-items-center' href='home.php'> " +
+                        document.getElementById("divmessagetick").innerHTML += " <a class='dropdown-item d-flex align-items-center' data-toggle='modal' data-target='#TicketModal' style='cursor: pointer' onClick='viewTicket("+ data[i].Id +")'> " +
                                                                                 "<div class='font-weight-bold'>" +
                                                                                 "<div class='text-truncate'> Ticket # "+ data[i].Id + " - " + data[i].title +" </div> " +
                                                                                 "<div class='small text-gray-500'>"+ data[i].name +" · "+ formatDate(data[i].lastUpdate) +"</div></div></a>"

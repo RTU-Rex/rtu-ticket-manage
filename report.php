@@ -5,7 +5,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
     include 'header.php';  
  ?>
 
-
+<?php include 'message.php' ?>
 
 
                 <!-- Begin Page Content -->

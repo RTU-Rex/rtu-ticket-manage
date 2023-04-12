@@ -244,7 +244,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
             });
     }
 
-        // May error dito, ayaw mag record sa database ng new ticket (refertoIndexController)
     function createTicket() {
         if (validateForm()) {
         $('#divTitle').html("Success"); 
