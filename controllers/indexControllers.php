@@ -42,6 +42,8 @@ include "dbConnect.php";
         }
     }
 
+    
+
     if(isset($_POST['getDept'])){
         $sql = "SELECT DISTINCT Department FROM tblDepartment WHERE 1;";
 		$result = mysqli_query($conn, $sql);
