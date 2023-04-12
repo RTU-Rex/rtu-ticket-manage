@@ -123,6 +123,7 @@
                 "<div class='form-group'><label class ='text-dark'>Category</label><select class='form-control' id='cmbIncident' required></select></div>" +
                 "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Office Under</label><select class='form-control ' onchange='getOffice()' id='cmbDepartment' required></select><small class='text-danger' style='display: none;'>Please select an office.</small></div>" +
                 "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Department</label><select class='form-control' id='cmbOffice' required></select></div>" +
+                "<div class='form-group'><label class ='text-dark'>Attachment</label><input class='form-control' id='fileupload' type='file' name='fileupload'/></div>" +
             "</div>" +
             "<div class='col-md-12'>" +
             "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Description</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Provide a detailed description of the issue you are experiencing.'required></textarea><small class='text-danger' id='txtdescription-error' style='display: none;'></small></div>" +
@@ -328,6 +329,7 @@
     function createTicket() {
         if (validateForm()) {
         $('#divTitle').html("RTU Ticketing Message"); 
+            uploadFile();
             $.ajax({
                 async: false,
                 type: "POST",
@@ -343,7 +345,7 @@
                     },
                     success: function(data) {
                     data = JSON.parse(data);
-                 
+                    uploadFile(data);
 
                     sendemail($('#txtEmail').val(),"RTU-Ticketing Management - Ticket Number:" + data,"<html><body>Hi "+ $('#txtEmpName').val() +"<br>You successfully created a ticket.<br><h2><b>Ticket Number: "+ data +"</b></h2><div style='padding-left: 3%;'>"+
                                                                               "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Category</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
@@ -378,6 +380,16 @@
                 } else {
                 $('#chkAgree').removeClass('is-invalid');
                 }
+    }
+
+    async function uploadFile(id) {
+        let formData = new FormData();           
+        formData.append("file", fileupload.files[0]);
+        formData.append("id",id);
+        await fetch('./upload.php', {
+          method: "POST", 
+          body: formData
+        });    
     }
 
     function createFeedback() {
