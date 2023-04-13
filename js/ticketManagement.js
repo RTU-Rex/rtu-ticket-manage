@@ -294,6 +294,14 @@ function replyTicket(id, techId, access) {
             elementtech.disabled = false;
             elementAction.disabled = false;
             elementStatus.disabled = false;
+          } else if (data[i].ticketStatus == 5) {
+            var elementtech = document.getElementById("cmbTech");
+            var elementAction = document.getElementById("cmbStatus");
+            var elementStatus = document.getElementById("txtdescription");
+            elementtech.disabled = false;
+            elementAction.disabled = false;
+            elementStatus.disabled = false;
+
           }
   
           $("#divButtons").html("<form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> Print</button></form>" +
