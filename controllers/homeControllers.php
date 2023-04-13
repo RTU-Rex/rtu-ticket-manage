@@ -251,6 +251,9 @@ include "dbConnect.php";
            }           
            echo json_encode($value);
          
+       } else {
+        echo json_encode("0");
+
        }
     }
 
