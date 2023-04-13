@@ -253,10 +253,9 @@ include "dbConnect.php";
                $int = $int + 1;
            }           
            echo json_encode($value);
-         
-       } else {
-        echo json_encode("0");
-
+        } else {
+            echo json_encode("0");
+    
        }
     }
 

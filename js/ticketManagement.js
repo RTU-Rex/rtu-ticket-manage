@@ -296,7 +296,7 @@ function replyTicket(id, techId, access) {
             elementStatus.disabled = false;
           }
   
-          $("#divButtons").html(
+          $("#divButtons").html("<form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> Print</button></form>" +
             "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
               "<button type='button' class='btn btn-warning' onclick='updateTech(" +
               id +
@@ -314,7 +314,7 @@ function replyTicket(id, techId, access) {
       } else {
 
       
-        $("#divButtons").html(
+        $("#divButtons").html("<form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> PRINT</button></form>" +
           "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
             "<button type='button' class='btn btn-warning' onclick='updateTech(" +
             id +
@@ -444,9 +444,8 @@ function updateTech(id, techid, access) {
           );
           $("#divMessage").html(data);
           $("#divButtons").html(
-            " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button> <form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> PRINT</button></form>"
+            " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
           );
-
         } else {
           $("#divMessage").html(data);
           $("#divButtons").html(
@@ -460,7 +459,6 @@ function updateTech(id, techid, access) {
         alert(e);
       },
     });
-    location.reload();
   } else {
     $('#error').html("<div class='alert alert-danger'>Please fill out all required fields marked with an asterisk (*).</div>");
     $("#divButtons").html(
@@ -474,6 +472,7 @@ function updateTech(id, techid, access) {
           ")' id='btnUpdate'>Send</button>"
       );
   }
+   location.reload();
 }
 
 function getOffice() {

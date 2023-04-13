@@ -31,7 +31,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                         <th class="sortable" >ACCESS<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                         <th class="sortable" >EMAIL<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                         <th class="sortable" >FIRST NAME<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
-                                        <th class="sortable" >>LAST NAME<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                        <th class="sortable" >LAST NAME<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                         <th class="sortable" >CONTACT NUMBER<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                         <th class="sortable" >STATUS<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                         <th class="sortable" >DATE CREATED<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
