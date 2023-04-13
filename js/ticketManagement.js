@@ -286,6 +286,15 @@ function replyTicket(id, techId, access) {
             );
   
          } else {
+
+          if (data[i].ticketStatus == 5  && access == 2) {
+            var elementtech = document.getElementById("cmbTech");
+            var elementAction = document.getElementById("cmbStatus");
+            var elementStatus = document.getElementById("txtdescription");
+            elementtech.disabled = false;
+            elementAction.disabled = false;
+            elementStatus.disabled = false;
+          }
   
           $("#divButtons").html(
             "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
@@ -303,6 +312,8 @@ function replyTicket(id, techId, access) {
   
         }
       } else {
+
+      
         $("#divButtons").html(
           "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
             "<button type='button' class='btn btn-warning' onclick='updateTech(" +
