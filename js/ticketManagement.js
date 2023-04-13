@@ -68,36 +68,40 @@ function viewTicket(id) {
     success: function (data) {
       console.log(data);
       data = JSON.parse(data);
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].modifiedFrom == "User") {
-          document.getElementById("divMessage").innerHTML +=
-            "<div class='card border-right-warning shadow mb-4 no-animation '> " +
-            "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-right text-warning'>" +
-            data[i].name +
-            "</h6></div>" +
-            "<div class='card-body text-right text-dark'>" +
-            data[i].ticketMessage +
-            "<hr> <p class='mb-0 text-left'><small>" +
-            formatDate(data[i].dateModified) +
-            " - " + "<ins>" +
-            data[i].statusName +
-            "</p></div></div>";
-        } else {
-          document.getElementById("divMessage").innerHTML +=
-            "<div class='card border-left-info shadow mb-4 no-animation conversation-card mb-3'> " +
-            "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-left text-info'>" +
-            data[i].Tech +
-            "</h6></div>" +
-            "<div class='card-body card-text text-left text-dark'>" +
-            data[i].ticketMessage +
-            "<hr> <p class='mb-0 text-right'><small>" +
-            formatDate(data[i].dateModified) +
-            " - " + "<ins>" +
-            data[i].statusName +
-            "</p></div></div>";
+      if ( data != 0) {
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].modifiedFrom == "User") {
+            document.getElementById("divMessage").innerHTML +=
+              "<div class='card border-right-warning shadow mb-4 no-animation '> " +
+              "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-right text-warning'>" +
+              data[i].name +
+              "</h6></div>" +
+              "<div class='card-body text-right text-dark'>" +
+              data[i].ticketMessage +
+              "<hr> <p class='mb-0 text-left'><small>" +
+              formatDate(data[i].dateModified) +
+              " - " + "<ins>" +
+              data[i].statusName +
+              "</p></div></div>";
+          } else {
+            document.getElementById("divMessage").innerHTML +=
+              "<div class='card border-left-info shadow mb-4 no-animation conversation-card mb-3'> " +
+              "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-left text-info'>" +
+              data[i].Tech +
+              "</h6></div>" +
+              "<div class='card-body card-text text-left text-dark'>" +
+              data[i].ticketMessage +
+              "<hr> <p class='mb-0 text-right'><small>" +
+              formatDate(data[i].dateModified) +
+              " - " + "<ins>" +
+              data[i].statusName +
+              "</p></div></div>";
+          }
+          techid = data[i].technicianId;
         }
-        techid = data[i].technicianId;
+
       }
+    
     },
   });
 
@@ -243,32 +247,46 @@ function replyTicket(id, techId, access) {
     data: { ticketId: id, getTicketsJourneyHistory: 1 },
     success: function (data) {
       data = JSON.parse(data);
-      for (var i = 0; i < data.length; i++) {
-        $("#txtdescription").val(data[i].ticketMessage)
-        $("#cmbStatus").val(data[i].ticketStatus) 
-        $("#cmbRecomend").val(data[i].recomend)
-        $("#txtrDes").val(data[i].recomendDes)
-        if ( (data[i].ticketStatus == 3 || data[i].ticketStatus == 4 ) && access == 2) {
-          var element = document.getElementById("cmbRecomend");
-          var elementtext = document.getElementById("txtrDes");
-          var elementtech = document.getElementById("cmbTech");
-          var elementAction = document.getElementById("cmbStatus");
-          var elementStatus = document.getElementById("txtdescription");
-          element.disabled = true;
-          elementtext.disabled = true;
-          elementtech.disabled = true;
-          elementAction.disabled = true;
-          elementStatus.disabled = true;
-
-          $("#divButtons").html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
-       } else if (data[i].ticketStatus == 4) {
-          var element = document.getElementById("cmbRecomend");
-          var elementtext = document.getElementById("txtrDes");
-          var elementtech = document.getElementById("cmbTech");
-          elementtext.disabled = true;
-          elementtech.disabled = true;
-          element.disabled = true;
-
+      if (data != 0) {
+        for (var i = 0; i < data.length; i++) {
+          $("#txtdescription").val(data[i].ticketMessage)
+          $("#cmbStatus").val(data[i].ticketStatus) 
+          $("#cmbRecomend").val(data[i].recomend)
+          $("#txtrDes").val(data[i].recomendDes)
+          if ( (data[i].ticketStatus == 3 || data[i].ticketStatus == 4 ) && access == 2) {
+            var element = document.getElementById("cmbRecomend");
+            var elementtext = document.getElementById("txtrDes");
+            var elementtech = document.getElementById("cmbTech");
+            var elementAction = document.getElementById("cmbStatus");
+            var elementStatus = document.getElementById("txtdescription");
+            element.disabled = true;
+            elementtext.disabled = true;
+            elementtech.disabled = true;
+            elementAction.disabled = true;
+            elementStatus.disabled = true;
+  
+            $("#divButtons").html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
+         } else if (data[i].ticketStatus == 4) {
+            var element = document.getElementById("cmbRecomend");
+            var elementtext = document.getElementById("txtrDes");
+            var elementtech = document.getElementById("cmbTech");
+            elementtext.disabled = true;
+            elementtech.disabled = true;
+            element.disabled = true;
+  
+            $("#divButtons").html(
+              "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
+                "<button type='button' class='btn btn-warning' onclick='updateTech(" +
+                id +
+                "," +
+                techId +
+                "," +
+                access +
+                ")' id='btnUpdate'>Send</button>"
+            );
+  
+         } else {
+  
           $("#divButtons").html(
             "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
               "<button type='button' class='btn btn-warning' onclick='updateTech(" +
@@ -279,9 +297,12 @@ function replyTicket(id, techId, access) {
               access +
               ")' id='btnUpdate'>Send</button>"
           );
-
-       } else {
-
+  
+         }
+  
+  
+        }
+      } else {
         $("#divButtons").html(
           "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
             "<button type='button' class='btn btn-warning' onclick='updateTech(" +
@@ -292,11 +313,9 @@ function replyTicket(id, techId, access) {
             access +
             ")' id='btnUpdate'>Send</button>"
         );
-
-       }
-
-
+        
       }
+   
     },
   });
 
@@ -385,11 +404,14 @@ function updateTech(id, techid, access) {
             success: function (data) {
               console.log(data);
               data = JSON.parse(data);
-              for (var i = 0; i < data.length; i++) {
-                techName = data[i].techName;
-                reqEmail = data[i].email;
-                rname = data[i].name;
+              if (data != 0) {
+                for (var i = 0; i < data.length; i++) {
+                  techName = data[i].techName;
+                  reqEmail = data[i].email;
+                  rname = data[i].name;
+                }
               }
+             
             },
           });
 
@@ -427,7 +449,7 @@ function updateTech(id, techid, access) {
         alert(e);
       },
     });
-    //location.reload();
+    location.reload();
   } else {
     $('#error').html("<div class='alert alert-danger'>Please fill out all required fields marked with an asterisk (*).</div>");
     $("#divButtons").html(
