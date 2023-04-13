@@ -201,9 +201,17 @@ include "dbConnect.php";
         $recommend = validate($_POST['recommend']);
         $dRecomend = validate($_POST['dRecomend']);
         $sessionId = $_SESSION['id'];
-       
-
-        $sql = "INSERT INTO tblTicketHistory 
+        $sql = "";
+        if ($cmbStatus == 5) {
+            $sql = "INSERT INTO tblTicketHistory 
+                            ( ticketId, 
+                              ticketStatus, 
+                              ticketMessage,
+                              modifiedBy,
+                              fileAttach, recomend, recomendDes) 
+                VALUES ($ticketId,$cmbStatus,'$txtdescription',$sessionId,'1',$recommend, '$dRecomend' );";
+        } else {
+            $sql = "INSERT INTO tblTicketHistory 
                             ( ticketId, 
                               ticketStatus, 
                               ticketMessage,
@@ -211,6 +219,8 @@ include "dbConnect.php";
                               modifiedBy,
                               fileAttach, recomend, recomendDes) 
                 VALUES ($ticketId,$cmbStatus,'$txtdescription',$tech,$sessionId,'1',$recommend, '$dRecomend' );";
+        }
+       
         if(mysqli_query($conn, $sql)) {
             $message = "You successfully updated ticket";
             echo json_encode($message);
