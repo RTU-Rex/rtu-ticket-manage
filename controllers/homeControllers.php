@@ -21,7 +21,10 @@ include "dbConnect.php";
         $sql = "SELECT CASE WHEN Isnull(c.statusName) then 'Open' ELSE c.statusName END Stas,
         a.title, a.description, a.name, IFNULL(e.IncidentName, 'Not Assigned') AS IncidentName, a.Id, IFNULL(f.priorityName, 'Not Assigned') as priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
         d.firstName, d.lastName,
-        CASE WHEN ISNULL(b.datemodified) then a.DateCreated else b.datemodified end lastUpdate
+        CASE 
+                    WHEN a.dateModified IS NULL THEN a.DateCreated 
+                    ELSE a.dateModified 
+                END AS dateModified
         FROM tblTicket a 
         LEFT JOIN  (SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
                     FROM `tblTicketHistory`) b on a.Id = b.ticketId and row_num = 1
@@ -38,7 +41,7 @@ include "dbConnect.php";
         if (mysqli_num_rows($result) >= 1) {
         $value = array();
         $int = 0;
-        $badge_class = array('','badge badge-danger', 'badge badge-warning', 'badge badge-info', 'badge badge-success');
+        $badge_class = array('badge badge-danger', 'badge badge-warning', 'badge badge-info', 'badge badge-success' );
 
         while ($row = mysqli_fetch_assoc($result)) {
         $prioId = $row['prioId'];
@@ -59,7 +62,7 @@ include "dbConnect.php";
             "Office" => $row['Office'],
             "priorityName" => $priorityNameWithBadge,
             "prioId" => $row['prioId'],
-            "lastUpdate" => $row['lastUpdate'],
+            "lastUpdate" => $row['dateModified'],
             "technicianName" => $technicianName
         );
         $int = $int + 1;

@@ -28,9 +28,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                 <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>DEPARTMENT</th>
-                                            <th>OFFICE</th>
+                                        <th class="sortable" >ID <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                        <th class="sortable" >DEPARTMENT <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                        <th class="sortable" >OFFICE <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                         </tr>
                                     </thead>
                                    
@@ -47,7 +47,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                           
                              while ($row = mysqli_fetch_assoc($result)) {
                                 echo '<tr><td><button class="btn btn-link" data-toggle="modal" data-target="#TicketModal" onClick="editOffice('.$row['Id'].')">'.$row['Id'].'</button></td>';
-                                echo '<td>'.$row['Department'].'</td>';
+                                echo '<td><b>'.$row['Department'].'</b></td>';
                                 echo '<td>'.$row['Office'].'</td></tr>';                                
                              }           
                           

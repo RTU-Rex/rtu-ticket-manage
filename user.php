@@ -27,14 +27,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                 <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>ACCESS</th>
-                                            <th>EMAIL</th>
-                                            <th>FIRST NAME</th>
-                                            <th>LAST NAME</th>
-                                            <th>CONTACT NUMBER</th>
-                                            <th>STATUS</th>
-                                            <th>DATE CREATED</th>
+                                        <th class="sortable" >ID<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                        <th class="sortable" >ACCESS<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                        <th class="sortable" >EMAIL<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                        <th class="sortable" >FIRST NAME<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                        <th class="sortable" >>LAST NAME<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                        <th class="sortable" >CONTACT NUMBER<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                        <th class="sortable" >STATUS<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                        <th class="sortable" >DATE CREATED<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                            
 
                                        
