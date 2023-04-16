@@ -52,24 +52,44 @@ include "dbConnect.php";
 		}
     }
 
-    if(isset($_POST['getReportSummary'])){
-        $sql = "SELECT MONTHNAME(DateCreated) as Months, COUNT(*) numbers
-                FROM tblTicket 
-                WHERE Year(DateCreated) = YEAR(NOW())
-                GROUP BY MONTHNAME(DateCreated);";
 
-		$result = mysqli_query($conn, $sql);
-    	if (mysqli_num_rows($result) >= 1) {
-            $value = array();
-            $int = 0;
-            while ($row = mysqli_fetch_assoc($result)) {
-                $value[$int] =  array("stas" => $row['Months'],"numbers" => $row['numbers'] );
-                $int = $int + 1;
-            }           
-            echo json_encode($value);
-          
-		}
-    }
+        if(isset($_POST['getReportSummary'])){
+            $reportType = $_POST['reportType'];
+
+            if ($reportType === 'daily') {
+                $sql = "SELECT DATE(DateCreated) AS Dates, COUNT(*) AS Numbers
+                FROM tblTicket
+                WHERE DateCreated BETWEEN DATE_SUB(NOW(), INTERVAL 1 DAY) AND NOW()
+                GROUP BY Dates;";
+            } else if ($reportType === 'weekly') {
+                $sql = "SELECT CONCAT('Week ', WEEK(DateCreated)) as Weeks, COUNT(*) as Numbers
+                FROM tblTicket 
+                WHERE DateCreated BETWEEN DATE_SUB(NOW(), INTERVAL 1 WEEK) AND NOW()
+                GROUP BY YEAR(DateCreated), MONTH(DateCreated), WEEK(DateCreated);";
+            } else if ($reportType === 'monthly') {
+                $sql = "SELECT MONTHNAME(DateCreated) as Months, COUNT(*) as Numbers
+                FROM tblTicket 
+                WHERE DateCreated BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()
+                GROUP BY MONTH(DateCreated);";        
+            } else if ($reportType === 'yearly') {
+                $sql = "SELECT YEAR(DateCreated) as Years, COUNT(*) as Numbers
+                FROM tblTicket 
+                WHERE DateCreated BETWEEN DATE_SUB(NOW(), INTERVAL 1 YEAR) AND NOW()
+                GROUP BY YEAR(DateCreated);";        
+            }
+            
+        
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) >= 1) {
+                $value = array();
+                $int = 0;
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $value[$int] = array("stas" => $row[array_keys($row)[0]], "numbers" => $row['Numbers']);
+                    $int++;
+                }           
+                echo json_encode($value);
+            }
+        }
   
 
 ?>

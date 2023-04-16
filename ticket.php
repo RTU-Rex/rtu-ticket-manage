@@ -34,7 +34,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                             <tr>
                                                 <th class="sortable" >TICKET <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                                 <th class="sortable">STATUS <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
-                                                <th class="sortable">TITLE <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                                <th class="sortable">DESCRIPTION <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                                 <th class="sortable">PRIORITY <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                                 <th class="sortable">OFFICE/DEPARTMENT <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                                 <th class="sortable">TECHNICIAN <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
@@ -53,7 +53,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                      }
                                     include "./controllers/dbConnect.php";   
                                      $sql = "SELECT CASE WHEN Isnull(b.technicianId) then 'Unassign' ELSE c.statusName END Stas,
-                                     a.title, e.IncidentName, a.Id, f.priorityName, g.Office,
+                                     a.title,description, e.IncidentName, a.Id, f.priorityName, g.Office,
                                      IFNULL(CONCAT(d.lastName,', ',d.firstName),'---') Assigned,
                                      a.name,
                                      CASE WHEN ISNULL(b.datemodified) then a.DateCreated else b.datemodified end lastUpdate
@@ -74,7 +74,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                              while ($row = mysqli_fetch_assoc($result)) {
                                 echo '<tr><td><b>'.$row['Id'].'</b></td>';
                                 echo '<td>'.$row['Stas'].'</td>';
-                                echo '<td data-toggle="modal" data-target="#TicketModal" class="text-primary text-capitalize" style="cursor: pointer" onClick="viewTicket('.$row['Id'].')"> <ins>'.$row['title'].'</ins> </td>';
+                                echo '<td data-toggle="modal" data-target="#TicketModal" class="text-primary text-capitalize" style="cursor: pointer" onClick="viewTicket('.$row['Id'].')"> <ins>'.$row['description'].'</ins> </td>';
                                 echo '<td>';
                                 if ($row['priorityName'] == 'Critical') {
                                     echo '<span class="badge badge-danger">'.$row['priorityName'].'</span>';

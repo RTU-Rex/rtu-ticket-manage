@@ -266,7 +266,7 @@ var result = false;
                         for (var i=0; i < limit; i++ ) {
                         document.getElementById("divmessagetick").innerHTML += " <a class='dropdown-item d-flex align-items-center' data-toggle='modal' data-target='#TicketModal' style='cursor: pointer' onClick='viewTicket("+ data[i].Id +")'> " +
                                                                                 "<div class='font-weight-bold'>" +
-                                                                                "<div class='text-truncate'> Ticket # "+ data[i].Id + " - " + data[i].title +" </div> " +
+                                                                                "<div class='text-truncate'> Ticket # "+ data[i].Id + " - " + data[i].description +" </div> " +
                                                                                 "<div class='small text-gray-500'>"+ data[i].name +" · "+ formatDate(data[i].lastUpdate) +"</div></div></a>"
                        } 
                        

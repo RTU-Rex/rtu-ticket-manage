@@ -10,42 +10,41 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
                 <div class="row">
-                    <div class="col"><h1 class="h3 mb-2 text-gray-800">REPORT</h1> </div>
-                    <div  class="col"> </div>
-
+                    <div class="col-md-8 mb-4">
+                        <h1 class="h3 mb-2 text-gray-800">Report</h1>
+                        <select id="reportType" class="form-control">
+                            <option value="daily" selected>Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
                 </div>
-
-        <br>
-                    <!-- Content Row -->
-                  
-
-                    <div class="card shadow mb-4 no-animation fade-up">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Ticket Summary</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-bar">
-                                        <canvas id="myBarChart"></canvas>
-                                    </div>
-                        
+                <div class="row">
+                    <div class="col-md-8 mb-4">
+                        <div class="card shadow mb-4 no-animation fade-up">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Ticket Summary</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-bar">
+                                    <canvas id="myBarChartI"></canvas>
                                 </div>
                             </div>
-
-
-                    <div class="card shadow mb-4 no-animation fade-up">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Ticket Status</h6>
-                                </div>
-                                <div id="divStatusReport" class="card-body">
-                                   
-                                </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow mb-4 no-animation fade-up">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Ticket Status</h6>
                             </div>
-
-                 
-
+                            <div id="divStatusReport" class="card-body"></div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
                 <!-- /.container-fluid -->
 
           
@@ -63,8 +62,87 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
     <script src="js/demo/chart-bar-demo.js"></script>
 
     <script> 
-  
-    $(document).ready(function() {
+            $(document).ready(function() {
+            $(document).ready(function() {
+             // Function to load the report summary
+            function loadReportSummary(reportType) {
+                $.ajax({
+                    type: "POST",
+                    url: "controllers/reportControllers.php",
+                    data: { getReportSummary: 1, reportType: reportType },
+                    success: function (data) {
+                        const name = [];
+                        const numbers = [];
+                        data = JSON.parse(data);
+                        for (var i = 0; i < data.length; i++) {
+                            name[i] = data[i].stas;
+                            numbers[i] = data[i].numbers;
+                        }
+
+                        var ctx = document.getElementById('myBarChartI').getContext('2d');
+
+                        var options = {
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Number of Tickets'
+                                    }
+                                }],
+                            }
+                        };
+
+
+                        var reportLabel = "";
+                        if (reportType === 'daily') {
+                            reportLabel = "Daily";
+                        } else if (reportType === 'weekly') {
+                            reportLabel = "Weekly";
+                        } else if (reportType === 'monthly') {
+                            reportLabel = "Monthly";
+                        } else if (reportType === 'yearly') {
+                            reportLabel = "Yearly";
+                        }
+
+                        var data = {
+                            labels: name,
+                            datasets: [{
+                                label: reportLabel,
+                                data: numbers,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        };
+
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: data,
+                            options: options
+                        });
+                    }
+                });
+            }
+
+    // Load the report summary for the selected report type
+    var reportType = $('#reportType').val();
+    loadReportSummary(reportType);
+
+    // Update the report summary when the report type is changed
+    $('#reportType').on('change', function() {
+        var reportType = $(this).val();
+        loadReportSummary(reportType);
+    });
+});
+
+
+
+
         $.ajax({
                async: false,
                type: "POST",
