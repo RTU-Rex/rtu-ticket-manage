@@ -18,7 +18,7 @@ if(isset($_POST['Print'])){
   $recommend = "";
 
 
-  $sql = "SELECT a.id, a.name, g.Office, e.IncidentName, a.title, a.description, 
+  $sql = "SELECT LPAD(a.id, 4, '0') AS id_formatted, a.name, g.Office, e.IncidentName, a.title, a.description, 
           DATE(a.DateCreated) as DateCreated, TIME(a.DateCreated) as TimeCreated, 
           b.ticketMessage, b.dateModified, 
           DATE(b.dateModified) as dateModified, TIME(b.dateModified) as timeModified, 
@@ -40,17 +40,20 @@ if(isset($_POST['Print'])){
       $rname = $row['name'] ;
       $office = $row['Office']; 
       
-      if ($row['IncidentName'] == "Hardware") {
-        $incident = "<td style='padding: 5px;'><input type='checkbox' checked> EDP </td><td style='padding: 5px;'><input type='checkbox' > Network Division </td><td style='padding: 5px;'><input type='checkbox' > Technical Division </td>";
-      } else if( $row['IncidentName'] == "Software") {
-        $incident = "<td style='padding: 5px;'><input type='checkbox'> EDP </td><td style='padding: 5px;'><input type='checkbox' checked> Network Division </td><td style='padding: 5px;'><input type='checkbox' > Technical Division </td>";
-      } else {
-        $incident = "<td style='padding: 5px;'><input type='checkbox'> EDP </td><td style='padding: 5px;'><input type='checkbox'> Network Division </td><td style='padding: 5px;'><input type='checkbox' checked> Technical Division </td>";
-      }
+     // if ($row['IncidentName'] == "Hardware") {
+     //   $incident = "<td style='padding: 5px;'><input type='checkbox' checked> EDP </td><td style='padding: 5px;'><input type='checkbox' > Network Division </td><td style='padding: 5px;'><input type='checkbox' > Technical Division </td>";
+     // } else if( $row['IncidentName'] == "Software") {
+       // $incident = "<td style='padding: 5px;'><input type='checkbox'> EDP </td><td style='padding: 5px;'><input type='checkbox' checked> Network Division </td><td style='padding: 5px;'><input type='checkbox' > Technical Division </td>";
+      //} else {
+      //  $incident = "<td style='padding: 5px;'><input type='checkbox'> EDP </td><td style='padding: 5px;'><input type='checkbox'> Network Division </td><td style='padding: 5px;'><input type='checkbox' checked> Technical Division </td>";
+     // }
+      $formattedid = $row['id_formatted'];
+      $incident = $row['IncidentName'];
       $title = $row['title']; 
       $description = $row['description']; 
       $dCreate = $row['DateCreated']; 
       $tCreate = $row['TimeCreated']; 
+      $cCreate = date('y-m', strtotime($row['DateCreated']));
       $message = $row['ticketMessage']; 
       $status = $row['statusName']; 
       $dStatus = $row['dateModified']; 
@@ -126,7 +129,7 @@ if(isset($_POST['Print'])){
                   <strong><p>RTU-FA-MIC-F-004 <br> RIZAL TECHNOLOGICAL UNIVERSITY</p></strong>
               </div>
               <div class="col text-right h5 " style="margin-right: 2%;">
-                  <strong><p>Control No.: <?php echo $id; ?> <!--Ticket Number--><p></strong>
+                  <strong><p>Control No.: <?php echo $cCreate;?>-<?php echo $formattedid; ?> </p></strong>
               </div>
              
     </div>
@@ -159,14 +162,14 @@ if(isset($_POST['Print'])){
       </div>
 
     <div class="row" style="margin-left: 2%; margin-right: 2%;"> 
-    <table class="col d-flex justify-content-center align-items-center"><tr><?php echo $incident; ?></tr></table>
+    <table class="col d-flex justify-content-center align-items-center"><tr><!-- <?php echo $incident; ?>--></tr></table>
                   <table class="table table-bordered">
                     <tbody>
                       <tr>
                         <td style="width: 8.50cm">Reported Problem:</td>
                         <td style="width: 8.50cm">Time: <?php echo $tCreate; ?> </td>
                         <td tyle="width: 7.50cm">Date: <?php echo $dCreate; ?></td>
-                        <tr><td colspan ="3" style="height: 3.90cm"> <h4> <?php echo $title; ?></h4> <br><h5> <?php echo $description; ?></h5></td></tr>
+                        <tr><td colspan ="3" style="height: 3.90cm"> <h4> <?php echo $incident; ?></h4> <h5> <?php echo $description; ?></h5></td></tr>
                       </tr>
     
                     <table class="table table-bordered">
