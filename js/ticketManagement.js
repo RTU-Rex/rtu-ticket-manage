@@ -20,13 +20,13 @@ function viewTicket(id) {
               "<div class='card-header py-3'>" +
               " <h5 class='m-0 font-weight-bold text-dark text-capitalize hover-danger'>"  +
               " <i class='fas fa-ticket-alt mr-2'></i>"  +
-              " Ticket # "+ data[i].id + " - " + data[i].title + 
+              " Ticket # "+ data[i].id + " - " + data[i].IncidentName + 
               " </h5>"  + "</div>" +
               "<div class='card-body'>"+
                 "<small class='text-mute'>" +
                   " Created: " + formatDate(data[i].DateCreated) +
                   " by: " + "<b>" + data[i].name + "</b>" + " (" + data[i].email + ")" +
-                  " located at: " + "<b>" + data[i].Office + "</b>" + " , " + "Issue: " + "<b>" + data[i].IncidentName + "</b> " +  data[i].file  +
+                  " located at: " + "<b>" + data[i].Office + "</b>" + data[i].file  +
                 "</small>" +  
                 "<div class='email-container mt-3'>" +
                   "<div class='text-dark'>" + data[i].description + "</div>" +
@@ -74,7 +74,7 @@ function viewTicket(id) {
             document.getElementById("divMessage").innerHTML +=
               "<div class='card border-right-warning shadow mb-4 no-animation '> " +
               "<div class='card-header py-3'><h6 class='m-0 font-weight-bold text-right text-warning'>" +
-              data[i].name +
+              data[i].Tech +
               "</h6></div>" +
               "<div class='card-body text-right text-dark'>" +
               data[i].ticketMessage +
@@ -113,7 +113,7 @@ function viewTicket(id) {
         techid +
         ", " +
         access +
-        ")' id='btnUpdate'>Technical Report</button> <form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> PRINT</button></form>"
+        ")' id='btnUpdate'>Technical Report</button>"
     );
   } else {
     $("#divButtons").html(
@@ -227,7 +227,7 @@ function replyTicket(id, techId, access) {
     $("#cmbTech").val(techId);
     if (access != 2) {
       var element = document.getElementById("cmbTech");
-      element.disabled = true;
+      element.disabled = false;
     }
   }
 
@@ -266,15 +266,8 @@ function replyTicket(id, techId, access) {
             elementStatus.disabled = true;
   
             $("#divButtons").html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
-         } else if (data[i].ticketStatus == 4) {
-            var element = document.getElementById("cmbRecomend");
-            var elementtext = document.getElementById("txtrDes");
-            var elementtech = document.getElementById("cmbTech");
-            elementtext.disabled = true;
-            elementtech.disabled = true;
-            element.disabled = true;
-  
-            $("#divButtons").html(
+         } else if (data[i].ticketStatus == 3 ||data[i].ticketStatus == 4) {
+            $("#divButtons").html("<form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> Print </button></form>" +
               "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
                 "<button type='button' class='btn btn-warning' onclick='updateTech(" +
                 id +
@@ -287,11 +280,11 @@ function replyTicket(id, techId, access) {
   
          } else {
 
-          if (data[i].ticketStatus == 5  && access == 2) {
+          if ((data[i].ticketStatus == 5 ||data[i].ticketStatus == 1)  && access == 2) {
             var elementtech = document.getElementById("cmbTech");
             var elementAction = document.getElementById("cmbStatus");
             var elementStatus = document.getElementById("txtdescription");
-            elementtech.disabled = false;
+            elementtech.disabled = true;
             elementAction.disabled = false;
             elementStatus.disabled = false;
           } else if (data[i].ticketStatus == 5) {
@@ -301,10 +294,9 @@ function replyTicket(id, techId, access) {
             elementtech.disabled = false;
             elementAction.disabled = false;
             elementStatus.disabled = false;
-
           }
   
-          $("#divButtons").html("<form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> Print</button></form>" +
+          $("#divButtons").html(
             "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
               "<button type='button' class='btn btn-warning' onclick='updateTech(" +
               id +
@@ -320,9 +312,8 @@ function replyTicket(id, techId, access) {
   
         }
       } else {
-
-      
-        $("#divButtons").html("<form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> PRINT</button></form>" +
+        
+        $("#divButtons").html(
           "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
             "<button type='button' class='btn btn-warning' onclick='updateTech(" +
             id +
@@ -512,49 +503,27 @@ function getOffice() {
 
 function updateTicketview(id) {
   $("#divTitle").html("<h4 class='text-dark text-center'><b> Ticket No " + id + " Form </b> </div> <br> </h4>");
-  $("#divMessage").html("<div class = 'text-danger' id='error'> </div>" +
+  $("#divMessage").html("<div class = 'text-danger' id='error'> </div>" +"<a href='#' id='edit-link'>Edit</a> | <a href='#' id='save-link'>Disable</a>" + "<h5> <b>Contact Information</b></h5>" + 
     "<div class='row'>" + "<br>" +
     "<div class='col-md-6'>" +
-    "<div class='form-group'>" +
-    "<label for='txtEmail'>Email Address</label>" +
-    "<input type='email' class='form-control form-control-user form-floating' id='txtEmail' placeholder='Email Address' disabled>" +
-    "</div>" +
-    "<div class='form-group'>" +
-    "<label for ='txtEmp'>Employee No.</label>" +
-    "<input type='text' class='form-control form-control-user form-floating' id='txtEmp' placeholder='Employee Number' disabled>" +
-    "</div>" +
-    "<div class='form-group'>" +
-    "<label for='txtEmpName'>Employee Name</label>" +
-    "<input type='text' class='form-control form-control-user form-floating' id='txtEmpName' placeholder='Complete Name'disabled>" +
-    "</div>" +
-    "<div class='form-group'>" +
-    "<label for='txtTitle'><span class='required-indicator'>*</span>Title</label>" +
-    "<input type='text' class='form-control form-control-user form-floating' id='txtTitle' placeholder='Title'>" +
-    "</div>" +
+    "<div class='form-group'><label class ='text-dark'>Email</label><input type='email' class='form-control' id='txtEmail' placeholder='Enter Email Address' disabled><small class='text-danger' id='txtEmail-error'></small></div>" +
+    "<div class='form-group'><label class ='text-dark'>Employee No. (ex. D-11-12-123)</label><input type='text' class='form-control' id='txtEmp' placeholder='Enter Employee Number' disabled><small class='text-danger' id='txtEmp-error'></small></div>" +
+    "<div class='form-group'><label class ='text-dark'>Employee Name</label><input type='text' class='form-control' id='txtEmpName' placeholder='Complete Name' disabled><small class='text-danger'></small></div>" +
     "</div>" +
     "<div class='col-md-6'>" +
-    "<div class='form-group'>" +
-    "<label for='cmbPrio'><span class='required-indicator'>*</span>Priority</label>" +
-    "<select class='form-control form-control-user form-floating' id='cmbPrio'></select>" +
-    "</div>" +
-    "<div class='form-group'>" +
-    "<label for='cmbIncident'><span class='required-indicator'>*</span>Category</label>" +
-    "<select class='form-control form-control-user form-floating' id='cmbIncident'></select>" +
-    "</div>" +
-    "<div class='form-group'>" +
-    "<label for='cmbDepartment'>Office Under: </label>" +
-    "<select class='form-control form-control-user form-floating' onchange='getOffice()' id='cmbDepartment'disabled></select>" +
-    "</div>" +
-    "<div class='form-group'>" +
-    "<label for='cmbOffice'>Office/Department</label>" +
-    "<select class='form-control form-control-user form-floating' id='cmbOffice'disabled></select>" +
-    "</div>" +
-    "</div>" +
-    "<div class='col-md-12'>" +
-    "<div class='form-group'>" +
-    "<label for='txtdescription'><span class='required-indicator'>*</span>Description</label>" +
-    "<textarea class='form-control form-floating' rows='5' id='txtdescription' placeholder='Description'></textarea>" +
-    "</div>"
+    "<div class='form-group'><label class ='text-dark'>Office Under</label><select class='form-control ' onchange='getOffice()' id='cmbDepartment' disabled></select><small class='office-error text-danger' style='display: none;'>Please select Office</small></div>" +
+    "<div class='form-group'><label class ='text-dark'>Department</label><select class='form-control' id='cmbOffice' disabled></select></div>" +
+    "<div class='form-group'><label class ='text-dark'>Title/Position</label><input type='text' class='form-control' id='txtTitle' placeholder='Position/Title' disabled></div>" + 
+    "</div>" + 
+    "<div class='col-md-12'>" + "<hr><h5> <b>Ticket Information</b> </h5>" + 
+            "<div class='form-group'>" +
+            "<label for='cmbPrio'><span class='required-indicator'>*</span>Priority</label>" +
+            "<select class='form-control form-control-user form-floating' id='cmbPrio'></select>" +
+            "</div>" +
+            "<div class='form-group'><label class ='text-dark'>Category of the issue</label><select class='form-control' id='cmbIncident' disabled></select></div>" +
+            "<div class='form-group'><label class ='text-dark'>Description of the issue</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Provide a detailed description of the issue you are experiencing.'disabled></textarea><small class='text-danger' id='txtdescription-error'></small></div>" +
+            "<div class='form-group'><label class ='text-dark'>Attachment</label> <input type='file' class='fileToUpload form-control' ></input><br></div>" +
+            "<div class='form-group'>"
   );
   
   $("#divButtons").html(
@@ -562,6 +531,31 @@ function updateTicketview(id) {
       id +
       ")' data-dismiss='modal'>Update</button>"
   );
+
+  document.getElementById('edit-link').addEventListener('click', function() {
+    // Enable the disabled fields
+    document.getElementById('txtEmail').disabled = false;
+    document.getElementById('txtEmp').disabled = false;
+    document.getElementById('txtEmpName').disabled = false;
+    document.getElementById('cmbDepartment').disabled = false;
+    document.getElementById('cmbOffice').disabled = false;
+    document.getElementById('txtTitle').disabled = false;
+    document.getElementById('txtdescription').disabled = false;
+    document.getElementById('cmbIncident').disabled = false;
+  });
+
+  document.getElementById('save-link').addEventListener('click', function() {
+    // Enable the disabled fields
+    document.getElementById('txtEmail').disabled = true;
+    document.getElementById('txtEmp').disabled = true;
+    document.getElementById('txtEmpName').disabled = true;
+    document.getElementById('cmbDepartment').disabled = true;
+    document.getElementById('cmbOffice').disabled = true;
+    document.getElementById('txtTitle').disabled = true;
+    document.getElementById('txtdescription').disabled = true;
+    document.getElementById('cmbIncident').disabled = true;
+  });
+
 
   $.ajax({
     async: false,
@@ -662,7 +656,7 @@ function updateTicket(id) {
   var title = $('#txtTitle').val()
   var desc = $('#txtdescription').val()
 
-  if (!((title == '') || (desc == ''))) {  
+  if (!((desc == ''))) {  
     $.ajax({
         async: false,
         type: "POST",

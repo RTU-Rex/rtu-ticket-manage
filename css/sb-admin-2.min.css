@@ -12668,6 +12668,7 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 /*Init*/
+/* Default styles */
 .accordeon-checkbox {
     display: none;
     border: 1px solid #ddd;
@@ -12685,26 +12686,56 @@ body.sidebar-toggled footer.sticky-footer {
     margin-left: 3px;
     margin-right: 2px;
     text-align: justify;
-    height: 0;
+    max-height: 0;
     overflow:hidden;
-    -webkit-transition: height 1s ease;
-    -moz-transition: height 1s ease;
-    -ms-transition: height 1s ease;
-    -o-transition: height 1s ease;
-    transition: height 1s ease;
+    -webkit-transition: max-height 1s ease;
+    -moz-transition: max-height 1s ease;
+    -ms-transition: max-height 1s ease;
+    -o-transition: max-height 1s ease;
+    transition: max-height 1s ease;
 }
 
-/*Click functionaliteit*/
 .accordeon:checked + label {
     background-color: #eee;
     cursor: pointer;
-    
 }
 
 .accordeon-checkbox:checked ~ .accordeon-content {
-    height: 100px;
-    display: block;
+    max-height: 100px;
+    overflow: auto;
 }
+
+/* Collapsible when unchecked */
+.accordeon-checkbox:not(:checked) ~ .accordeon-content {
+    max-height: 0;
+    overflow: hidden;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .accordeon-title-label {
+        padding: 5px;
+    }
+    
+    .accordeon-content {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .accordeon-title-label {
+        padding: 5px;
+    }
+    
+    .accordeon-content {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
 
 .card:hover {
     transform: scale(1.05);

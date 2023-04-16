@@ -267,7 +267,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 
                     sendemail($('#txtEmail').val(),"RTU-Ticketing Management - Ticket Number:" + data,"<html><body>Hi "+ $('#txtEmpName').val() +"<br>You successfully created a ticket.<br><h2><b>Ticket Number: "+ data +"</b></h2><div style='padding-left: 3%;'>"+
                                                                                 "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Incident</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
-                                                                                "<tr style='vertical-align: text-top;'><td>Title</td><td>"+ $('#txtTitle').val() +"</td></tr><tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
+                                                                                "<tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
                                                                               "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
                      
                     $('#divMessage').html("<div class='alert alert-info' role='alert'>" +
@@ -277,7 +277,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                       "<div><b>Office:</b> " + $('#cmbOffice option:selected').text() + "</div>" +
                                       "<div><b>Priority:</b> " + $('#cmbPrio option:selected').text() + "</div>" +
                                       "<div><b>Category:</b> " + $('#cmbIncident option:selected').text() + "</div>" +
-                                      "<div><b>Issue:</b> " + $('#txtTitle').val() + "</div>" +
                                       "<div><b>Date Created:</b> " + new Date().toLocaleString() + "</div>"); 
                 $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
 
@@ -299,7 +298,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                 const emailField = document.getElementById('txtEmail');
                 const email = emailField.value;
                 const emailErrorMessage = "Please enter a valid Email Address";
-                if (!email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email || !email.match(emailRegex)) {
                     emailField.classList.add('is-invalid');
                     document.getElementById('txtEmail-error').textContent = emailErrorMessage;
                     isValid = false;
@@ -310,8 +310,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 
                 const empField = document.getElementById('txtEmp');
                 const emp = empField.value;
-                const empRegex = /^\d{4}-\d{6}$/; // Match a 5-digit number
-                const empErrorMessage = "Please enter a valid employee number('YYYY-NNNNNN')";
+                const empRegex = /^[A-Za-z]-\d{2}-\d{2}-\d{3}$/; // Match a 5-digit number
+                const empErrorMessage = "Please enter a valid employee number";
                 if (!emp || !emp.match(empRegex)) {
                     empField.classList.add('is-invalid');
                     document.getElementById('txtEmp-error').textContent = empErrorMessage;
