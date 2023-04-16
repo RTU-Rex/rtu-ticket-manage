@@ -265,8 +265,11 @@ function replyTicket(id, techId, access) {
             elementAction.disabled = true;
             elementStatus.disabled = true;
   
-            $("#divButtons").html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
-         } else if (data[i].ticketStatus == 3 ||data[i].ticketStatus == 4) {
+          $("#divButtons").html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
+          
+         } else if (data[i].ticketStatus == 3) {
+          var elementStatus = document.getElementById("txtdescription");
+          elementStatus.disabled = true;
             $("#divButtons").html("<form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> Print </button></form>" +
               "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
                 "<button type='button' class='btn btn-warning' onclick='updateTech(" +
