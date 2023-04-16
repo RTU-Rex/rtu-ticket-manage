@@ -15,6 +15,7 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -29,7 +30,7 @@
             <div class="container">
                 <a class="navbar-brand text-white strong" href="index.php"><img src="../rtu-ticket-manage/img/rtulogo.png" class="img-fluid" alt="RTU Logo" style="max-width: 15%;"> Rizal Technological University</a>
                 <button id="home" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fa fa-bars"> </i>
+                <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
@@ -51,7 +52,7 @@
         </nav>
 
 
-    <div class="jumbotron jumbotron-fluid">
+    <div class="jumbotron jumbotron-fluid mt-5">
         <div class="container mt-5 fade-up">
         <div class="row">
             <div class="col-lg-8">
@@ -110,26 +111,28 @@
     $('#btnNewTicket').click(function(e) {   
 
         
-    $('#divTitle').html("Submit Ticket");
-    $('#divMessage').html("<p class='text-justify mb-4'>Use this form to submit a ticket for any IT-related issues you're experiencing. Please fill out all required fields marked with an asterisk (*).</p>" +
-        "<div class='row'>" + "<br>" +
+    $('#divTitle').html("<h4 class='text-dark'><b> Ticket Form </b> </div> <br> </h4>");
+    $('#divMessage').html("<h5> <b>Contact Information</b> </h5>" + 
+    "<p class='text-justify mb-4'> Please fill out all required fields marked with an asterisk (*).</p>" +
+        "<div class='row'>" + "<br>" + 
             "<div class='col-md-6'>" +
-                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Email</label><input type='email' class='form-control' id='txtEmail' placeholder='Enter Email Address' required><small class='text-danger' id='txtEmail-error' style='display: none;'></small></div>" +
-                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Employee No.</label><input type='text' class='form-control' id='txtEmp' placeholder='Enter Employee Number' required><small class='text-danger' id='txtEmp-error' style='display: none;'></small></div>" +
-                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Employee Name</label><input type='text' class='form-control' id='txtEmpName' placeholder='Complete Name' required><small class='text-danger' id='txtEmpName-error' style='display: none;'></small></div>" +
-                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Title</label><input type='text' class='form-control' id='txtTitle' placeholder='What is the major issue?' required><small class='text-danger' id='txtTitle-error' style='display: none;'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Email</label><input type='email' class='form-control' id='txtEmail' placeholder='Enter Email Address' required><small class='text-danger' id='txtEmail-error'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Employee No. (ex. D-11-12-123)</label><input type='text' class='form-control' id='txtEmp' placeholder='Enter Employee Number' required><small class='text-danger' id='txtEmp-error'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Employee Name</label><input type='text' class='form-control' id='txtEmpName' placeholder='Complete Name' required><small class='text-danger'></small></div>" +
             "</div>" +
             "<div class='col-md-6'>" +
-                "<div class='form-group'><label class ='text-dark'>Category</label><select class='form-control' id='cmbIncident' required></select></div>" +
-                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Office Under</label><select class='form-control ' onchange='getOffice()' id='cmbDepartment' required></select><small class='text-danger' style='display: none;'>Please select an office.</small></div>" +
+                "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Office Under</label><select class='form-control ' onchange='getOffice()' id='cmbDepartment' required></select><small class='office-error text-danger' style='display: none;'>Please select Office</small></div>" +
                 "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Department</label><select class='form-control' id='cmbOffice' required></select></div>" +
-                "<div class='form-group'><label class ='text-dark'>Attachment</label> <input type='file' class='fileToUpload form-control' ></input><br></div>" +
-            "</div>" +
-            "<div class='col-md-12'>" +
-            "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Description</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Provide a detailed description of the issue you are experiencing.'required></textarea><small class='text-danger' id='txtdescription-error' style='display: none;'></small></div>" +
+                "<div class='form-group'><label class ='text-dark'>Title/Position</label><input type='text' class='form-control' id='txtTitle' placeholder='Position/Title'></div>" + 
+            "</div>" + 
+            "<div class='col-md-12'>" + "<hr><h5> <b>Ticket Information</b> </h5>" + 
+            "<p class='text-justify mb-4'> Please fill out all required fields marked with an asterisk (*).</p>" + 
+            "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Category of the issue</label><select class='form-control' id='cmbIncident' required></select><small class='priority-error text-danger' style='display: none;'>Please select category</small></div>" +
+            "<div class='form-group'><label class ='text-dark'><span class='required-indicator'>*</span>Description of the issue</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Provide a detailed description of the issue you are experiencing.'required></textarea><small class='text-danger' id='txtdescription-error'></small></div>" +
+            "<div class='form-group'><label class ='text-dark'>Attachment</label> <input type='file' class='fileToUpload form-control' ></input><br></div>" +
             "<div class='form-group'>"+
             "<div class='form-check'>"+
-            " <input type='checkbox' class='form-check-input' id='chkAgree' required>"+
+            "<input type='checkbox' class='form-check-input' id='chkAgree' required>"+
             "<label class='form-check-label' for='chkAgree'>I confirm that the information provided is true and correct.</label>"+
             "<div class='invalid-feedback'>You must confirm that the information provided is true and correct.</div>"+
             "</div>"+
@@ -276,13 +279,13 @@
                             "<div class='card-header py-3'>" +
                             " <h5 class='m-0 font-weight-bold text-dark text-capitalize hover-danger'>"  +
                             " <i class='fas fa-ticket-alt mr-2'></i>"  +
-                            " Ticket # "+ data[i].id + " - " + data[i].title + 
+                            " Ticket # "+ data[i].id + " - " + data[i].IncidentName + 
                             " </h5>"  + "</div>" +
                             "<div class='card-body'>"+
                                 "<small class='text-mute'>" +
                                 " Created: " + formatDate(data[i].DateCreated) +
                                 " by: " + "<b>" + data[i].name + "</b>" + " (" + data[i].email + ")" +
-                                " located at: " + "<b>" + data[i].Office + "</b>" + " , " + "Issue: " + "<b>" + data[i].IncidentName + "</b>" +
+                                " located at: " + "<b>" + data[i].Office + "</b>" + 
                                 "</small>" +  
                                 "<div class='email-container mt-3'>" +
                                 "<div class='text-dark'>" + data[i].description + "</div>" +
@@ -391,8 +394,8 @@
                     uploadfile(data);
 
                     sendemail($('#txtEmail').val(),"RTU-Ticketing Management - Ticket Number:" + data,"<html><body>Hi "+ $('#txtEmpName').val() +"<br>You successfully created a ticket.<br><h2><b>Ticket Number: "+ data +"</b></h2><div style='padding-left: 3%;'>"+
-                                                                              "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Category</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
-                                                                           "<tr style='vertical-align: text-top;'><td>Title</td><td>"+ $('#txtTitle').val() +"</td></tr><tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
+                                                                               "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Category</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
+                                                                               "<tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
                                                                                "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
 
                    
@@ -402,7 +405,6 @@
                                       "<div><b>Requestor's Name:</b> " + $('#txtEmpName').val() + "</div>" +
                                       "<div><b>Office:</b> " + $('#cmbOffice option:selected').text() + "</div>" +
                                       "<div><b>Category:</b> " + $('#cmbIncident option:selected').text() + "</div>" +
-                                      "<div><b>Issue:</b> " + $('#txtTitle').val() + "</div>" +
                                       "<div><b>Date Created:</b> " + new Date().toLocaleString() + "</div>"); 
                 $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
 
@@ -417,12 +419,6 @@
                                             "  <button type='button' class='btn btn-warning' onclick='createTicket()' id='btnSubmit'>Submit</button>");
 
                     }
-                    if (!$('#chkAgree').is(':checked')) {
-                $('#chkAgree').addClass('is-invalid');
-                return;
-                } else {
-                $('#chkAgree').removeClass('is-invalid');
-                }
     }
 
     function uploadfile(id){
@@ -545,82 +541,65 @@
             })
     }
 
-                function validateForm() {
-                let isValid = true;
+    function validateForm() {
+                    let isValid = true;
 
-            
-                const emailField = document.getElementById('txtEmail');
-                const email = emailField.value;
-                const emailErrorMessage = "Please enter a valid Email Address";
-                if (!email) {
-                    emailField.classList.add('is-invalid');
-                    document.getElementById('txtEmail-error').textContent = emailErrorMessage;
-                    isValid = false;
-                } else {
-                    emailField.classList.remove('is-invalid');
-                    document.getElementById('txtEmail-error').textContent = '';
-                }
+                    const emailField = document.getElementById('txtEmail');
+                    const empField = document.getElementById('txtEmp');
+                    const empNameField = document.getElementById('txtEmpName');
+                    const descField = document.getElementById('txtdescription');
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-                const empField = document.getElementById('txtEmp');
-                const emp = empField.value;
-                const empRegex = /^\d{4}-\d{6}$/; // Match a 5-digit number
-                const empErrorMessage = "Please enter a valid employee number('YYYY-NNNNNN')";
-                if (!emp || !emp.match(empRegex)) {
-                    empField.classList.add('is-invalid');
-                    document.getElementById('txtEmp-error').textContent = empErrorMessage;
-                    isValid = false;
-                } else {
-                    empField.classList.remove('is-invalid');
-                    document.getElementById('txtEmp-error').textContent = '';
-                }
-                
-                const empNameField = document.getElementById('txtEmpName');
-                const empName = empNameField.value;
-                const empNameErrorMessage = "Please enter your name";
-                if (!empName) {
-                    empNameField.classList.add('is-invalid');
-                    document.getElementById('txtEmpName-error').textContent = empNameErrorMessage;
-                    isValid = false;
-                } else {
-                    empNameField.classList.remove('is-invalid');
-                    document.getElementById('txtEmpName-error').textContent = '';
-                }
+                    setError(emailField, !emailField.value.match(emailRegex), '', 'Please enter a valid email address');
+                    setError(empField, !empField.value.match(/^[A-Za-z]-\d{2}-\d{2}-\d{3}$/), '', 'Please enter a valid employee number');
+                    setError(empNameField, !empNameField.value, '', 'Please enter your name');
+                    setError(descField, !descField.value, '', 'Please enter a brief description of your issue');
 
-                const titleNameField = document.getElementById('txtTitle');
-                const titleName = titleNameField.value;
-                const titleErrorMessage = "Please enter the issue title";
-                if (!titleName) {
-                    titleNameField.classList.add('is-invalid');
-                    document.getElementById('txtTitle-error').textContent = titleErrorMessage;
-                    isValid = false;
-                } else {
-                    titleNameField.classList.remove('is-invalid');
-                    document.getElementById('txtTitle-error').textContent = '';
-                }
-
-                const descField = document.getElementById('txtdescription');
-                const txtdescription = descField.value;
-                const descriptionErrorMessage = "Please a brief description of your issue";
-                if (!txtdescription) {
-                    descField.classList.add('is-invalid');
-                    document.getElementById('txtdescription-error').textContent = descriptionErrorMessage;
-                    isValid = false;
-                } else {
-                    descField.classList.remove('is-invalid');
-                    document.getElementById('txtdescription-error').textContent = '';
-                }
+                    function setError(field, condition, successMessage, errorMessage) {
+                        if (condition) {
+                        field.classList.add('is-invalid');
+                        field.classList.remove('is-valid');
+                        field.nextElementSibling.textContent = errorMessage;
+                        isValid = false;
+                        } else {
+                        field.classList.remove('is-invalid');
+                        field.classList.add('is-valid');
+                        field.nextElementSibling.textContent = successMessage;
+                        }
+                    }
 
                 var selectedOffice = $("#cmbOffice").val(); // get the selected office
                     if (!selectedOffice) { // if no office is selected
-                        $(".text-danger").show(); // show error message
+                        $("#cmbDepartment").addClass("is-invalid");
+                        $(".office-error").show(); // show error message
                         isValid = false;
                         event.preventDefault(); // prevent form submission
                     } else {
-                        $(".text-danger").hide(); // hide error message
+                        $("#cmbDepartment").removeClass("is-invalid").addClass('is-valid');
+                        $(".office-error").hide(); // hide error message.
                     }
-                    
+
+                 var aspriority = $("#cmbIncident").val();
+                    if (aspriority == "0") {
+                        $("#cmbIncident").addClass("is-invalid");
+                        $(".priority-error").show();
+                        isValid = false;
+                        event.preventDefault();
+                        } else {
+                        $("#cmbIncident").removeClass("is-invalid").addClass('is-valid');
+                        $(".priority-error").hide();
+                        }
+
+                    if (!$('#chkAgree').is(':checked')) {
+                        $('#chkAgree').addClass('is-invalid');
+                        return;
+                        } else {
+                        $('#chkAgree').removeClass('is-invalid');
+                        }
+
                     return isValid;
-                }
+          
+        }
 
             function sendemail(recipient,subject,content) {
             $.ajax({
