@@ -174,7 +174,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                                     " <div class='col'>"  +
                                                     " <h5 class='m-0 font-weight-bold text-dark text-capitalize hover-danger'>"  +
                                                     " <i class='fas fa-ticket-alt mr-2'></i>"  +
-                                                    " Ticket # "+ data[i].Id + " - " + data[i].title + 
+                                                    " Ticket # "+ data[i].Id + " - " + data[i].IncidentName +
                                                     " </h5>"  +
                                                     "</div>"  +
                                                     "<div class='col-auto'>"  +
@@ -186,7 +186,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                                     "<b>Requestor's Name:</b> "+ data[i].name +"<br>"+
                                                     "<b>Office/Department:</b> "+ data[i].Office +"<br>" +
                                                     "<b>Priority: </b>" + data[i].priorityName +
-                                                    "<br><b> Category:</b> "+ data[i].IncidentName +
+                                                    "<br><b> Description:</b> "+ data[i].description +
                                                     "<br><b> Assigned to:</b> "+ data[i].technicianName +
                                                     "<hr> <small class='mb-1'> Last udpate: "+ formatDate(data[i].lastUpdate) +
                                                     "</div>"+
