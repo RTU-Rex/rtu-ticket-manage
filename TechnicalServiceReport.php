@@ -16,12 +16,14 @@ if(isset($_POST['Print'])){
   $dStatus = "";
   $techni = "";
   $recommend = "";
-
+  $serial_number = "";
+  $property_number = "";
 
   $sql = "SELECT LPAD(a.id, 4, '0') AS id_formatted, a.name, g.Office, e.IncidentName, a.title, a.description, 
           DATE(a.DateCreated) as DateCreated, TIME(a.DateCreated) as TimeCreated, 
           b.ticketMessage, b.dateModified, 
           DATE(b.dateModified) as dateModified, TIME(b.dateModified) as timeModified, 
+          b.serial_number, b.property_number, 
           c.statusName, concat( d.firstName,' ', d.lastName ) Technician , b.recomend, b.recomendDes
   FROM tblTicket a 
   LEFT JOIN  (SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
@@ -40,15 +42,17 @@ if(isset($_POST['Print'])){
       $rname = $row['name'] ;
       $office = $row['Office']; 
       
-     // if ($row['IncidentName'] == "Hardware") {
-     //   $incident = "<td style='padding: 5px;'><input type='checkbox' checked> EDP </td><td style='padding: 5px;'><input type='checkbox' > Network Division </td><td style='padding: 5px;'><input type='checkbox' > Technical Division </td>";
-     // } else if( $row['IncidentName'] == "Software") {
-       // $incident = "<td style='padding: 5px;'><input type='checkbox'> EDP </td><td style='padding: 5px;'><input type='checkbox' checked> Network Division </td><td style='padding: 5px;'><input type='checkbox' > Technical Division </td>";
-      //} else {
-      //  $incident = "<td style='padding: 5px;'><input type='checkbox'> EDP </td><td style='padding: 5px;'><input type='checkbox'> Network Division </td><td style='padding: 5px;'><input type='checkbox' checked> Technical Division </td>";
-     // }
-      $formattedid = $row['id_formatted'];
-      $incident = $row['IncidentName'];
+     if ($row['IncidentName'] == "Hardware") {
+     $incident = "<td style='padding: 5px;'><input type='checkbox'> EDP </td><td style='padding: 5px;'><input type='checkbox' > Network Division </td><td style='padding: 5px;'><input type='checkbox' checked> Technical Division </td>";
+     } else if( $row['IncidentName'] == "Software") {
+      $incident = "<td style='padding: 5px;'><input type='checkbox'> EDP </td><td style='padding: 5px;'><input type='checkbox'> Network Division </td><td style='padding: 5px;'><input type='checkbox' checked> Technical Division </td>";
+      } else {
+      $incident = "<td style='padding: 5px;'><input type='checkbox'> EDP </td><td style='padding: 5px;'><input type='checkbox'checked> Network Division </td><td style='padding: 5px;'><input type='checkbox'> Technical Division </td>";
+     }
+     
+      $serial_number = $row['serial_number'];
+      $property_number = $row['property_number'];
+      $inci = $row['IncidentName'];
       $title = $row['title']; 
       $description = $row['description']; 
       $dCreate = $row['DateCreated']; 
@@ -59,6 +63,8 @@ if(isset($_POST['Print'])){
       $dStatus = $row['dateModified']; 
       $tStatus = $row['timeModified']; 
       $techni =  $row['Technician']; 
+      $formattedid = $row['id_formatted'];
+
       if ($row['recomend'] == 1) {
         $recommend  = "<input type='checkbox' name='partreplacement' value='1' checked> Parts Replacement (Specify):  ". $row['recomendDes'] ." <br> <input type='checkbox' name='unservicable' value='2'> Unserviceable / To Be Surrendered <br> <input type='checkbox' name='others' value='3'> Others (Specify) : ";
       } else if ($row['recomend'] == 2) {
@@ -151,25 +157,28 @@ if(isset($_POST['Print'])){
                     </tr>
                     <tr>
                       <td>Serial Number:</td>
-                      <td><!--None--></td>
+                      <td><?php echo $serial_number; ?></td>
                     </tr>
                     <tr>
                       <td>Property Number:</td>
-                      <td><!--None--></td>
+                      <td><?php echo $property_number; ?></td>
                     </tr>
                   </tbody>
                 </table>
       </div>
 
     <div class="row" style="margin-left: 2%; margin-right: 2%;"> 
-    <table class="col d-flex justify-content-center align-items-center"><tr><!-- <?php echo $incident; ?>--></tr></table>
+    <table class="col d-flex justify-content-center align-items-center">
+      <tr> 
+        <?php echo $incident; ?> 
+      </tr>
                   <table class="table table-bordered">
                     <tbody>
                       <tr>
                         <td style="width: 8.50cm">Reported Problem:</td>
                         <td style="width: 8.50cm">Time: <?php echo $tCreate; ?> </td>
                         <td tyle="width: 7.50cm">Date: <?php echo $dCreate; ?></td>
-                        <tr><td colspan ="3" style="height: 3.90cm"> <h4> <?php echo $incident; ?></h4> <h5> <?php echo $description; ?></h5></td></tr>
+                        <tr><td colspan ="3" style="height: 3.90cm"> <h4> <?php echo $inci; ?></h4> <h5> <?php echo $description; ?></h5></td></tr>
                       </tr>
     
                     <table class="table table-bordered">

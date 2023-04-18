@@ -134,9 +134,14 @@ function viewTicket(id) {
 function replyTicket(id, techId, access) {
   $("#divTitle").html("Technical Report");
   $("#divMessage").html(
-      "<div id='error'> </div><div class='form-group'><h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Action Taken </b></h6>"+
+      "<div id='error'> </div>" + "<div class='row'>" +
+      "<div class='col-md-6'><div class='form-group'><h6 class='text-dark fs-5'><b>Serial Number </b></h6> "+
+      "<input type='text' class='form-control' id='txtSerialNumber' placeholder='Serial Number'></div></div>" +
+      "<div class='col-md-6'><div class='form-group'><h6 class='text-dark fs-5'><b>Property Number </b></h6>"+
+      "<input type='text' class='form-control' id='txtPropertyNumber' placeholder='Property Number'></div></div></div>" +
+      "<div class='form-group'><hr><h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Action Taken </b></h6>"+
       "<textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>" +
-      "<div  class='form-group'><h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Status</b></h6>" +
+      "<div class='form-group'><h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Status</b></h6>" +
       "<select class='form-control form-control-user' onChange='enableR()' id='cmbStatus'></select></div>" + "<hr>" +
       "<div class='form-group'><h6 class='text-dark fs-5'><b>Recommendation</b></h6>" +
       "<select onChange='hideText()' class='form-control form-control-user' id='cmbRecomend'></select></div>" + 
@@ -144,8 +149,6 @@ function replyTicket(id, techId, access) {
       "<h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Assigned to: </b></h6>"+
       "<div id='divTech' class='form-group'> <select class='form-control form-control-user' id='cmbTech'></select></div>" 
   );
-
-  
 
   $.ajax({
     async: false,
@@ -253,22 +256,33 @@ function replyTicket(id, techId, access) {
           $("#cmbStatus").val(data[i].ticketStatus) 
           $("#cmbRecomend").val(data[i].recomend)
           $("#txtrDes").val(data[i].recomendDes)
+          $("#txtPropertyNumber").val(data[i].property_number)
+          $("#txtSerialNumber").val(data[i].serial_number)
+          
           if ( (data[i].ticketStatus == 3 || data[i].ticketStatus == 4 ) && access == 2) {
             var element = document.getElementById("cmbRecomend");
             var elementtext = document.getElementById("txtrDes");
             var elementtech = document.getElementById("cmbTech");
             var elementAction = document.getElementById("cmbStatus");
-            var elementStatus = document.getElementById("txtdescription");
+            var elementStatus = document.getElementById("txtserialNumber");
+            var elementProperty = document.getElementById("txtPropertyNumber");
+            var elementSerial = document.getElementById("txtSerialNumber");
             element.disabled = true;
             elementtext.disabled = true;
             elementtech.disabled = true;
             elementAction.disabled = true;
             elementStatus.disabled = true;
-  
+            elementProperty.disabled=true;
+            elementSerial.disabled=true;
+
           $("#divButtons").html("<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
           
          } else if (data[i].ticketStatus == 3) {
           var elementStatus = document.getElementById("txtdescription");
+          var elementProperty = document.getElementById("txtPropertyNumber");
+          var elementSerial = document.getElementById("txtSerialNumber");
+          elementProperty.disabled=true;
+          elementSerial.disabled=true;
           elementStatus.disabled = true;
             $("#divButtons").html("<form target='_blank' action='TechnicalServiceReport.php' method='POST'><button type='submit' name='Print' value='"+ id +"' class='btn btn-danger'> Print </button></form>" +
               "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
@@ -347,7 +361,7 @@ function enableR() {
   var elementtext = document.getElementById("txtrDes");
   element.disabled = true;
   elementtext.disabled = true;
-  if ( $("#cmbStatus").val() == 3) {
+  if ( $("#cmbStatus").val() == 3 ||$("#cmbStatus").val() == 2 ) {
         var element = document.getElementById("cmbRecomend");
        var elementtext = document.getElementById("txtrDes");
         element.disabled = false;
@@ -403,6 +417,8 @@ function updateTech(id, techid, access) {
         cmbTech: editTech,
         recommend: $("#cmbRecomend").val() , 
         dRecomend: $("#txtrDes").val(),
+        propertyNumber: $('#txtPropertyNumber').val(),
+        serialNumber: $('#txtSerialNumber').val(),
         createJourney: 1,
       },
       success: function (data) {

@@ -201,6 +201,9 @@ include "dbConnect.php";
         $recommend = validate($_POST['recommend']);
         $dRecomend = validate($_POST['dRecomend']);
         $sessionId = $_SESSION['id'];
+        $propertyNumber = validate($_POST['propertyNumber']);
+        $serialNumber = validate($_POST['serialNumber']);
+        
         $sql = "";
         if ($cmbStatus == 5) {
             $sql = "INSERT INTO tblTicketHistory 
@@ -208,8 +211,8 @@ include "dbConnect.php";
                               ticketStatus, 
                               ticketMessage,
                               modifiedBy,
-                              fileAttach, recomend, recomendDes) 
-                VALUES ($ticketId,$cmbStatus,'$txtdescription',$sessionId,'1',$recommend, '$dRecomend' );";
+                              fileAttach, recomend, recomendDes, property_number, serial_number) 
+                VALUES ($ticketId,$cmbStatus,'$txtdescription',$sessionId,'1',$recommend, '$dRecomend', '$propertyNumber', '$serialNumber');";
         } else {
             $sql = "INSERT INTO tblTicketHistory 
                             ( ticketId, 
@@ -217,8 +220,8 @@ include "dbConnect.php";
                               ticketMessage,
                               technicianId, 
                               modifiedBy,
-                              fileAttach, recomend, recomendDes) 
-                VALUES ($ticketId,$cmbStatus,'$txtdescription',$tech,$sessionId,'1',$recommend, '$dRecomend' );";
+                              fileAttach, recomend, recomendDes, property_number, serial_number) 
+                VALUES ($ticketId,$cmbStatus,'$txtdescription',$tech,$sessionId,'1',$recommend, '$dRecomend', '$propertyNumber', '$serialNumber');";
         }
        
         if(mysqli_query($conn, $sql)) {
@@ -229,12 +232,14 @@ include "dbConnect.php";
             echo json_encode($message);
         }
     }
+    
 
     if(isset($_POST['getTicketsJourneyHistory'])){
         $ticketId = validate($_POST['ticketId']);
         $sessionId = $_SESSION['id'];
 
-        $sql = "SELECT a.ticketMessage, IFNULL(a.ticketStatus,0) ticketStatus ,IFNULL(recomend,0) recomend, IFNULL(recomendDes, '') recomendDes,c.email, b.statusName, c.name, a.dateModified, IFNULL(a.technicianId,0) technicianId ,  IFNULL(CONCAT(f.firstName,' ',f.lastName),'') as techName , IFNULL(CONCAT(e.accessName,'(', d.firstName,' ', d.lastName, ')'), 'REQUESTOR') AS Tech , IFNULL(a.modifiedFrom, CASE WHEN a.modifiedBy = $sessionId then 'User' else 'admin' end ) modifiedFrom
+        $sql = "SELECT a.ticketMessage, IFNULL(a.ticketStatus,0) ticketStatus ,IFNULL(recomend,0) recomend, IFNULL(recomendDes, '') recomendDes,c.email, b.statusName, c.name, a.dateModified, IFNULL(a.technicianId,0) technicianId ,  IFNULL(CONCAT(f.firstName,' ',f.lastName),'') as techName , IFNULL(CONCAT(e.accessName,'(', d.firstName,' ', d.lastName, ')'), 'REQUESTOR') AS Tech , IFNULL(a.modifiedFrom, CASE WHEN a.modifiedBy = $sessionId then 'User' else 'admin' end ) modifiedFrom,
+                IFNULL(serial_number, '') serial_number, IFNULL(property_number, '') property_number
                 FROM tblTicketHistory a 
                 LEFT JOIN tblStatus b on a.ticketStatus = b.id 
                 LEFT JOIN tblTicket c on c.Id = a.ticketId 
@@ -258,8 +263,10 @@ include "dbConnect.php";
                                        "recomendDes" => $row['recomendDes'],
                                        "ticketStatus" => $row['ticketStatus'],
                                        "techName" => $row['techName'],
-                                       "Tech" => $row['Tech'] );
-                                       
+                                       "Tech" => $row['Tech'],
+                                       "serial_number" => $row['serial_number'],
+                                       "property_number" => $row['property_number'],
+                                    );
                $int = $int + 1;
            }           
            echo json_encode($value);
