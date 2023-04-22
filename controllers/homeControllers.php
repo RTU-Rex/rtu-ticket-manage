@@ -239,7 +239,7 @@ include "dbConnect.php";
         $sessionId = $_SESSION['id'];
 
         $sql = "SELECT a.ticketMessage, IFNULL(a.ticketStatus,0) ticketStatus ,IFNULL(recomend,0) recomend, IFNULL(recomendDes, '') recomendDes,c.email, b.statusName, c.name, a.dateModified, IFNULL(a.technicianId,0) technicianId ,  IFNULL(CONCAT(f.firstName,' ',f.lastName),'') as techName , IFNULL(CONCAT(e.accessName,'(', d.firstName,' ', d.lastName, ')'), 'REQUESTOR') AS Tech , IFNULL(a.modifiedFrom, CASE WHEN a.modifiedBy = $sessionId then 'User' else 'admin' end ) modifiedFrom,
-                IFNULL(serial_number, '') serial_number, IFNULL(property_number, '') property_number
+                IFNULL(serial_number, '') serial_number, IFNULL(property_number, '') property_number, c.DateCreated
                 FROM tblTicketHistory a 
                 LEFT JOIN tblStatus b on a.ticketStatus = b.id 
                 LEFT JOIN tblTicket c on c.Id = a.ticketId 
@@ -266,6 +266,7 @@ include "dbConnect.php";
                                        "Tech" => $row['Tech'],
                                        "serial_number" => $row['serial_number'],
                                        "property_number" => $row['property_number'],
+                                       "dateCreated" => date('M d, Y h:i A', strtotime($row['DateCreated'])),
                                     );
                $int = $int + 1;
            }           

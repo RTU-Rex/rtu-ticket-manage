@@ -438,6 +438,8 @@ function updateTech(id, techid, access) {
                   techName = data[i].techName;
                   reqEmail = data[i].email;
                   rname = data[i].name;
+                  dcreated = data[i].dateCreated;
+                  dresolvedat = data[i].dateModified;
                 }
               }
              
@@ -446,19 +448,15 @@ function updateTech(id, techid, access) {
 
           sendemail(
             reqEmail,
-            "RTU-Ticketing Management - Ticket Number:" + id + " (Resolved)",
-            "<html><body>Hi " +
-              rname +
-              "<br>Ticket is now resolved<br><h2><b>Ticket Number: " +
-              id +
-              "</b></h2><div style='padding-left: 3%;'>" +
-              "<table style='border: 1px solid black; width: 30%;'><tr><td>Technician</td><td>" +
-              techName +
-              "</td></tr><tr><td>Description</td><td>" +
-              $("#txtdescription").val() +
-              "</td></tr>" +
-              "</table></div>" +
-              "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>"
+            "RTU-Ticketing Management System - Ticket Number:" + id + " (Resolved)",
+            "<html><body>Hi, " + rname +
+              "<br><br>Your issue has been resolved. If the issue reoccurred again please contact our admin/help desk for re-opening of ticket.<br><br>" +
+              "<b>Ticket Created at:</b> " + dcreated + "<br>" + 
+              "<b>Resolved at </b>" + dresolvedat + "<br>" +
+              "<b>Ticket Number:</b> " + id + "<br>" +
+              "<b>Action Taken:</b> " +  $("#txtdescription").val() + "<br>" +
+              "<b>Resolved by: </b>" +  techName + "<br></div>" +
+              "<br>Thank you! <br><b> MIC Technical Division</b></body></html>"
           );
           $("#divMessage").html(data);
           $("#divButtons").html(

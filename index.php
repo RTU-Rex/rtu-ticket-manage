@@ -393,10 +393,13 @@
                     data = JSON.parse(data);
                     uploadfile(data);
 
-                    sendemail($('#txtEmail').val(),"RTU-Ticketing Management - Ticket Number:" + data,"<html><body>Hi "+ $('#txtEmpName').val() +"<br>You successfully created a ticket.<br><h2><b>Ticket Number: "+ data +"</b></h2><div style='padding-left: 3%;'>"+
-                                                                               "<table style='border: 1px solid black; width: 30%;'><tr style='vertical-align: text-top;'><td>Category</td><td>"+ $('#cmbIncident option:selected').text() +"</td></tr><tr style='vertical-align: text-top;'><td>Department</td><td>"+ $('#cmbOffice option:selected').text() +"</td></tr>" +
-                                                                               "<tr style='vertical-align: text-top;'><td>Description</td><td>"+ $('#txtdescription').val() +"</td></tr> </table></div>" +
-                                                                               "<br>Thanks,<br><b>RTU Ticketing System</b></body></html>");
+                    sendemail($('#txtEmail').val(),"RTU-Ticketing Management System - Ticket Number:" + data,"<html><body>Hi "+ $('#txtEmpName').val() +"<br>"+
+                                                                                "<br>We are pleased to inform you that your ticket has been successfully created with the following details: <br>"+
+                                                                                "<b><br>Ticket Number:</b> "+ data +"<br>"+
+                                                                                "<b>Category: </b>"+ $('#cmbIncident option:selected').text() + "<br>"+
+                                                                                "<b>Department: </b>"+ $('#cmbOffice option:selected').text() + "<br>"+
+                                                                                "<b>Description: </b>"+ $('#txtdescription').val() + "<br>"+
+                                                                                "<br>Thank you,<br><b> MIC - Boni Campus</b></body></html>");
 
                    
                     $('#divMessage').html("<div class='alert alert-info' role='alert'>" +
