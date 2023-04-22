@@ -53,8 +53,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                      }
                                     include "./controllers/dbConnect.php";   
                                      $sql = "SELECT CASE WHEN Isnull(b.technicianId) then 'Unassign' ELSE c.statusName END Stas,
-                                     a.title,description, e.IncidentName, a.Id, f.priorityName, g.Office,
-                                     IFNULL(CONCAT(d.lastName,', ',d.firstName),'---') Assigned,
+                                     a.title,description, e.IncidentName, a.Id, IFNULL(f.priorityName, '---') as priorityName, g.Office,
+                                     IFNULL(CONCAT(d.lastName,', ',d.firstName),'---') Assigned, 
                                      a.name,
                                      CASE WHEN ISNULL(b.datemodified) then a.DateCreated else b.datemodified end lastUpdate
                              FROM tblTicket a 
@@ -76,15 +76,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                 echo '<td>'.$row['Stas'].'</td>';
                                 echo '<td data-toggle="modal" data-target="#TicketModal" class="text-primary text-capitalize" style="cursor: pointer" onClick="viewTicket('.$row['Id'].')"> <ins>'.$row['description'].'</ins> </td>';
                                 echo '<td>';
-                                if ($row['priorityName'] == 'Critical') {
-                                    echo '<span class="badge badge-danger">'.$row['priorityName'].'</span>';
+                                if ($row['priorityName'] == '---') {
+                                    echo  $row['priorityName'];
+                                }else if ($row['priorityName'] == 'Critical') {
+                                    echo '<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Response Time: 1 hour or less&#13;Resolution Time: Within 24 hours">'.$row['priorityName'].'</span>';
                                 } elseif ($row['priorityName'] == 'High') {
-                                    echo '<span class="badge badge-warning">'.$row['priorityName'].'</span>';
+                                    echo '<span class="badge badge-warning" data-toggle="tooltip" data-placement="top" title="Response Time: 4-8 hours&#13;Resolution Time: Within 3 business days">'.$row['priorityName'].'</span>';
                                 } elseif ($row['priorityName'] == 'Moderate') {
-                                    echo '<span class="badge badge-info">'.$row['priorityName'].'</span>';
+                                    echo '<span class="badge badge-info" data-toggle="tooltip" data-placement="top" title="Response Time: 24-48 hours&#13;Resolution Time: Within 5 business days">'.$row['priorityName'].'</span>';
                                 } elseif ($row['priorityName'] == 'Low') {
-                                    echo '<span class="badge badge-success">'.$row['priorityName'].'</span>';
+                                    echo '<span class="badge badge-success" data-toggle="tooltip" data-placement="top" title="Response Time: 3-5 business days&#13;Resolution Time: Within 6-7 business days">'.$row['priorityName'].'</span>';
                                 }
+                                
                                 echo '</td>';
                                 echo '<td>'.$row['Office'].'</td>';
                                 echo '<td>'.$row['Assigned'].'</td>';

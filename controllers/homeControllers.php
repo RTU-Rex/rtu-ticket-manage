@@ -19,7 +19,7 @@ include "dbConnect.php";
         $prio = $_POST['priority'];
 
         $sql = "SELECT CASE WHEN Isnull(c.statusName) then 'Open' ELSE c.statusName END Stas,
-        a.title, a.description, a.name, IFNULL(e.IncidentName, 'Not Assigned') AS IncidentName, a.Id, IFNULL(f.priorityName, 'Not Assigned') as priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
+        a.title, a.description, a.name, IFNULL(e.IncidentName, 'Not Assigned') AS IncidentName, a.Id, IFNULL(f.priorityName, '---') as priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
         d.firstName, d.lastName,
         CASE 
                     WHEN a.dateModified IS NULL THEN a.DateCreated 
@@ -41,13 +41,26 @@ include "dbConnect.php";
         if (mysqli_num_rows($result) >= 1) {
         $value = array();
         $int = 0;
+        $priority_tooltip = array(
+            'Critical' => 'Response Time: 1 hour or less&#10;Resolution Time: Within 24 hours',
+            'High' => 'Response Time: 4-8 hours&#10;Resolution Time: Within 3 business days',
+            'Moderate' => 'Response Time: 24-48 hours&#10;Resolution Time: Within 5 business days',
+            'Low' => 'Response Time: 3-5 business days&#10;Resolution Time: Within 6-7 business days'
+        );
+        
+        
+    
         $badge_class = array('badge badge-danger', 'badge badge-warning', 'badge badge-info', 'badge badge-success' );
 
         while ($row = mysqli_fetch_assoc($result)) {
         $prioId = $row['prioId'];
         $priorityName = $row['priorityName'];
-        $badge_class_index = $prioId > 0 ? $prioId - 1 : 0;
-        $priorityNameWithBadge = '<span class="badge ' . $badge_class[$badge_class_index] . '">' . $priorityName . '</span>';
+        if ($priorityName === '---') {
+            $priorityNameWithBadge = '<span>' . $priorityName . '</span>';
+        } else {
+            $badge_class_index = $prioId > 0 ? $prioId - 1 : 0;
+            $priorityNameWithBadge = '<span class="badge ' . $badge_class[$badge_class_index] . '" data-toggle="tooltip" data-placement="top" title="' . $priority_tooltip[$priorityName] . '">' . $priorityName . '</span>';
+        }
         $technicianName = $row['firstName'] . ' ' . $row['lastName'];
         $technicianName = empty($row['firstName']) && empty($row['lastName']) ? 'Not assigned' : $row['firstName'] . ' ' . $row['lastName'];
 
