@@ -3,6 +3,7 @@
 function viewTicket(id) {
   var access = 0;
   var techid = 0;
+  var status = 0;
 
     $("#divTitle").html("<div class = 'ml-2'>Ticket Journey</div>");
 
@@ -70,6 +71,7 @@ function viewTicket(id) {
       data = JSON.parse(data);
       if ( data != 0) {
         for (var i = 0; i < data.length; i++) {
+        if (data[i].ticketStatus != 4) { 
           if (data[i].modifiedFrom == "User") {
             document.getElementById("divMessage").innerHTML +=
               "<div class='card border-right-warning shadow mb-4 no-animation '> " +
@@ -97,7 +99,11 @@ function viewTicket(id) {
               data[i].statusName +
               "</p></div></div>";
           }
+
+        }
+        
           techid = data[i].technicianId;
+          status = data[i].ticketStatus;
         }
 
       }
@@ -116,18 +122,32 @@ function viewTicket(id) {
         ")' id='btnUpdate'>Technical Report</button>"
     );
   } else {
-    $("#divButtons").html(
-      "<button type='button' class='btn btn-primary' onclick='updateTicketview(" +
-        id +
-        ")'>Update Ticket</button>" +
-        "<button type='button' class='btn btn-warning' onclick='replyTicket(" +
-        id +
-        ", " +
-        techid +
-        ", " +
-        access +
-        ")' id='btnUpdate'>Technical Report</button>"
-    );
+
+    if (status == 4) {
+      $("#divButtons").html(
+          "<button type='button' class='btn btn-warning' onclick='replyTicket(" +
+          id +
+          ", " +
+          techid +
+          ", " +
+          access +
+          ")' id='btnUpdate'>Re-open</button>"
+      );
+
+    } else {
+      $("#divButtons").html(
+        "<button type='button' class='btn btn-primary' onclick='updateTicketview(" +id +", "+ status +", "+ techid + ")'>Update Ticket</button>" +
+          "<button type='button' class='btn btn-warning' onclick='replyTicket(" +
+          id +
+          ", " +
+          techid +
+          ", " +
+          access +
+          ")' id='btnUpdate'>Technical Report</button>"
+      );
+
+    }
+   
   }
 }
 
@@ -263,14 +283,12 @@ function replyTicket(id, techId, access) {
             var element = document.getElementById("cmbRecomend");
             var elementtext = document.getElementById("txtrDes");
             var elementtech = document.getElementById("cmbTech");
-            var elementAction = document.getElementById("cmbStatus");
-            var elementStatus = document.getElementById("txtserialNumber");
+            var elementStatus = document.getElementById("cmbStatus");
             var elementProperty = document.getElementById("txtPropertyNumber");
             var elementSerial = document.getElementById("txtSerialNumber");
             element.disabled = true;
             elementtext.disabled = true;
             elementtech.disabled = true;
-            elementAction.disabled = true;
             elementStatus.disabled = true;
             elementProperty.disabled=true;
             elementSerial.disabled=true;
@@ -297,13 +315,21 @@ function replyTicket(id, techId, access) {
   
          } else {
 
-          if ((data[i].ticketStatus == 5 ||data[i].ticketStatus == 1)  && access == 2) {
+          if ((data[i].ticketStatus == 5 || data[i].ticketStatus == 1)  && access == 2) {
             var elementtech = document.getElementById("cmbTech");
             var elementAction = document.getElementById("cmbStatus");
             var elementStatus = document.getElementById("txtdescription");
+            var elementProperty = document.getElementById("txtPropertyNumber");
+            var elementSerial = document.getElementById("txtSerialNumber");
+            var elementrecom = document.getElementById("cmbRecomend");
+            var elementrecomD = document.getElementById("txtrDes");
+            elementProperty.disabled=false;
+            elementSerial.disabled=false;
             elementtech.disabled = true;
             elementAction.disabled = false;
             elementStatus.disabled = false;
+            elementrecom.disabled = false;
+            elementrecomD.disabled = false;
           } else if (data[i].ticketStatus == 5) {
             var elementtech = document.getElementById("cmbTech");
             var elementAction = document.getElementById("cmbStatus");
@@ -488,8 +514,9 @@ function updateTech(id, techid, access) {
           ")' id='btnUpdate'>Send</button>"
       );
   }
-   location.reload();
+  
 }
+
 
 function getOffice() {
   $.ajax({
@@ -518,7 +545,7 @@ function getOffice() {
   });
 }
 
-function updateTicketview(id) {
+function updateTicketview(id,status,techid) {
   $("#divTitle").html("<h4 class='text-dark text-center'><b> Ticket No " + id + " Form </b> </div> <br> </h4>");
   $("#divMessage").html("<div class = 'text-danger' id='error'> </div>" +"<a href='#' id='edit-link'>Edit</a> | <a href='#' id='save-link'>Disable</a>" + "<h5> <b>Contact Information</b></h5>" + 
     "<div class='row'>" + "<br>" +
@@ -536,6 +563,14 @@ function updateTicketview(id) {
             "<div class='form-group'>" +
             "<label for='cmbPrio'><span class='required-indicator'>*</span>Priority</label>" +
             "<select class='form-control form-control-user form-floating' id='cmbPrio'></select>" +
+            "</div>" +
+            "<div class='form-group'>" +
+            "<label for='cmbStatus'><span class='required-indicator'>*</span>Status</label>" +
+            "<select class='form-control form-control-user form-floating' id='cmbStatus'></select>" +
+            "</div>" +
+            "<div class='form-group'>" +
+            "<label for='cmbTech'><span class='required-indicator'>*</span>Technician</label>" +
+            "<select class='form-control form-control-user form-floating' id='cmbTech'></select>" +
             "</div>" +
             "<div class='form-group'><label class ='text-dark'>Category of the issue</label><select class='form-control' id='cmbIncident' disabled></select></div>" +
             "<div class='form-group'><label class ='text-dark'>Description of the issue</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Provide a detailed description of the issue you are experiencing.'disabled></textarea><small class='text-danger' id='txtdescription-error'></small></div>" +
@@ -638,6 +673,50 @@ function updateTicketview(id) {
     },
   });
 
+  $.ajax({
+    async: false,
+    type: "POST",
+    url: "controllers/indexControllers.php",
+    data: { getTicketStatus: 1 },
+    success: function (data) {
+      data = JSON.parse(data);
+      $("#cmbStatus").empty();
+      var cmbStatus = document.getElementById("cmbStatus");
+      for (var i = 0; i < data.length; i++) {
+      
+          var option = document.createElement("option");
+          option.text = data[i].name;
+          option.value = data[i].id;
+          cmbStatus.add(option);
+       
+      }
+    },
+    error: function (e) {
+      alert(e);
+    },
+  });
+
+  $.ajax({
+    async: false,
+    type: "POST",
+    url: "controllers/homeControllers.php",
+    data: { getTech: 1 },
+    success: function (data) {
+      data = JSON.parse(data);
+      $("#cmbTech").empty();
+      var cmbInc = document.getElementById("cmbTech");
+      for (var i = 0; i < data.length; i++) {
+        var option = document.createElement("option");
+        option.text = data[i].name;
+        option.value = data[i].id;
+        cmbInc.add(option);
+      }
+    },
+    error: function (e) {
+      alert(e);
+    },
+  });
+
   //Retrived ticket deatils
 
   $.ajax({
@@ -653,6 +732,8 @@ function updateTicketview(id) {
         $("#txtEmp").val(data[i].empId);
         $("#txtEmpName").val(data[i].name);
         $("#cmbPrio").val(data[i].priority);
+        $("#cmbTech").val(techid);
+        $("#cmbStatus").val(status);
         $("#cmbIncident").val(data[i].incident);
         $("#cmbDepartment").val(data[i].Department);
         getOffice();
@@ -691,17 +772,84 @@ function updateTicket(id) {
         },
         success: function (data) {
           data = JSON.parse(data);
-          $("#divMessage").html(data);
-          $("#divButtons").html(
-            " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
-          );
         },
         error: function (e) {
           alert(e);
         },
       });
-      location.reload();
 
+      $.ajax({
+        async: false,
+        type: "POST",
+        url: "controllers/homeControllers.php",
+        data: {
+          ticketId: id,
+          cmbStatus: $("#cmbStatus").val(),
+          txtdescription: 'Ticket is updated',
+          cmbTech: $("#cmbTech").val(),
+          recommend: 0 , 
+          dRecomend: '',
+          propertyNumber: '',
+          serialNumber: '',
+          createJourney: 1,
+        },
+        success: function (data) {
+          data = JSON.parse(data);
+  
+          if ($("#cmbStatus").val() == 3) {
+            $.ajax({
+              async: false,
+              type: "POST",
+              url: "controllers/homeControllers.php",
+              data: { ticketId: id, getTicketsJourneyHistory: 1 },
+              success: function (data) {
+                console.log(data);
+                data = JSON.parse(data);
+                if (data != 0) {
+                  for (var i = 0; i < data.length; i++) {
+                    techName = data[i].techName;
+                    reqEmail = data[i].email;
+                    rname = data[i].name;
+                    dcreated = data[i].dateCreated;
+                    dresolvedat = data[i].dateModified;
+                  }
+                }
+               
+              },
+            });
+  
+            sendemail(
+              reqEmail,
+              "RTU-Ticketing Management System - Ticket Number:" + id + " (Resolved)",
+              "<html><body>Hi, " + rname +
+                "<br><br>Your issue has been resolved. If the issue reoccurred again please contact our admin/help desk for re-opening of ticket.<br><br>" +
+                "<b>Ticket Created at:</b> " + dcreated + "<br>" + 
+                "<b>Resolved at </b>" + dresolvedat + "<br>" +
+                "<b>Ticket Number:</b> " + id + "<br>" +
+                "<b>Action Taken:</b> " +  $("#txtdescription").val() + "<br>" +
+                "<b>Resolved by: </b>" +  techName + "<br></div>" +
+                "<br>Thank you! <br><b> MIC Technical Division</b></body></html>"
+            );
+            $("#divMessage").html(data);
+            $("#divButtons").html(
+              " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
+            );
+
+           
+          } else {
+            $("#divMessage").html(data);
+            $("#divButtons").html(
+              " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
+            );
+  
+          }
+        
+        },
+        error: function (e) {
+          alert(e);
+        },
+      });
+     
   } else {
     $('#error').html("<div class='alert alert-danger'>Please fill out all required fields marked with an asterisk (*).</div>");
     $("#divButtons").html(

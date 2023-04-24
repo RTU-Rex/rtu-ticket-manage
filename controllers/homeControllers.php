@@ -217,6 +217,10 @@ include "dbConnect.php";
         $propertyNumber = validate($_POST['propertyNumber']);
         $serialNumber = validate($_POST['serialNumber']);
         
+        if($recommend == '') {
+            $recommend = 0;
+        }
+        
         $sql = "";
         if ($cmbStatus == 5) {
             $sql = "INSERT INTO tblTicketHistory 
@@ -233,7 +237,7 @@ include "dbConnect.php";
                               ticketMessage,
                               technicianId, 
                               modifiedBy,
-                              fileAttach, recomend, recomendDes, property_number, serial_number) 
+                              fileAttach, recomend ,recomendDes, property_number, serial_number) 
                 VALUES ($ticketId,$cmbStatus,'$txtdescription',$tech,$sessionId,'1',$recommend, '$dRecomend', '$propertyNumber', '$serialNumber');";
         }
        
@@ -245,6 +249,7 @@ include "dbConnect.php";
             echo json_encode($message);
         }
     }
+
     
 
     if(isset($_POST['getTicketsJourneyHistory'])){

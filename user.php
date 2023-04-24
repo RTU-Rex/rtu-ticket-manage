@@ -35,6 +35,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                         <th class="sortable" >CONTACT NUMBER<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                         <th class="sortable" >STATUS<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                         <th class="sortable" >DATE CREATED<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                        <th class="sortable" >EMPSTATUS<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                            
 
                                        
@@ -48,7 +49,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                     include "./controllers/dbConnect.php";   
                                      $sql = "SELECT a.Id, 
                                                     email, b.accessName , firstName, lastName, IFNULL(contactNumber,'-----') contactNumber , 
-                                                    CASE WHEN a.isActive = 1 THEN 'ACTIVE' ELSE 'INACTIVE' END isActive, dateCreated 
+                                                    CASE WHEN a.isActive = 1 THEN 'ACTIVE' ELSE 'INACTIVE' END isActive, dateCreated , CASE WHEN isOJT = 0 THEN 'REGULAR' ELSE 'OJT' END empstat
                                             FROM tblUser a 
                                             LEFT JOIN tblAccess b on a.accessId = b.id;";
                      
@@ -64,7 +65,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                 echo '<td>'.$row['lastName'].'</td>';
                                 echo '<td>'.$row['contactNumber'].'</td>';
                                 echo '<td>'.$row['isActive'].'</td>';
-                                echo '<td>'.$row['dateCreated'].'</td></tr>';                                
+                                echo '<td>'.$row['dateCreated'].'</td>'; 
+                                echo '<td>'.$row['empstat'].'</td></tr>';                               
                              }           
                           
                          
@@ -109,8 +111,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
         $('#divMessage').html("<div class='form-group'><input type='text' class='form-control form-control-user' id='txtUserEmail' placeholder='Email'></div>"+
         "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtUserFirstName' placeholder='First Name'></div>"+
         "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtUserLastName' placeholder='Last Name'></div>"+
-        "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtUserContact' placeholder='Contact Number'></div>"+                     
-        "<div class='form-group'><select class='form-control form-control-user' id='cmbStatus'><option value=1>ACTIVE</option><option value=0>INACTIVE</option></select></div>" +
+        "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtUserContact' placeholder='Contact Number'></div>"+  
+        "<div class='form-group'><select class='form-control form-control-user' id='cmbStatus'><option value=1>ACTIVE</option><option value=0>INACTIVE</option></select></div>" +                   
+        "<div class='form-group'><select class='form-control form-control-user' id='cmbEmpStatus'><option value=0>REGULAR</option><option value=1>OJT</option></select></div>" +
         "<div class='form-group'><select class='form-control form-control-user' id='cmbAccess'></select></div>" );
         $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button><button type='button' class='btn btn-warning'  onclick='updateUser("+ id +")' data-dismiss='modal'>Update</button>");
             
@@ -154,6 +157,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                     $('#txtUserContact').val(data[i].contactNumber)
                     $('#cmbStatus').val(data[i].isActive) 
                     $('#cmbAccess').val(data[i].accessId) 
+                    $('#cmbEmpStatus').val(data[i].isOJT) 
 
                 }
                 
@@ -172,6 +176,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
         "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtUserLastName' placeholder='Last Name'></div>"+
         "<div class='form-group'><input type='text' class='form-control form-control-user' id='txtUserContact' placeholder='Contact Number'></div>"+                     
         "<div class='form-group'><select class='form-control form-control-user' id='cmbStatus'><option value=1>ACTIVE</option><option value=0>INACTIVE</option></select></div>" +
+        "<div class='form-group'><select class='form-control form-control-user' id='cmbEmpStatus'><option value=0>REGULAR</option><option value=1>OJT</option></select></div>" +
         "<div class='form-group'><select class='form-control form-control-user' id='cmbAccess'></select></div>" );
         $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button><button type='button' class='btn btn-warning'  onclick='NewUserAccess()' data-dismiss='modal'>Update</button>");
             
@@ -216,6 +221,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                         txtUserContact: $('#txtUserContact').val(),
                         cmbStatus: $('#cmbStatus').val(),
                         cmbAccess: $('#cmbAccess').val(),
+                        cmbEmpStatus: $('#cmbEmpStatus').val(),
                         addUser: 1
                     },
                 success: function(data) {
@@ -228,7 +234,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                     alert(e);
                 }
             })
-            location.reload();
+          
 
     }
 
@@ -245,6 +251,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                     txtUserContact: $('#txtUserContact').val(),
                     cmbStatus: $('#cmbStatus').val(),
                     cmbAccess: $('#cmbAccess').val(),
+                    cmbEmpStatus: $('#cmbEmpStatus').val(),
                     userId: id,
                     updateUser: 1
                 },
@@ -257,7 +264,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                 alert(e);
             }
         });
-        location.reload();
+     
     
     }
     

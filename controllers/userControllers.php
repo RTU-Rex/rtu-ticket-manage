@@ -28,7 +28,7 @@ include "dbConnect.php";
         $userId = validate($_POST['userId']);
  
         $sql = "SELECT  email, accessId , firstName, lastName, IFNULL(contactNumber,'') contactNumber , 
-                        isActive 
+                        isActive , isOJT
                 FROM tblUser where id = $userId ;";
 
        $result = mysqli_query($conn, $sql);
@@ -41,6 +41,7 @@ include "dbConnect.php";
                                        "firstName" => $row['firstName'],
                                        "lastName" => $row['lastName'],
                                        "contactNumber" => $row['contactNumber'],
+                                       "isOJT" => $row['isOJT'],
                                        "isActive" => $row['isActive']);
                $int = $int + 1;
            }           
@@ -59,13 +60,15 @@ include "dbConnect.php";
         $txtUserContact = validate($_POST['txtUserContact']);
         $cmbStatus = validate($_POST['cmbStatus']);
         $cmbAccess = validate($_POST['cmbAccess']);
+        $cmbEmpStatus = validate($_POST['cmbEmpStatus']);
     
         $sql = "UPDATE tblUser 
                 SET email='$txtEmail', modifiedBy='$sessionId',firstName='$txtUserFirstName',lastName='$txtUserLastName',
                     contactNumber='$txtUserContact',
                     accessId=$cmbAccess,
                     isActive=$cmbStatus, 
-                    dateModified=CURRENT_TIMESTAMP() 
+                    dateModified=CURRENT_TIMESTAMP(),
+                    isOJT = $cmbEmpStatus
                 WHERE id = '$id';";
         if(mysqli_query($conn, $sql)) {
             $message = "You successfully updated ticket. $id";
@@ -82,11 +85,12 @@ include "dbConnect.php";
         $txtUserContact = validate($_POST['txtUserContact']);
         $cmbStatus = validate($_POST['cmbStatus']);
         $cmbAccess = validate($_POST['cmbAccess']);
+        $cmbEmpStatus = validate($_POST['cmbEmpStatus']);
         $password = password_hash('Password@1234',PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO tblUser 
-                (email, password, createdBy,firstName, lastName, contactNumber, accessId, isActive) 
-                VALUES ('$txtEmail','$password','$sessionId','$txtUserFirstName','$txtUserLastName','$txtUserContact','$cmbAccess','$cmbStatus');";
+                (email, password, createdBy,firstName, lastName, contactNumber, accessId, isActive, isOJT) 
+                VALUES ('$txtEmail','$password','$sessionId','$txtUserFirstName','$txtUserLastName','$txtUserContact','$cmbAccess','$cmbStatus', $cmbEmpStatus);";
         if(mysqli_query($conn, $sql)) {
             $message = "You Successfully Created a new User";
 
