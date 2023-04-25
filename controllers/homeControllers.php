@@ -114,7 +114,7 @@ include "dbConnect.php";
             $value = array();
             $int = 0;
             while ($row = mysqli_fetch_assoc($result)) {
-                $value[$int] =  array("id" => $row['id'],"name" => $row['name'], "accessid" => $accessid );
+                $value[$int] =  array("id" => $row['id'],"name" => $row['name']  );
                 $int = $int + 1;
             }           
             echo json_encode($value);
@@ -350,7 +350,7 @@ include "dbConnect.php";
             $value = array();
             $int = 0;
             while ($row = mysqli_fetch_assoc($result)) {
-                $value[$int] =  array("id" => $row['id'],"name" => $row['name'], "accessid" => $accessid );
+                $value[$int] =  array("id" => $row['id'],"name" => $row['name']);
                 $int = $int + 1;
             }           
             echo json_encode($value);
