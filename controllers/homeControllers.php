@@ -107,13 +107,14 @@ include "dbConnect.php";
     }
 
     if(isset($_POST['getTech'])){
+        $accessid = $_SESSION['id'];
         $sql = "SELECT id, CONCAT(lastName,', ',firstName) as name FROM tblUser WHERE not(accessId = 1);";
 		$result = mysqli_query($conn, $sql);
     	if (mysqli_num_rows($result) >= 1) {
             $value = array();
             $int = 0;
             while ($row = mysqli_fetch_assoc($result)) {
-                $value[$int] =  array("id" => $row['id'],"name" => $row['name'] );
+                $value[$int] =  array("id" => $row['id'],"name" => $row['name'], "accessid" => $accessid );
                 $int = $int + 1;
             }           
             echo json_encode($value);
@@ -337,4 +338,64 @@ include "dbConnect.php";
 		}
     }
 
+
+    if(isset($_POST['getTechs'])){
+        $ticketId = validate($_POST['ticketId']);
+        $sql = "SELECT a.id, CONCAT(b.lastName,', ',b.firstName) as name 
+        FROM tblTechShared a 
+        LEFT JOIN tblUser b on a.userId = b.id 
+        WHERE a.ticketId = $ticketId;";
+		$result = mysqli_query($conn, $sql);
+    	if (mysqli_num_rows($result) >= 1) {
+            $value = array();
+            $int = 0;
+            while ($row = mysqli_fetch_assoc($result)) {
+                $value[$int] =  array("id" => $row['id'],"name" => $row['name'], "accessid" => $accessid );
+                $int = $int + 1;
+            }           
+            echo json_encode($value);
+          
+		} else {
+
+            echo json_encode(0);
+        }
+    }
+
+    if(isset($_POST['updateTechs'])){
+        $ticketId = validate($_POST['ticketId']);
+        $tech = validate($_POST['tech']);
+        $sql = "INSERT INTO tblTechShared ( ticketId, userId) VALUES ($ticketId,$tech);";
+        if(mysqli_query($conn, $sql)) {
+            $message = "You Successfully Created a new User";
+
+            echo json_encode($message);
+
+        }
+    }
+
+    if(isset($_POST['DeleteTechs'])){
+        $id = validate($_POST['id']);
+
+        $sql = "DELETE FROM tblTechShared WHERE id = $id;";
+        if(mysqli_query($conn, $sql)) {
+            $message = "You Successfully Created a new User";
+
+            echo json_encode($message);
+
+        }
+    }
+
+    if(isset($_POST['checkTechExist'])){
+        $ticketId = validate($_POST['id']);
+        $tech = validate($_POST['tech']);
+
+        $sql = "SELECT * FROM tblTechShared WHERE ticketId = $ticketId and userId = $tech;";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) >= 1) {    
+            echo json_encode(1);
+        } else {
+            echo json_encode(0);
+        }
+
+    }
 ?>

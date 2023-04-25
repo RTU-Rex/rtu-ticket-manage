@@ -160,13 +160,10 @@ include "dbConnect.php";
 
     if(isset($_POST['deleteMenu'])){
         $MenuId = validate($_POST['MenuId']);
-
         $sql = "DELETE FROM tblMenu WHERE id = $MenuId;";
         if(mysqli_query($conn, $sql)) {
             $message = "You Successfully Created a new Access Level";
-
             echo json_encode($message);
-
         }
     }
 

@@ -167,7 +167,10 @@ function replyTicket(id, techId, access) {
       "<select onChange='hideText()' class='form-control form-control-user' id='cmbRecomend'></select></div>" + 
       "<div id='divRecomend' class='form-group'><textarea class='form-control' rows='5' id='txtrDes' placeholder='Recommendation'></textarea></div>" + "<hr>" +
       "<h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Assigned to: </b></h6>"+
-      "<div id='divTech' class='form-group'> <select class='form-control form-control-user' id='cmbTech'></select></div>" 
+      "<div id='divTech' class='form-group'> <select class='form-control form-control-user' id='cmbTech'></select></div>" +
+      "<h6 class='text-dark fs-5'><b>Technicians: </b></h6>"+
+      "<div id='cmbtechsdiv' class='form-group'><select class='select' style='width: 100%;' size='5' id='cmbtechs'></select></div>"+
+      "<div id='cmbTechsfildiv' class='form-group row'><div class='col-8'><select class='form-control form-control-user' id='cmbTechsfil'></select></div><div class='col-4'><button type='button' onclick='updateAccess("+ id +")' class='btn btn-primary'>ADD</button><button type='button' onclick='deleteAccess("+ id +")' class='btn btn-warning'>REMOVE</button></div></div>"
   );
 
   $.ajax({
@@ -224,6 +227,35 @@ function replyTicket(id, techId, access) {
       alert(e);
     },
   });
+
+
+  $.ajax({
+    async: false,
+    type: "POST",
+    url: "controllers/homeControllers.php",
+    data: { getTech: 1 },
+    success: function (data) {
+      data = JSON.parse(data);
+      $("#cmbTechsfil").empty();
+      var cmbInc = document.getElementById("cmbTechsfil");
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].id != techId) {
+          var option = document.createElement("option");
+          option.text = data[i].name;
+          option.value = data[i].id;
+          cmbInc.add(option);
+        }
+       
+      }
+    },
+    error: function (e) {
+      alert(e);
+    },
+  });
+
+  techs(id)
+
+  
 
   $.ajax({
     async: false,
@@ -371,15 +403,108 @@ function replyTicket(id, techId, access) {
    
     },
   });
-
-
-
-
-
- 
-
  
 }
+
+function checkAccess(id) {
+       
+  var checking = 1;
+  $.ajax({
+      async: false,
+      type: "POST",
+      url: 'controllers/homeControllers.php',
+      data: { id: id, 
+              tech: $('#cmbTechsfil').val(),
+              checkTechExist: 1
+          },
+      success: function(data) {
+          data = JSON.parse(data);
+          if (data == 1) {
+              checking = 0;
+          } else {
+              checking = 1;
+          }
+         
+      }, 
+      error: function (e) {
+          alert(e);
+      }
+  });
+
+return checking; 
+
+}
+
+function updateAccess(id) {
+  var checking = checkAccess(id);
+  if (checking == 1) { 
+    $.ajax({
+      async: false,
+      type: "POST",
+      url: 'controllers/homeControllers.php',
+      data: { ticketId: id, 
+              tech: $('#cmbTechsfil').val(),
+              updateTechs: 1
+          },
+      success: function(data) {
+          data = JSON.parse(data);
+      }, 
+      error: function (e) {
+          alert(e);
+      }
+  });
+
+  }
+   
+    techs(id);
+
+}
+
+function deleteAccess(id) {
+      
+  $.ajax({
+      async: false,
+      type: "POST",
+      url: 'controllers/homeControllers.php',
+      data: { id: $('#cmbtechs').val(),
+              DeleteTechs: 1
+          },
+      success: function(data) {
+          data = JSON.parse(data);
+      }, 
+      error: function (e) {
+          alert(e);
+      }
+  });
+
+  techs(id)
+
+}
+function techs(id) {
+  $.ajax({
+    async: false,
+    type: "POST",
+    url: "controllers/homeControllers.php",
+    data: { ticketId: id,getTechs: 1 },
+    success: function (data) {
+      data = JSON.parse(data);
+      $("#cmbtechs").empty();
+      var cmbInc = document.getElementById("cmbtechs");
+      for (var i = 0; i < data.length; i++) {
+          var option = document.createElement("option");
+          option.text = data[i].name;
+          option.value = data[i].id;
+          cmbInc.add(option);
+        }
+       
+    },
+    error: function (e) {
+      alert(e);
+    },
+  });
+
+}
+
 
 
 function enableR() {

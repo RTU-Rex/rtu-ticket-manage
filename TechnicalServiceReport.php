@@ -233,16 +233,45 @@ if(isset($_POST['Print'])){
                                   <td style="text-align: center;">Signature</td>
                               </tr>
                                                                   
-                              <tr>
-                                  <td style="width: 10cm">  Technician/Trainee: 
+                              <tr><td style="width: 10cm">  Technician/Trainee: 
                                   <td style="border-bottom: 0.9px solid black; padding-bottom: 0; margin-bottom: 0;" class="text-center"><h7 class="text-uppercase"><?php echo $techni; ?></h7></td>
-                                  <td style="border-bottom: 0.9px solid black;"></td>  
-                              </tr>
+                                  <td style="border-bottom: 0.9px solid black;"></td>  </tr>
                               <tr>
                                   <td></td>
                                   <td style="text-align: center;">Name</td>
                                   <td style="text-align: center;">Signature</td>
                               </tr>
+
+                              <?php   
+                                    
+                                    include "./controllers/dbConnect.php";   
+                                     $sql = "SELECT a.id, CONCAT(b.firstName ,' ',b.lastName) as name 
+                                     FROM tblTechShared a 
+                                     LEFT JOIN tblUser b on a.userId = b.id 
+                                     WHERE a.ticketId = $id;";
+                     
+                         $result = mysqli_query($conn, $sql);
+                        
+                         if (mysqli_num_rows($result) >= 1) {
+                          
+                             while ($row = mysqli_fetch_assoc($result)) {
+                                echo '<tr><td style="width: 10cm">  Technician/Trainee: ';
+                                echo ' <td style="border-bottom: 0.9px solid black; padding-bottom: 0; margin-bottom: 0;" class="text-center"><h7 class="text-uppercase">'.$row['name'].'</h7></td>';
+                                echo ' <td style="border-bottom: 0.9px solid black;"></td>  </tr>'; 
+                                echo '<tr><td></td> ';
+                                echo ' <td style="text-align: center;">Name</td>';
+                                echo '  <td style="text-align: center;">Signature</td>  </tr>';                               
+                             }           
+                          
+                         
+                         }
+                                    
+                                    
+                                    
+                                    ?>
+
+
+
 
                               <tr>
                                   <td style="width: 10cm">  Immediate Head 
