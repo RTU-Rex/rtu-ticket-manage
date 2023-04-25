@@ -152,26 +152,32 @@ function viewTicket(id) {
 }
 
 function replyTicket(id, techId, access) {
-  $("#divTitle").html("Technical Report");
+  $("#divTitle").html("Technical Report Form");
   $("#divMessage").html(
       "<div id='error'> </div>" + "<div class='row'>" +
-      "<div class='col-md-6'><div class='form-group'><h6 class='text-dark fs-5'><b>Serial Number </b></h6> "+
-      "<input type='text' class='form-control' id='txtSerialNumber' placeholder='Serial Number'></div></div>" +
-      "<div class='col-md-6'><div class='form-group'><h6 class='text-dark fs-5'><b>Property Number </b></h6>"+
-      "<input type='text' class='form-control' id='txtPropertyNumber' placeholder='Property Number'></div></div></div>" +
-      "<div class='form-group'><hr><h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Action Taken </b></h6>"+
-      "<textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>" +
+      "<div class='col-md-6'>" +
+      "<div class='form-group'><h6 class='text-dark fs-5'><b>Serial Number </b></h6> "+
+      "<input type='text' class='form-control' id='txtSerialNumber' placeholder='Serial Number'></div>" +
+      "<div class='form-group'><h6 class='text-dark fs-5'><b>Property Number </b></h6>"+
+      "<input type='text' class='form-control' id='txtPropertyNumber' placeholder='Property Number'></div>" +
       "<div class='form-group'><h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Status</b></h6>" +
-      "<select class='form-control form-control-user' onChange='enableR()' id='cmbStatus'></select></div>" + "<hr>" +
+      "<select class='form-control form-control-user' onChange='enableR()' id='cmbStatus'></select></div>" + 
+      "</div>" +
+      "<div class='col-md-6'>"+
       "<div class='form-group'><h6 class='text-dark fs-5'><b>Recommendation</b></h6>" +
       "<select onChange='hideText()' class='form-control form-control-user' id='cmbRecomend'></select></div>" + 
-      "<div id='divRecomend' class='form-group'><textarea class='form-control' rows='5' id='txtrDes' placeholder='Recommendation'></textarea></div>" + "<hr>" +
-      "<h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Assigned to: </b></h6>"+
+      "<div id='divRecomend' class='form-group'><textarea class='form-control' rows='5' id='txtrDes' placeholder='Recommendation'></textarea></div>" +
       "<div id='divTech' class='form-group'> <select class='form-control form-control-user' id='cmbTech'></select></div>" +
-      "<h6 class='text-dark fs-5'><b>Technicians: </b></h6>"+
-      "<div id='cmbtechsdiv' class='form-group'><select class='select' style='width: 100%;' size='5' id='cmbtechs'></select></div>"+
-      "<div id='cmbTechsfildiv' class='form-group row'><div class='col-8'><select class='form-control form-control-user' id='cmbTechsfil'></select></div><div class='col-4'><button type='button' onclick='updateAccess("+ id +")' class='btn btn-primary'>ADD</button><button type='button' onclick='deleteAccess("+ id +")' class='btn btn-warning'>REMOVE</button></div></div>"
-  );
+      "</div>" + 
+      "<div class='col-md-12'>" +
+      "<div class='form-group'><hr><h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Action Taken </b></h6>"+
+      "<textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>" +
+      "<h6 class='text-dark fs-5'><b>Added Technicians: </b></h6>"+
+      "<div id='cmbtechsdiv' class='form-group'><select class='select form-control sm' style='width: 100%;' size='5' id='cmbtechs'></select></div>"+
+      "<div id='cmbTechsfildiv' class='form-group row'><div class='col-8'><select class='form-control form-control-user' id='cmbTechsfil'></select></div><div class='col-4'><button type='button' onclick='updateAccess("+ id +")' class='btn btn-primary'>Add</button><button type='button' onclick='deleteAccess("+ id +")' class='btn btn-warning'>Remove</button></div></div>" +
+        // "<h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Assigned to: </b></h6>"+
+      "</div></div>"
+      );
 
   $.ajax({
     async: false,
@@ -222,6 +228,8 @@ function replyTicket(id, techId, access) {
         option.value = data[i].id;
         cmbInc.add(option);
       }
+       // Hide the cmbTech element
+    $("#cmbTech").hide();
     },
     error: function (e) {
       alert(e);
@@ -685,22 +693,26 @@ function updateTicketview(id,status,techid) {
     "<div class='form-group'><label class ='text-dark'>Title/Position</label><input type='text' class='form-control' id='txtTitle' placeholder='Position/Title' disabled></div>" + 
     "</div>" + 
     "<div class='col-md-12'>" + "<hr><h5> <b>Ticket Information</b> </h5>" + 
+    "<div class='row'>" + "<br>" +
+            "<div class='col-md-6'>" +
             "<div class='form-group'>" +
-            "<label for='cmbPrio'><span class='required-indicator'>*</span>Priority</label>" +
+            "<label for='cmbPrio' class ='text-dark'><span class='required-indicator'>*</span>Priority</label>" +
             "<select class='form-control form-control-user form-floating' id='cmbPrio'></select>" +
             "</div>" +
             "<div class='form-group'>" +
-            "<label for='cmbStatus'><span class='required-indicator'>*</span>Status</label>" +
+            "<label for='cmbStatus' class ='text-dark'><span class='required-indicator'>*</span>Status</label>" +
             "<select class='form-control form-control-user form-floating' id='cmbStatus'></select>" +
             "</div>" +
+            "</div>" + 
+            "<div class='col-md-6'>" +
             "<div class='form-group'>" +
-            "<label for='cmbTech'><span class='required-indicator'>*</span>Technician</label>" +
-            "<select class='form-control form-control-user form-floating' id='cmbTech'></select>" +
-            "</div>" +
+            "<label for='cmbTech' class ='text-dark'><span class='required-indicator'>*</span>Technician</label>" +
+            "<select class='form-control form-control-user form-floating' id='cmbTech'></select></div>" +
             "<div class='form-group'><label class ='text-dark'>Category of the issue</label><select class='form-control' id='cmbIncident' disabled></select></div>" +
+          
+            "</div>" +  "</div>" + 
             "<div class='form-group'><label class ='text-dark'>Description of the issue</label><textarea class='form-control' rows='5' id='txtdescription' placeholder='Provide a detailed description of the issue you are experiencing.'disabled></textarea><small class='text-danger' id='txtdescription-error'></small></div>" +
-            "<div class='form-group'><label class ='text-dark'>Attachment</label> <input type='file' class='fileToUpload form-control' ></input><br></div>" +
-            "<div class='form-group'>"
+            "<div class='form-group'><label class ='text-dark'>Attachment</label> <input type='file' class='fileToUpload form-control' ></input><br></div>"
   );
   
   $("#divButtons").html(

@@ -56,7 +56,8 @@ if(isset($_POST['Print'])){
       $title = $row['title']; 
       $description = $row['description']; 
       $dCreate = $row['DateCreated']; 
-      $tCreate = $row['TimeCreated']; 
+      $tCreate = date('h:i:s', strtotime($row['TimeCreated']));
+      //$tCreate = $row['TimeCreated']; 
       $cCreate = date('y-m', strtotime($row['DateCreated']));
       $message = $row['ticketMessage']; 
       $status = $row['statusName']; 
