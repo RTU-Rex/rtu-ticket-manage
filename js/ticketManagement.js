@@ -173,9 +173,9 @@ function replyTicket(id, techId, access) {
       "<div class='form-group'><hr><h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Action Taken </b></h6>"+
       "<textarea class='form-control' rows='5' id='txtdescription' placeholder='Description'></textarea></div>" +
       "<h6 class='text-dark fs-5'><b>Added Technicians: </b></h6>"+
-      "<div id='cmbtechsdiv' class='form-group'><select class='select form-control sm' style='width: 100%;' size='5' id='cmbtechs'></select></div>"+
-      "<div id='cmbTechsfildiv' class='form-group row'><div class='col-8'><select class='form-control form-control-user' id='cmbTechsfil'></select></div><div class='col-4'><button type='button' onclick='updateAccess("+ id +")' class='btn btn-primary'>Add</button><button type='button' onclick='deleteAccess("+ id +")' class='btn btn-warning'>Remove</button></div></div>" +
-        // "<h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Assigned to: </b></h6>"+
+      "<div id='cmbTechsfildiv' class='form-group row'><div class='col-8'><select class='form-control form-control-user' id='cmbTechsfil'></select></div><div class='col-4'><button type='button' onclick='updateAccess("+ id +")' class='btn btn-success sm'>Add</button> <button type='button' onclick='deleteAccess("+ id +")' class='btn btn-danger sm'>Remove</button></div></div>" +
+      "<div id='cmbtechsdiv' class='form-group'><select class='select form-control sm' style='width: 100%;' size='5' id='cmbtechs'></select></div>"+ 
+      // "<h6 class='text-dark fs-5'><span class='required-indicator'>*</span><b>Assigned to: </b></h6>"+
       "</div></div>"
       );
 
@@ -370,7 +370,7 @@ function replyTicket(id, techId, access) {
             elementStatus.disabled = false;
             elementrecom.disabled = false;
             elementrecomD.disabled = false;
-          } else if (data[i].ticketStatus == 5) {
+          } else if (data[i].ticketStatus == 5 || data[i].ticketStatus == 4) {
             var elementtech = document.getElementById("cmbTech");
             var elementAction = document.getElementById("cmbStatus");
             var elementStatus = document.getElementById("txtdescription");
@@ -547,7 +547,7 @@ function updateTech(id, techid, access) {
 
   var desc = $("#txtdescription").val();
 
-  if (!(desc.length < 5)) {
+  if (!(desc.length < 1)) {
     var editTech = 0;
     if (techid == 0) {
       editTech = $("#cmbTech").val();
@@ -619,12 +619,12 @@ function updateTech(id, techid, access) {
           );
           $("#divMessage").html(data);
           $("#divButtons").html(
-            " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
+            " <button type='button' class='btn btn-secondary' data-dismiss='modal' id='closeButton'>Close</button>"
           );
         } else {
           $("#divMessage").html(data);
           $("#divButtons").html(
-            " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
+            " <button type='button' class='btn btn-secondary' data-dismiss='modal' id='closeButton'>Close</button>"
           );
 
         }
@@ -647,6 +647,10 @@ function updateTech(id, techid, access) {
           ")' id='btnUpdate'>Send</button>"
       );
   }
+  $("#closeButton").click(function() {
+    location.reload();
+  });
+ 
   
 }
 
@@ -969,14 +973,14 @@ function updateTicket(id) {
             );
             $("#divMessage").html(data);
             $("#divButtons").html(
-              " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
+              " <button type='button' class='btn btn-secondary' data-dismiss='modal' id='closeButton'>Close</button>"
             );
 
            
           } else {
             $("#divMessage").html(data);
             $("#divButtons").html(
-              " <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>"
+              " <button type='button' class='btn btn-secondary' data-dismiss='modal' id='closeButton'>Close</button>"
             );
   
           }
@@ -995,7 +999,9 @@ function updateTicket(id) {
           ")' data-dismiss='modal'>Update</button>"
       );
   }
-
+  $("#closeButton").click(function() {
+    location.reload();
+  });
  
 }
 
@@ -1015,3 +1021,4 @@ function sendemail(recipient, subject, content) {
     },
   });
 }
+
