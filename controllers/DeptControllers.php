@@ -54,7 +54,7 @@ include "dbConnect.php";
                 SET Department='$cmbDept',Office='$txtOffice',modifiedBy=$sessionId,dateModified=CURRENT_TIMESTAMP() 
                 WHERE id = $DeptId;";
         if(mysqli_query($conn, $sql)) {
-            $message = "You successfully updated ticket. $id";
+            $message = "Office Under $txtOffice that is $cmbDept is successfully updated";
             echo json_encode($message);
 
         }

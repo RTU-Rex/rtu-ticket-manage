@@ -71,7 +71,7 @@ include "dbConnect.php";
                     isOJT = $cmbEmpStatus
                 WHERE id = '$id';";
         if(mysqli_query($conn, $sql)) {
-            $message = "You successfully updated ticket. $id";
+            $message = "You successfully updated user $txtUserFirstName  $txtUserLastName";
             echo json_encode($message);
 
         }

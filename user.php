@@ -258,13 +258,16 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
             success: function(data) {
                 data = JSON.parse(data);
                 $('#divMessage').html(data);
-                $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>");
+                $('#divButtons').html(" <button type='button' class='btn btn-secondary' data-dismiss='modal' id='closeButton'>Close</button>");
             }, 
             error: function (e) {
                 alert(e);
             }
         });
-     
+
+        $("#closeButton").click(function() {
+    location.reload();
+  });
     
     }
     
