@@ -40,6 +40,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                                 <th class="sortable">TECHNICIAN <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                                 <th class="sortable">REQUESTOR <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                                 <th class="sortable">LAST UPDATE <i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
+                                                <th class="sortable">Action<i class="fas fa-sort float-right" style='cursor: pointer'></i></th>
                                             </tr>
                                         </thead>
 
@@ -53,32 +54,34 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                      }
                                     include "./controllers/dbConnect.php";   
                                      $sql = "SELECT CASE WHEN Isnull(b.technicianId) then 'Unassign' ELSE c.statusName END Stas,
-                                     a.title,description, e.IncidentName, a.Id, IFNULL(f.priorityName, '---') as priorityName, g.Office,
+                                     a.title, description, e.IncidentName, a.Id, IFNULL(f.priorityName, '---') as priorityName, g.Office,
                                      IFNULL(CONCAT(d.lastName,', ',d.firstName),'---') Assigned, 
                                      a.name,
                                      CASE WHEN ISNULL(b.datemodified) then a.DateCreated else b.datemodified end lastUpdate
-                             FROM tblTicket a 
-                             LEFT JOIN  (SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
-                                         FROM `tblTicketHistory`) b on a.Id = b.ticketId and row_num = 1
-                             LEFT JOIN tblStatus c on c.id = b.ticketStatus
-                             LEFT JOIN tblUser d on d.id = b.technicianId
-                             LEFT JOIN tblIncident e on e.id = a.incident
-                             LEFT JOIN tblPriority f on f.id = a.priority
-                             LEFT JOIN tblDepartment g on g.id = a.department
-                             WHERE (CASE WHEN 2=$accessid then b.technicianId else $user end) = $user;";
+                                 FROM tblTicket a 
+                                 LEFT JOIN (
+                                     SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
+                                     FROM `tblTicketHistory`
+                                 ) b on a.Id = b.ticketId and row_num = 1
+                                 LEFT JOIN tblStatus c on c.id = b.ticketStatus
+                                 LEFT JOIN tblUser d on d.id = b.technicianId
+                                 LEFT JOIN tblIncident e on e.id = a.incident
+                                 LEFT JOIN tblPriority f on f.id = a.priority
+                                 LEFT JOIN tblDepartment g on g.id = a.department
+                                 WHERE (CASE WHEN 2=$accessid then b.technicianId else $user end) = $user
+                                 AND a.isarchived = 0;  -- exclude archived tickets";
                      
                          $result = mysqli_query($conn, $sql);
                         
                          if (mysqli_num_rows($result) >= 1) {
-                          
-                             while ($row = mysqli_fetch_assoc($result)) {
+                            while ($row = mysqli_fetch_assoc($result)) {
                                 echo '<tr><td><b>'.$row['Id'].'</b></td>';
                                 echo '<td>'.$row['Stas'].'</td>';
                                 echo '<td data-toggle="modal" data-target="#TicketModal" class="text-primary text-capitalize" style="cursor: pointer" onClick="viewTicket('.$row['Id'].')"> <ins>'.$row['description'].'</ins> </td>';
                                 echo '<td>';
                                 if ($row['priorityName'] == '---') {
                                     echo  $row['priorityName'];
-                                }else if ($row['priorityName'] == 'Critical') {
+                                } else if ($row['priorityName'] == 'Critical') {
                                     echo '<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Response Time: 1 hour or less&#13;Resolution Time: Within 24 hours">'.$row['priorityName'].'</span>';
                                 } elseif ($row['priorityName'] == 'High') {
                                     echo '<span class="badge badge-warning" data-toggle="tooltip" data-placement="top" title="Response Time: 4-8 hours&#13;Resolution Time: Within 3 business days">'.$row['priorityName'].'</span>';
@@ -87,16 +90,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
                                 } elseif ($row['priorityName'] == 'Low') {
                                     echo '<span class="badge badge-success" data-toggle="tooltip" data-placement="top" title="Response Time: 3-5 business days&#13;Resolution Time: Within 6-7 business days">'.$row['priorityName'].'</span>';
                                 }
-                                
                                 echo '</td>';
                                 echo '<td>'.$row['Office'].'</td>';
                                 echo '<td>'.$row['Assigned'].'</td>';
                                 echo '<td>'.$row['name'].'</td>';
-                                echo '<td>'.date('M d, Y h:i A', strtotime($row['lastUpdate'])).'</td></tr>';                                
-                             }           
-                          
-                         
-                         }
+                                echo '<td>'.date('M d, Y h:i A', strtotime($row['lastUpdate'])).'</td>';
+                                echo '<td><button class="btn btn-danger" onClick="archiveTicket('.$row['Id'].')">Archive</button></td></tr>';           
+                            }             
+                        }
                                     
                                     
                                     
@@ -127,6 +128,20 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 
 
     <script> 
+
+    function archiveTicket(ticketId) {
+    if (confirm("Are you sure you want to archive this ticket?")) {
+        $.ajax({
+            url: "controllers/homeControllers.php",
+            type: "POST",
+            data: { archiveTickets: true, id: ticketId },
+            success: function() {
+                location.reload();
+            }
+        });
+    }
+}
+
   
     $(document).ready(function() {
         $('#dataTable1').DataTable(); 

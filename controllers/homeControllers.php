@@ -10,6 +10,34 @@ include "dbConnect.php";
     }
 
 
+
+    if(isset($_POST['archiveTickets'])){
+        // Get ticket ID from POST data
+        $ticketId = $_POST["id"];
+    
+        // Archive ticket in database
+        $sql = "UPDATE tblticket SET isArchived = 1 WHERE Id = '$ticketId'";
+        if (mysqli_query($conn, $sql)) {
+            echo "Ticket archived successfully";
+        } else {
+            echo "Error archiving ticket: " . mysqli_error($conn);
+        }
+    }
+    
+    if(isset($_POST['unarchiveTickets'])){
+    $ticketId = $_POST["id"];
+
+    $sql = "UPDATE tblticket SET isArchived = 0 WHERE Id = '$ticketId'";
+
+    if (mysqli_query($conn, $sql)) {
+        echo "Ticket unarchived successfully";
+    } else {
+        echo "Error unarchiving ticket: " . mysqli_error($conn);
+    }
+    }
+
+    
+
     if(isset($_POST['gettickets'])){
         $accessid = $_SESSION['accessId'];
         $user = "1";
@@ -22,9 +50,9 @@ include "dbConnect.php";
         a.title, a.description, a.name, IFNULL(e.IncidentName, 'Not Assigned') AS IncidentName, a.Id, IFNULL(f.priorityName, '---') as priorityName, IFNULL(a.priority, 0) as prioId, g.Office,
         d.firstName, d.lastName,
         CASE 
-                    WHEN a.dateModified IS NULL THEN a.DateCreated 
-                    ELSE a.dateModified 
-                END AS dateModified
+            WHEN a.dateModified IS NULL THEN a.DateCreated 
+            ELSE a.dateModified 
+        END AS dateModified
         FROM tblTicket a 
         LEFT JOIN  (SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
                     FROM `tblTicketHistory`) b on a.Id = b.ticketId and row_num = 1
@@ -33,7 +61,11 @@ include "dbConnect.php";
         LEFT JOIN tblIncident e on e.id = a.incident
         LEFT JOIN tblPriority f on f.id = a.priority
         LEFT JOIN tblDepartment g on g.id = a.department
-        WHERE NOT(CASE WHEN ISNULL(c.id) THEN 5 ELSE c.id END = 4) AND (CASE WHEN c.id = 1 THEN d.email ELSE 1 END) = '$user' AND  (CASE WHEN $prio = -1 THEN -1 ELSE IFNULL(a.priority,0) END ) = $prio;";
+        WHERE NOT(CASE WHEN ISNULL(c.id) THEN 5 ELSE c.id END = 4) 
+        AND (CASE WHEN c.id = 1 THEN d.email ELSE 1 END) = '$user' 
+        AND (CASE WHEN $prio = -1 THEN -1 ELSE IFNULL(a.priority,0) END ) = $prio 
+        AND a.isarchived = 0 
+        AND (CASE WHEN 2=$accessid then b.technicianId else $user end) = $user;";
 
 
         $result = mysqli_query($conn, $sql);
@@ -257,7 +289,7 @@ include "dbConnect.php";
         $ticketId = validate($_POST['ticketId']);
         $sessionId = $_SESSION['id'];
 
-        $sql = "SELECT a.ticketMessage, IFNULL(a.ticketStatus,0) ticketStatus ,IFNULL(recomend,0) recomend, IFNULL(recomendDes, '') recomendDes,c.email, b.statusName, c.name, a.dateModified, IFNULL(a.technicianId,0) technicianId ,  IFNULL(CONCAT(f.firstName,' ',f.lastName),'') as techName , IFNULL(CONCAT(e.accessName,'(', d.firstName,' ', d.lastName, ')'), 'REQUESTOR') AS Tech , IFNULL(a.modifiedFrom, CASE WHEN a.modifiedBy = $sessionId then 'User' else 'admin' end ) modifiedFrom,
+        $sql = "SELECT a.ticketMessage, IFNULL(a.ticketStatus,0) ticketStatus ,IFNULL(recomend,0) recomend, IFNULL(recomendDes, '') recomendDes,c.email, IFNULL(b.statusName,'Open') statusName, c.name, a.dateModified, IFNULL(a.technicianId,0) technicianId ,  IFNULL(CONCAT(f.firstName,' ',f.lastName),'') as techName , IFNULL(CONCAT(e.accessName,'(', d.firstName,' ', d.lastName, ')'), 'REQUESTOR') AS Tech , IFNULL(a.modifiedFrom, CASE WHEN a.modifiedBy = $sessionId then 'User' else 'admin' end ) modifiedFrom,
                 IFNULL(serial_number, '') serial_number, IFNULL(property_number, '') property_number, c.DateCreated
                 FROM tblTicketHistory a 
                 LEFT JOIN tblStatus b on a.ticketStatus = b.id 

@@ -11,14 +11,15 @@ include "dbConnect.php";
 
     if(isset($_POST['getReport'])){
         $sql = "SELECT Stas, numbers, ROUND((numbers/totals) * 100, 2) as percents FROM
-                (SELECT Stas, COUNT(*) numbers 
-                    FROM (SELECT CASE WHEN Isnull(b.technicianId) then 'OPEN - Unassign' ELSE c.statusName END Stas 
-                        FROM tblTicket a 
-                        LEFT JOIN  (SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
-                                    FROM `tblTicketHistory`) b on a.Id = b.ticketId and row_num = 1
-                        LEFT JOIN tblStatus c on c.id = b.ticketStatus
-                        WHERE Year(a.DateCreated) = year(now())) a
-                GROUP by Stas) a LEFT JOIN (SELECT COUNT(*) as Totals From tblTicket WHERE Year(DateCreated) = year(now())) b on 1=1;";
+        (SELECT Stas, COUNT(*) numbers 
+            FROM (SELECT CASE WHEN Isnull(b.technicianId) then 'OPEN - Unassign' ELSE c.statusName END Stas 
+                FROM tblTicket a 
+                LEFT JOIN  (SELECT *, ROW_NUMBER() OVER(PARTITION BY ticketId ORDER by dateModified DESC) AS row_num 
+                            FROM `tblTicketHistory`) b on a.Id = b.ticketId and row_num = 1
+                LEFT JOIN tblStatus c on c.id = b.ticketStatus
+                WHERE Year(a.DateCreated) = year(now()) AND a.isarchived = 0) a
+        GROUP by Stas) a LEFT JOIN (SELECT COUNT(*) as Totals From tblTicket WHERE Year(DateCreated) = year(now()) AND isarchived = 0) b on 1=1;";
+
 
 		$result = mysqli_query($conn, $sql);
     	if (mysqli_num_rows($result) >= 1) {

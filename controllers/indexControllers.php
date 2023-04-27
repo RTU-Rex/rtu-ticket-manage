@@ -95,13 +95,16 @@ include "dbConnect.php";
         $ticketId = validate($_POST['ticketId']);
         $sql = "SELECT a.Id, email, name, title, description, IFNULL(b.IncidentName, 'Unassigned') AS IncidentName, c.Office, a.DateCreated,
                     CASE 
-                    WHEN a.dateModified IS NULL THEN a.DateCreated 
-                    ELSE a.dateModified 
+                    WHEN th.dateModified IS NULL THEN a.DateCreated 
+                    ELSE th.dateModified 
                 END AS dateModified
-                FROM tblTicket a left join tblIncident b on a.incident = b.id 
-                left join tblDepartment c on a.department = c.id  WHERE a.Id = $ticketId ";
-		$result = mysqli_query($conn, $sql);
-    	if (mysqli_num_rows($result) >= 1) {
+                FROM tblTicket a 
+                LEFT JOIN tblIncident b ON a.incident = b.id 
+                LEFT JOIN tblDepartment c ON a.department = c.id  
+                LEFT JOIN tblTicketHistory th ON a.id = th.ticketId
+                WHERE a.Id = $ticketId";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) >= 1) {
             $value = array();
             $int = 0;
             while ($row = mysqli_fetch_assoc($result)) {
@@ -117,10 +120,10 @@ include "dbConnect.php";
                                     );
                 $int = $int + 1;
             }           
-            echo json_encode($value);
-          
-		}
+            echo json_encode($value);          
+        }
     }
+    
 
     if(isset($_POST['getTicketStatus'])){
         $sql = "SELECT id, statusName FROM tblStatus where isActive = 1;";
@@ -160,7 +163,7 @@ include "dbConnect.php";
     if(isset($_POST['getTicketsJourneyHistory'])){
         $ticketId = validate($_POST['ticketId']);
 
-        $sql = "SELECT a.ticketMessage, IFNULL(a.ticketStatus,0) Statusid , b.statusName, c.name, a.dateModified, IFNULL(a.technicianId,0) as TechId ,CONCAT(e.accessName,'(', d.firstName,' ', d.lastName, ')') AS Tech, a.modifiedFrom 
+        $sql = "SELECT a.ticketMessage, IFNULL(a.ticketStatus,0) Statusid , IFNULL(b.statusName,'Waiting for approval') statusName, c.name, a.dateModified, IFNULL(a.technicianId,0) as TechId ,CONCAT(e.accessName,'(', d.firstName,' ', d.lastName, ')') AS Tech, a.modifiedFrom 
                 FROM tblTicketHistory a 
                 LEFT JOIN tblStatus b on a.ticketStatus = b.id 
                 LEFT JOIN tblTicket c on c.Id = a.ticketId 
