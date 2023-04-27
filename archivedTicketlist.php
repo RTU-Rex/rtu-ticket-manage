@@ -10,7 +10,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 <div class="container-fluid">
 
     <h1 class="h3 mb-2 text-gray-800">Archived Tickets</h1>
-
     <div class="card shadow mb-4 no-animation fade-up">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Archived Ticket List</h6>
@@ -18,6 +17,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
 
         <div class="card-body">
             <div class="table-responsive">
+            <button class= "btn btn-primary" style='float:right;' onclick="exportTableToCSV('archived_tickets.csv')"> Export Data <i class='fas fa-file-export'></i></button>
                 <table class="table table-bordered table-striped" id="dataTable1" width="100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -117,6 +117,35 @@ if (isset($_SESSION['id']) && isset($_SESSION['email'])) {
             }
         });
     } }
+
+    function exportTableToCSV(filename) {
+    var csv = [];
+    var rows = document.querySelectorAll("#dataTable1 tbody tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td");
+
+        for (var j = 0; j < cols.length; j++)
+            row.push(cols[j].innerText);
+
+        csv.push(row.join(","));
+    }
+
+    downloadCSV(csv.join("\n"), filename);
+}
+
+    function downloadCSV(csv, filename) {
+        var csvFile;
+        var downloadLink;
+
+        csvFile = new Blob([csv], {type: "text/csv"});
+        downloadLink = document.createElement("a");
+        downloadLink.download = filename;
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+    }
 
 
 
